@@ -1,0 +1,65 @@
+{
+  "newProjectRoot": "projects",
+  "version": 1,
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "projects": {
+    "55-real-time-collab": {
+      "architect": {
+        "build": {
+          "defaultConfiguration": "production",
+          "options": {
+            "browser": "src/main.ts",
+            "assets": [],
+            "styles": [
+              "src/styles.css"
+            ],
+            "tsConfig": "tsconfig.app.json"
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "maximumError": "1MB",
+                  "maximumWarning": "500kB",
+                  "type": "initial"
+                },
+                {
+                  "maximumError": "8kB",
+                  "maximumWarning": "4kB",
+                  "type": "anyComponentStyle"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "sourceMap": true,
+              "optimization": false,
+              "extractLicenses": false
+            }
+          },
+          "builder": "@angular/build:application"
+        },
+        "serve": {
+          "defaultConfiguration": "development",
+          "configurations": {
+            "production": {
+              "buildTarget": "55-real-time-collab:build:production"
+            },
+            "development": {
+              "buildTarget": "55-real-time-collab:build:development"
+            }
+          },
+          "builder": "@angular/build:dev-server"
+        }
+      },
+      "sourceRoot": "src",
+      "prefix": "app",
+      "projectType": "application",
+      "schematics": {},
+      "root": ""
+    }
+  },
+  "cli": {
+    "packageManager": "npm"
+  }
+}
