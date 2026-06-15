@@ -29,6 +29,9 @@ npm-debug.log*
 # Angular
 *.ngsummary.json
 *.ngfactory.ts
+.angular/cache/
+
+# Capacitor (Ionic)
 
 # Capacitor (Ionic)
 android/
