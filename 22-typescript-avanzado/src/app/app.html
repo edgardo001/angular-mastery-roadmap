@@ -1,0 +1,68 @@
+<div class="container">
+  <h1>TypeScript Avanzado en Angular</h1>
+
+  <section>
+    <h2>Template Literal Types</h2>
+    <div class="grid">
+      @for (item of templateLiteralExamples; track item.label) {
+        <div class="card">
+          <strong>{{ item.label }}</strong>
+          <code>{{ item.value }}</code>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Conditional Types</h2>
+    <div class="grid">
+      <div class="card success">
+        <strong>Success Response</strong>
+        <pre>{{ responseSuccess | json }}</pre>
+      </div>
+      <div class="card error">
+        <strong>Error Response</strong>
+        <pre>{{ responseError | json }}</pre>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>satisfies</h2>
+    <div class="card">
+      <strong>ServerConfig</strong>
+      <pre>{{ config | json }}</pre>
+    </div>
+  </section>
+
+  <section>
+    <h2>as const (Routes)</h2>
+    <div class="grid">
+      @for (route of routeList; track route) {
+        <div class="card">
+          <code>{{ route }}</code>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Mapped Types (FormState)</h2>
+    <div class="grid">
+      @for (item of userForm | keyvalue; track item.key) {
+        <div class="card">
+          <strong>{{ item.key }}</strong>
+          <pre>{{ item.value | json }}</pre>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Generic CRUD Service</h2>
+    <div class="card">
+      <strong>Usuarios ({{ crudItems.length }})</strong>
+      <pre>{{ crudItems | json }}</pre>
+    </div>
+  </section>
+</div>

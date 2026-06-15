@@ -1,0 +1,61 @@
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+h1 {
+  font-size: 1.75rem;
+  margin-bottom: 2rem;
+  color: #c3002f;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin: 1.5rem 0 1rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid #eee;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.card {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  word-break: break-word;
+}
+
+.card strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #666;
+}
+
+.card code {
+  font-size: 0.9rem;
+  color: #c3002f;
+}
+
+.card pre {
+  font-size: 0.8rem;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.card.success { border-left: 4px solid #22c55e; }
+.card.error { border-left: 4px solid #ef4444; }
