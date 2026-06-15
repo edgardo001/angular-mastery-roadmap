@@ -2,6 +2,14 @@
 
 Reactive Forms en Angular: FormGroup, FormControl, FormArray, validación síncrona/asíncrona, y FormRecord.
 
+> **Propósito:** Crear formularios complejos con validación reactiva usando FormBuilder, FormArray, validadores personalizados y async validators.
+>
+> **Problema que resuelve:** Los formularios HTML nativos no tienen validación robusta, manejo de estado complejo ni soporte para formularios dinámicos anidados.
+>
+> **Cómo lo resuelve:** Angular Reactive Forms proporcionan un modelo de datos inmutable, validación síncrona/asíncrona, FormArray para grupos dinámicos y control total sobre el estado.
+>
+> **Por qué aprenderlo:** Los formularios son la interacción más común en apps empresariales; Angular Forms es el sistema más maduro del ecosistema frontend.
+
 ### Conceptos Clave
 
 - **`FormControl`**: control individual con valor y validación

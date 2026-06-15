@@ -2,6 +2,14 @@
 
 Sistema de inyección de dependencias de Angular: jerarquía, providers, injection tokens, y la función `inject()`.
 
+> **Propósito:** Maestro de la inyección de dependencias en Angular: inject(), InjectionToken, providers (useClass/useFactory/useValue) y jerarquía de inyectores.
+>
+> **Problema que resuelve:** Sin DI, las dependencias se crean manualmente creando acoplamiento fuerte, imposibilidad de mockear y violación del principio de inversión de dependencias.
+>
+> **Cómo lo resuelve:** El DI de Angular proporciona un contenedor centralizado con jerarquía por módulos/componentes, permitiendo intercambiar implementaciones sin modificar el consumidor.
+>
+> **Por qué aprenderlo:** Es el patrón arquitectónico central de Angular; entender DI es entender cómo Angular gestiona servicios, componentes y pipes.
+
 ### Conceptos Clave
 
 - **`@Injectable()`**: decorador de servicios, `providedIn: 'root'`

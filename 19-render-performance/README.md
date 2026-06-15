@@ -2,6 +2,14 @@
 
 Optimización de renderizado: ChangeDetectionStrategy.OnPush, @defer, signals, y lazy loading de componentes.
 
+> **Propósito:** Optimizar el renderizado Angular con OnPush, @defer (viewport/interaction/immediate/timer), and signals para detectar cambios precisos.
+>
+> **Problema que resuelve:** Angular con ChangeDetectionStrategy.Default detecta cambios en toda la aplicación ante cualquier evento, causando renders innecesarios y degradación de performance en apps grandes.
+>
+> **Cómo lo resuelve:** OnPush limita la detección al input del componente, @defer carga contenido bajo demanda (viewport, interaction, timer), y signals notifican cambios solo a consumidores directos.
+>
+> **Por qué aprenderlo:** La performance de renderizado impacta directamente en Core Web Vitals y UX; @defer solo está disponible desde Angular 17 y es clave para Lighthouse scores altos.
+
 ### Conceptos Clave
 
 - **`ChangeDetectionStrategy.OnPush`**: detección solo cuando inputs/señales cambian

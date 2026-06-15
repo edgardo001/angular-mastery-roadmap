@@ -2,6 +2,14 @@
 
 Hooks de ciclo de vida, `effect()` para reactividad, y `afterNextRender`/`afterRender` para interacciones con el DOM y APIs del navegador.
 
+> **Propósito:** Entender y usar correctamente el ciclo de vida de componentes Angular (ngOnInit, afterNextRender, DestroyRef) para controlar inicialización y limpieza.
+>
+> **Problema que resuelve:** Recursos como subscriptions, timers y event listeners deben inicializarse y limpiarse en el momento exacto. Errores aquí causan memory leaks y comportamiento impredecible.
+>
+> **Cómo lo resuelve:** Los hooks de ciclo de vida y DestroyRef proporcionan puntos de control precisos para setup/teardown, con afterNextRender para código seguro post-pintado.
+>
+> **Por qué aprenderlo:** Esencial para evitar memory leaks y asegurar que los componentes se comporten correctamente durante toda su vida útil.
+
 ### Conceptos Clave
 
 - **`ngOnInit()`**: inicialización del componente

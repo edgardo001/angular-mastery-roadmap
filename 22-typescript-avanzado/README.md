@@ -2,6 +2,14 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.1.
 
+> **Propósito:** Utilizar características avanzadas de TypeScript (template literals, conditional types, satisfies, mapped types) para tipar APIs y servicios genéricos Angular.
+>
+> **Problema que resuelve:** El tipado básico no cubre patrones complejos como transformaciones de tipos dinámicos, tipos condicionales según input, o validación de objetos literales contra interfaces.
+>
+> **Cómo lo resuelve:** Template literal types construyen tipos dinámicamente, conditional types adaptan el tipo según condiciones, satisfies valida objetos literales, y mapped types transforman propiedades.
+>
+> **Por qué aprenderlo:** TypeScript avanzado permite escribir librerías y servicios genéricos con tipado perfecto; es el nivel necesario para contribuir a frameworks y crear abstracciones elegantes.
+
 ## Development server
 
 To start a local development server, run:

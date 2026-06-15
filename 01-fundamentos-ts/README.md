@@ -2,6 +2,14 @@
 
 TypeScript moderno es la base de Angular. Este módulo cubre desde tipos básicos hasta patrones avanzados necesarios para escribir componentes y servicios Angular robustos.
 
+> **Propósito:** Dominar TypeScript moderno como lenguaje base de Angular, cubriendo tipos, genéricos, async/await y patrones avanzados.
+>
+> **Problema que resuelve:** Sin TypeScript sólido, el código Angular carece de tipado seguro, es propenso a errores en tiempo de ejecución y difícil de mantener en proyectos grandes.
+>
+> **Cómo lo resuelve:** TypeScript añade tipado estático, genéricos reutilizables, type narrowing y utility types que catchan errores en compilación, no en producción.
+>
+> **Por qué aprenderlo:** Es la base de todo el ecosistema Angular; cada componente, servicio y pipe se escribe en TypeScript. El 90% de los errores en Angular se previenen con buen tipado.
+
 ### Conceptos Clave
 
 - **Tipos básicos**: `string`, `number`, `boolean`, `null`, `undefined`, `void`, `never`

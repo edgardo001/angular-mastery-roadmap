@@ -2,6 +2,14 @@
 
 Servicios en Angular con señales y RxJS: Subjects, BehaviorSubject, operadores, `toSignal` y `toObservable`.
 
+> **Propósito:** Implementar servicios con RxJS y signals para manejar estado compartido, operaciones asíncronas y comunicación entre componentes desacoplados.
+>
+> **Problema que resuelve:** El estado compartido entre componentes hermanos sin un servicio central lleva a props drilling y estado duplicado inconsistente.
+>
+> **Cómo lo resuelve:** Servicios con BehaviorSubject + toSignal convierten streams RxJS en señales reactivas, combinando lo mejor de RxJS (operadores) con signals (reactividad simple).
+>
+> **Por qué aprenderlo:** Los servicios son el mecanismo de estado compartido en Angular; sin ellos cada componente es una isla de datos.
+
 ### Conceptos Clave
 
 - **Servicios**: lógica compartida, estado, comunicación cross-component

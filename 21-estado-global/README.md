@@ -2,6 +2,14 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.1.
 
+> **Propósito:** Gestionar estado global con NgRx Signals (signalStore): withState, withComputed, withMethods, withHooks para una store tipada y reactiva.
+>
+> **Problema que resuelve:** El estado compartido entre rutas y componentes lejanos requiere una solución global; sin ella, los datos se duplican, desincronizan y la lógica de negocio se dispersa.
+>
+> **Cómo lo resuelve:** signalStore proporciona una store centralizada con estado como señales, computed properties derivadas, métodos para actualizaciones y hooks de ciclo de vida — todo tipado.
+>
+> **Por qué aprenderlo:** NgRx Signals es el estado global moderno de Angular; combina la reactividad de signals con la estructura predecible de NgRx, sin el boilerplate de Redux clásico.
+
 ## Development server
 
 To start a local development server, run:

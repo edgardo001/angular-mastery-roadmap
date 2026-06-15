@@ -2,6 +2,14 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.1.
 
+> **Propósito:** Estructurar proyectos Angular profesionales con separación por features (feature folders), core/shared/layouts, barrel exports y lazy loading por dominio.
+>
+> **Problema que resuelve:** Proyectos sin estructura crecen desordenadamente con archivos mezclados, imports largos y dependencias circulares que dificultan el mantenimiento y onboarding.
+>
+> **Cómo lo resuelve:** Feature folders agrupan por dominio de negocio, core/shared separa infraestructura de utilidades, layouts centralizan estructuras de página, y barrel exports simplifican imports.
+>
+> **Por qué aprenderlo:** La estructura del proyecto determina su mantenibilidad a largo plazo; una buena arquitectura reduce el costo de cambios y facilita escalar el equipo.
+
 ## Development server
 
 To start a local development server, run:

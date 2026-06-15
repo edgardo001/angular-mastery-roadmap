@@ -2,6 +2,14 @@
 
 Primeros pasos con Angular 22: CLI, proyectos standalone, componentes, templates e interpolación. Angular con standalone components por defecto.
 
+> **Propósito:** Aprender los fundamentos de Angular 22: componentes standalone, templates, binding y comunicación entre componentes.
+>
+> **Problema que resuelve:** Desarrollar SPAs vanilla JavaScript lleva a código desorganizado, sin estructura clara y difícil de escalar.
+>
+> **Cómo lo resuelve:** Angular impone una arquitectura basada en componentes, con separación clara de responsabilidades, binding bidireccional y sistema de módulos que organiza el código.
+>
+> **Por qué aprenderlo:** Es la puerta de entrada al framework más completo para SPAs empresariales. Establece el patrón mental para todo el desarrollo Angular.
+
 ### Conceptos Clave
 
 - **Angular CLI**: `ng new`, `ng generate`, `ng serve`, `ng build`

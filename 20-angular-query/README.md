@@ -2,6 +2,14 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.1.
 
+> **Propósito:** Manejar estado servidor con TanStack Query (Angular Query): caching, refetch automático, paginación, mutations y optimistic updates.
+>
+> **Problema que resuelve:** El fetching manual con HttpClient + services requiere manejar caching, refetch, loading states, errores y sincronización — código repetitivo y propenso a bugs.
+>
+> **Cómo lo resuelve:** Angular Query con injectQuery/injectMutation abstrae caching automático, stale-while-revalidate, refetch en background, paginación infinita y optimistic updates con rollback.
+>
+> **Por qué aprenderlo:** TanStack Query es la librería estándar para estado servidor en Angular; elimina ~60% del boilerplate de llamadas HTTP y sincroniza datos automáticamente.
+
 ## Development server
 
 To start a local development server, run:

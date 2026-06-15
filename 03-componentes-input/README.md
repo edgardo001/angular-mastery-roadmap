@@ -2,6 +2,14 @@
 
 Comunicación entre componentes con decoradores clásicos y la nueva API de señales: `input()`, `output()`, `model()`.
 
+> **Propósito:** Dominar la comunicación entre componentes padre e hijo usando signals input/output, esencial para construir interfaces modulares y reutilizables.
+>
+> **Problema que resuelve:** Sin una comunicación estructurada, los componentes se acoplan creando código espagueti difícil de mantener y testear.
+>
+> **Cómo lo resuelve:** `input()` signal y `output()` proporcionan un contrato explícito y tipado entre componentes, siguiendo el flujo unidireccional de datos reactivos.
+>
+> **Por qué aprenderlo:** Es el patrón fundamental de composición en Angular; sin esto no se pueden construir UI modulares y reutilizables.
+
 ### Conceptos Clave
 
 - **`@Input()`**: decorador para propiedades de entrada

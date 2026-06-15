@@ -2,6 +2,14 @@
 
 Gestión de estado con señales: `signal()`, `computed()`, `effect()`, `untracked()`, y `linkedSignal()` para estado derivado.
 
+> **Propósito:** Construir estado reactivo complejo con signals: linkedSignal, computed avanzado, untracked, effect con cleanup y persistencia localStorage.
+>
+> **Problema que resuelve:** El estado de aplicación (carrito de compras, preferencias de usuario) necesita reactividad fina, derivaciones computadas y persistencia sin lógica repetitiva en cada componente.
+>
+> **Cómo lo resuelve:** Signals con computed derivan estado automáticamente, linkedSignal enlaza señales dependientes, effects con cleanup manejan side effects como persistencia localStorage.
+>
+> **Por qué aprenderlo:** Signals componibles permiten estado reactivo sin librerías externas; linkedSignal y computed son las herramientas para estado derivado complejo.
+
 ### Conceptos Clave
 
 - **`signal()`**: estado reactivo mutable

@@ -2,6 +2,14 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.1.
 
+> **Propósito:** Desplegar Angular en producción con Docker multi-stage (node → nginx), docker-compose multi-servicio y CI/CD con GitHub Actions.
+>
+> **Problema que resuelve:** ng serve/build no produce un artefacto desplegable portable; sin Docker, el entorno de producción difiere del desarrollo causando errores inesperados.
+>
+> **Cómo lo resuelve:** Docker multi-stage build (compile con node, sirve con nginx), docker-compose orquesta Angular + API + DB, y GitHub Actions automatiza build/test/deploy.
+>
+> **Por qué aprenderlo:** Docker es el estándar de despliegue moderno; todo proyecto Angular en producción se despliega en contenedor. GitHub Actions completa el pipeline CI/CD.
+
 ## Development server
 
 To start a local development server, run:

@@ -2,6 +2,14 @@
 
 Señales (`signal()`) como unidad fundamental de reactividad en Angular 22. Eventos del DOM, two-way binding y actualización de estado.
 
+> **Propósito:** Manejar estado reactivo con signals (signal, computed, effect, model) para construir interfaces que reaccionan automáticamente a cambios.
+>
+> **Problema que resuelve:** El estado mutable y la detección de cambios manual lleva a bugs difíciles de rastrear, renders innecesarios y mala performance.
+>
+> **Cómo lo resuelve:** Signals proporcionan reactividad fina-granular: solo los componentes que usan una señal se actualizan cuando esta cambia, eliminando detección de cambios manual.
+>
+> **Por qué aprenderlo:** Signals son el corazón de la reactividad en Angular moderno; reemplazan a RxJS para estado síncrono y mejoran drásticamente la performance.
+
 ### Conceptos Clave
 
 - **`signal()`**: creación, lectura (ejecución como función), `set()`, `update()`

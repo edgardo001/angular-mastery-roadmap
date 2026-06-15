@@ -2,6 +2,14 @@
 
 Angular 17+ reemplazó `*ngIf`/`*ngFor`/`*ngSwitch` con el nuevo bloque de control flow sintáctico.
 
+> **Propósito:** Utilizar el nuevo control flow de Angular (@if, @for, @switch) para escribir templates declarativos y más eficientes.
+>
+> **Problema que resuelve:** *ngIf/*ngFor/*ngSwitch son directivas estructurales que tienen peor rendimiento, no son tree-shakeables y complican el código anidado.
+>
+> **Cómo lo resuelve:** El nuevo control flow es built-in del compilador, con mejor rendimiento (@for con track automático), sintaxis más limpia y @empty para casos vacíos.
+>
+> **Por qué aprenderlo:** Es el estándar desde Angular 17; el *ngIf clásico está deprecado. Más rápido, menos código, mejor legibilidad.
+
 ### Conceptos Clave
 
 - **`@if` / `@else`**: condicionales con bloques, else y else-if anidados

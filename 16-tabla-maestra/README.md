@@ -2,6 +2,14 @@
 
 Tabla de datos completa: búsqueda, ordenamiento, paginación, y Angular CDK Table.
 
+> **Propósito:** Construir tablas de datos completas con búsqueda, ordenamiento multi-columna, paginación y virtual scrolling usando Angular CDK/Material y señales.
+>
+> **Problema que resuelve:** Las tablas HTML básicas no soportan búsqueda, ordenamiento ni paginación; implementar esto manualmente resulta en código frágil y mal rendimiento con grandes datasets.
+>
+> **Cómo lo resuelve:** CdkTable/MatTable con señales para datos y filtros, computed para ordenamiento, paginación con signal de configuración, y virtual scrolling del CDK para +1000 filas.
+>
+> **Por qué aprenderlo:** Las tablas de datos son el componente UI más usado en apps empresariales; dominar su implementación es indispensable para dashboards y paneles de administración.
+
 ### Conceptos Clave
 
 - **`@angular/cdk/table`**: `CdkTable`, columnas dinámicas

@@ -2,6 +2,14 @@
 
 Autenticación con cookies HttpOnly, SameSite, XSRF/CSRF protection, y refresh de sesión silencioso.
 
+> **Propósito:** Implementar autenticación con cookies HttpOnly, protección XSRF, withCredentials y configuración CORS para apps con backend same-origin.
+>
+> **Problema que resuelve:** JWT en localStorage es vulnerable a XSS; las cookies HttpOnly son más seguras pero requieren manejo de CSRF/XSRF y configuración cross-origin.
+>
+> **Cómo lo resuelve:** Cookies HttpOnly (inaccesibles desde JS), withCredentials para enviar cookies cross-origin, withXsrfConfiguration para token XSRF, y configuración CORS explícita.
+>
+> **Por qué aprenderlo:** Es el approach más seguro para autenticación web mitigando tanto XSS como CSRF. Preferido en apps bancarias y financieras.
+
 ### Conceptos Clave
 
 - **HttpOnly Cookies**: cookies no accesibles desde JavaScript
