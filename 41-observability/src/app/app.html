@@ -1,0 +1,26 @@
+<h1>Observability</h1>
+
+<h2>Logger</h2>
+<button (click)="logDebug()">Log Debug</button>
+<button (click)="logInfo()">Log Info</button>
+<button (click)="logWarn()">Log Warn</button>
+<button (click)="logError()">Log Error</button>
+<button (click)="triggerGlobalError()">Trigger Global Error</button>
+
+<h3>Log Entries</h3>
+<ul>
+  @for (entry of logs; track entry.timestamp) {
+    <li>[{{ entry.timestamp | date:'HH:mm:ss' }}] {{ entry.level | uppercase }}: {{ entry.message }}</li>
+  } @empty {
+    <li>No log entries yet</li>
+  }
+</ul>
+
+<h2>Web Vitals</h2>
+<ul>
+  @for (m of webVitals.metrics(); track m.name) {
+    <li>{{ m.name }}: {{ m.value | number:'1.0-0' }} ({{ m.rating }})</li>
+  } @empty {
+    <li>Waiting for metrics…</li>
+  }
+</ul>
