@@ -240,6 +240,25 @@ ng serve
 3. **Modifica** y experimenta
 4. **Completa** los ejercicios propuestos
 
+## Errores Más Frecuentes de Programadores (y cómo solucionarlos)
+
+| # | Error | Causa | Solución |
+|---|-------|-------|----------|
+| 1 | **Confundir signals con RxJS** | Usar `signal()` para streams asíncronos o `Observable` para estado síncrono | Signals: estado síncrono (`signal`, `computed`). RxJS: streams asíncronos, WebSocket, debounce. Convierte con `toSignal()` / `toObservable()`. |
+| 2 | **Mutar arrays/objetos directamente** | `items.update(arr => { arr.push(x); return arr; })` | Signals necesitan inmutabilidad: `items.update(arr => [...arr, x])` o `structuredClone`. Igual con objetos: `obj.update(o => ({...o, key: val}))`. |
+| 3 | **Olvidar providers** | `NullInjectorError: No provider for HttpClient` | En Angular standalone todo se `provide`: `provideHttpClient()`, `provideRouter()`, `provideAnimations()`. Se configura en `app.config.ts`. |
+| 4 | **No usar `track` en `@for`** | Error de compilación: "FOR loop must use 'track'" | El nuevo `@for` exige `track`: `@for (item of items; track item.id)`. Mejora rendimiento y evita bugs de reconciliación. |
+| 5 | **Mezclar `*ngIf`/`@if`** | Usar `*ngIf` y `@if` en el mismo template | Angular 22 usa solo el nuevo control flow. Migra todo a `@if`/`@for`/`@switch`. Son más legibles y performantes. |
+| 6 | **Usar `async` pipe con signals** | `{{ signal$ \| async }}` donde `signal$` es una `Signal` | Las signals **son funciones**: `{{ mySignal() }}`. No necesitan `async` pipe. Solo usa `async` pipe con Observables. |
+| 7 | **No importar pipes/directivas** | `No pipe found with name 'currency'` | Standalone components deben importar explícitamente: `imports: [CurrencyPipe, DatePipe]`. Lo mismo con directivas y componentes. |
+| 8 | **Olvidar `withFetch()` en HttpClient** | HttpClient no funciona en ciertos entornos | `provideHttpClient(withFetch())` usa la Fetch API nativa en vez de XHR. Recomendado en Angular 22+. |
+| 9 | **No limpiar effects/suscripciones** | Memory leaks, efectos que se ejecutan después de destruir el componente | Usa `DestroyRef` + `takeUntilDestroyed()` para RxJS, y `effect({ manualCleanup: true })` o retorna cleanup function para effects. |
+| 10 | **Usar `@Input()` y `input()` mezclados** | Inconsistencia en el código, confusión en el equipo | Elige un patrón por proyecto. Para código nuevo usa `input()` / `output()` signals. Para migración progresiva, manten el decorador `@Input()`. |
+| 11 | **No tipar genéricos en señales** | `signal([])` infiere `Signal<never[]>` | Tipa siempre: `signal<Product[]>([])` o usa `signal<Product[]>([])` para que las operaciones tengan tipos correctos. |
+| 12 | **Asumir que `effect()` es como `useEffect` de React** | Ejecutar lógica asíncrona sin manejo de timing | `effect()` corre dentro del ciclo de detección de Angular. Para operaciones DOM usa `afterNextRender()`. Para debounce usa RxJS + `toSignal()`. |
+| 13 | **Olvidar que `@defer` necesita triggers** | Carga diferida que no se dispara nunca | Usa triggers: `@defer (on viewport)`, `@defer (on interaction)`, `@defer (on timer(5s))`. Sin trigger, el contenido no se carga. |
+| 14 | **No separar responsabilidades** | Lógica de negocio dentro de componentes | Los componentes solo manejan UI/presentación. La lógica va en servicios o signals stores. Patrón: componentes "tontos" + servicios "inteligentes". |
+
 ---
 
 > **Angular Mastery Roadmap — Aprende haciendo, construye como profesional.**
