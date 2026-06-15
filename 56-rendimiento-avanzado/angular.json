@@ -1,0 +1,70 @@
+{
+  "newProjectRoot": "projects",
+  "version": 1,
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "projects": {
+    "56-rendimiento-avanzado": {
+      "architect": {
+        "build": {
+          "defaultConfiguration": "production",
+          "options": {
+            "browser": "src/main.ts",
+            "assets": [],
+            "styles": [
+              "src/styles.css"
+            ],
+            "tsConfig": "tsconfig.app.json"
+          },
+          "configurations": {
+            "production": {
+                "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "all",
+                  "maximumWarning": "1MB",
+                  "maximumError": "2MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "sourceMap": true,
+              "optimization": false,
+              "extractLicenses": false
+            }
+          },
+          "builder": "@angular/build:application"
+        },
+        "serve": {
+          "defaultConfiguration": "development",
+          "configurations": {
+            "production": {
+              "buildTarget": "56-rendimiento-avanzado:build:production"
+            },
+            "development": {
+              "buildTarget": "56-rendimiento-avanzado:build:development"
+            }
+          },
+          "builder": "@angular/build:dev-server"
+        }
+      },
+      "sourceRoot": "src",
+      "prefix": "app",
+      "projectType": "application",
+      "schematics": {},
+      "root": ""
+    }
+  },
+  "cli": {
+    "packageManager": "npm"
+  }
+}
