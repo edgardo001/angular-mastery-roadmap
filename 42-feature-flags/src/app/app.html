@@ -1,0 +1,28 @@
+<h1>Feature Flags</h1>
+
+<h2>Toggle Panel</h2>
+@for (item of flagList; track item.key) {
+  <label>
+    <input type="checkbox" [checked]="item.value" (change)="toggle(item.key)" />
+    {{ item.key }}
+  </label>
+}
+
+<h2>Demo Sections</h2>
+
+<div [class.dark]="flags.isEnabled('darkMode')">
+  <div *ffShow="'newCheckout'">
+    <h3>New Checkout</h3>
+    <p>This is the new checkout experience.</p>
+  </div>
+
+  <div *ffShow="'betaSearch'">
+    <h3>Beta Search</h3>
+    <p>This is the beta search feature.</p>
+  </div>
+
+  <div *ffHide="'betaSearch'">
+    <h3>Legacy Search</h3>
+    <p>Showing legacy search (hidden when betaSearch is on).</p>
+  </div>
+</div>

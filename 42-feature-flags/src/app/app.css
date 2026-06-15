@@ -1,0 +1,6 @@
+h1 { color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 0.5rem; }
+h2 { color: #2563eb; margin: 1rem 0 0.5rem; }
+h3 { color: #555; margin: 0.5rem 0; }
+label { display: block; margin: 0.5rem 0; cursor: pointer; }
+label input { margin-right: 0.5rem; }
+.dark { background: #222; color: #eee; padding: 1rem; border-radius: 8px; margin-top: 1rem; }
