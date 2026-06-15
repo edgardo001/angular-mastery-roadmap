@@ -1,0 +1,4 @@
+h1 { color: #2563eb; }
+nav { margin: 1rem 0; display: flex; gap: 0.5rem; }
+ul { margin: 1rem 0; list-style: none; }
+li { padding: 0.25rem 0; }

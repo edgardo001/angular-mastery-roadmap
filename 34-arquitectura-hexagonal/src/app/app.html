@@ -1,0 +1,16 @@
+<h1>Arquitectura Hexagonal</h1>
+<nav>
+  <button (click)="loadUsers()">Load Users</button>
+  <button (click)="addUser()">Add User</button>
+</nav>
+
+<h2>Users</h2>
+<ul>
+  @for (user of users(); track user.id) {
+    <li>{{ user.name }} - {{ user.email }}</li>
+  } @empty {
+    <li>No users yet</li>
+  }
+</ul>
+
+<p>{{ status() }}</p>
