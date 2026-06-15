@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" target-language="es" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="appTitle" datatype="html">
+        <source>Localization &amp; i18n</source>
+        <target>Localización e i18n</target>
+      </trans-unit>
+      <trans-unit id="appDesc" datatype="html">
+        <source>This app demonstrates Angular internationalization features.</source>
+        <target>Esta app demuestra las características de internacionalización de Angular.</target>
+      </trans-unit>
+      <trans-unit id="formattersTitle" datatype="html">
+        <source>Locale-aware Formatting</source>
+        <target>Formato según locale</target>
+      </trans-unit>
+      <trans-unit id="dateLabel" datatype="html">
+        <source>Date:</source>
+        <target>Fecha:</target>
+      </trans-unit>
+      <trans-unit id="currencyLabel" datatype="html">
+        <source>Currency:</source>
+        <target>Moneda:</target>
+      </trans-unit>
+      <trans-unit id="numberLabel" datatype="html">
+        <source>Number:</source>
+        <target>Número:</target>
+      </trans-unit>
+      <trans-unit id="percentageLabel" datatype="html">
+        <source>Percentage:</source>
+        <target>Porcentaje:</target>
+      </trans-unit>
+      <trans-unit id="greetingLabel" datatype="html">
+        <source>Greetings</source>
+        <target>Saludos</target>
+      </trans-unit>
+      <trans-unit id="morning" datatype="html">
+        <source>Good morning</source>
+        <target>Buenos días</target>
+      </trans-unit>
+      <trans-unit id="welcome" datatype="html">
+        <source>welcome to our Angular i18n demo</source>
+        <target>bienvenido a nuestro demo de i18n en Angular</target>
+      </trans-unit>
+      <trans-unit id="footerText" datatype="html">
+        <source>&amp;copy; 2026 Angular i18n Demo. All rights reserved.</source>
+        <target>&amp;copy; 2026 Demo de i18n en Angular. Todos los derechos reservados.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
