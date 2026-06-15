@@ -1,0 +1,26 @@
+<h1>Shell (Host) Application</h1>
+
+<section class="shell-content">
+  <h2>Shell Content</h2>
+  <p>This is rendered by the Shell application.</p>
+  <p>Remote content would be loaded via Module Federation at runtime.</p>
+  <button (click)="sendToRemote()">Send Event to Remote</button>
+</section>
+
+<section class="events">
+  <h2>Received Events</h2>
+  <ul>
+    @for (msg of messages(); track msg) {
+      <li>{{ msg }}</li>
+    } @empty {
+      <li>No events yet</li>
+    }
+  </ul>
+</section>
+
+<section class="mfe-info">
+  <h2>Module Federation Configuration</h2>
+  <p><strong>Shell</strong> is configured as the <em>host</em>. It loads remote microfrontends
+  via Webpack 5 Module Federation.</p>
+  <p>See <code>webpack.mf.config.js</code> for the federation setup.</p>
+</section>
