@@ -1,0 +1,48 @@
+name: CD Pipeline
+
+on:
+  workflow_run:
+    workflows: [CI Pipeline]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy-staging:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: https://staging.example.com
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx ng build --configuration staging
+      - name: Deploy to Staging
+        run: |
+          echo "Deploying to staging environment..."
+          chmod +x ./deploy/deploy-staging.sh
+          ./deploy/deploy-staging.sh
+
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://example.com
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx ng build --configuration production
+      - name: Deploy to Production
+        run: |
+          echo "Deploying to production environment..."
+          chmod +x ./deploy/deploy-production.sh
+          ./deploy/deploy-production.sh
