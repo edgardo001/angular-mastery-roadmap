@@ -1,0 +1,22 @@
+<h1>Event-Driven Architecture</h1>
+
+<button (click)="placeOrder()">Place Random Order</button>
+<button (click)="refreshLogs()">Refresh Logs</button>
+
+<h2>Event Log (Middleware)</h2>
+<ul>
+  @for (entry of logEntries(); track entry.timestamp) {
+    <li>{{ entry.timestamp | date:'medium' }} — {{ entry.eventName }} — {{ entry.aggregateId }}</li>
+  } @empty {
+    <li>No events yet</li>
+  }
+</ul>
+
+<h2>Saga Log</h2>
+<ul>
+  @for (log of sagaLogs(); track log) {
+    <li>{{ log }}</li>
+  } @empty {
+    <li>No saga activity</li>
+  }
+</ul>
