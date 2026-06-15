@@ -1,0 +1,57 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+out-tsc/
+*.tsbuildinfo
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Angular
+*.ngsummary.json
+*.ngfactory.ts
+
+# Capacitor (Ionic)
+android/
+ios/
+*.apk
+*.aab
+*.ipa
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+
+# Java (Spring Boot)
+target/
+*.class
+*.jar
+*.war
+
+# .NET
+bin/
+obj/
+*.csproj.user
+*.dbmdl
