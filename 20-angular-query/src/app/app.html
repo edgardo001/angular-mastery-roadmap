@@ -1,0 +1,28 @@
+<div class="container">
+  <h1>Angular Query — Posts</h1>
+
+  <div class="create-form">
+    <input [(ngModel)]="newTitle" placeholder="New post title" />
+    <button (click)="createPost()" [disabled]="createMutation.isPending()">
+      {{ createMutation.isPending() ? 'Creating...' : 'Create Post' }}
+    </button>
+  </div>
+
+  @if (postsQuery.isPending()) {
+    <div class="spinner">Loading posts...</div>
+  } @else if (postsQuery.isError()) {
+    <div class="error">Error: {{ postsQuery.error()?.message }}</div>
+  } @else {
+    <div class="posts">
+      @for (post of postsQuery.data(); track post.id) {
+        <div class="post">
+          <strong>{{ post.title }}</strong>
+          <p>{{ post.body }}</p>
+          <button class="delete" (click)="deletePost(post.id)" [disabled]="deleteMutation.isPending()">
+            Delete
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>
