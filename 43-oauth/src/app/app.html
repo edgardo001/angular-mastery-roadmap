@@ -1,0 +1,12 @@
+<h1>OAuth 2.0 / OIDC</h1>
+
+@if (auth.isAuthenticated()) {
+  <p>Authenticated</p>
+  <button (click)="logout()">Logout</button>
+
+  <h2>User Data</h2>
+  <pre>{{ auth.userData() | json }}</pre>
+} @else {
+  <p>Not authenticated</p>
+  <button (click)="login()">Login</button>
+}
