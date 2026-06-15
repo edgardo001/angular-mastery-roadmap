@@ -1,0 +1,4 @@
+h2 { color: #059669; }
+table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+th, td { border: 1px solid #ddd; padding: 0.5rem; text-align: left; }
+th { background: #f0fdf4; }

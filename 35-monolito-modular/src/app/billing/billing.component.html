@@ -1,0 +1,13 @@
+<h2>Billing Module</h2>
+<table>
+  <thead>
+    <tr><th>Invoice</th><th>Order</th><th>Amount</th><th>Paid</th></tr>
+  </thead>
+  <tbody>
+    @for (inv of invoices(); track inv.id) {
+      <tr><td>{{ inv.id | slice:-8 }}</td><td>{{ inv.orderId | slice:-8 }}</td><td>${{ inv.amount }}</td><td>{{ inv.paid ? 'Yes' : 'No' }}</td></tr>
+    } @empty {
+      <tr><td colspan="4">No invoices</td></tr>
+    }
+  </tbody>
+</table>

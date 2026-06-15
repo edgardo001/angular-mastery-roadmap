@@ -1,0 +1,9 @@
+<h2>Orders Module</h2>
+<button (click)="createOrder()">New Order</button>
+<ul>
+  @for (order of orders(); track order.id) {
+    <li>#{{ order.id | slice:-8 }} — {{ order.status }} — ${{ order.total }}</li>
+  } @empty {
+    <li>No orders</li>
+  }
+</ul>
