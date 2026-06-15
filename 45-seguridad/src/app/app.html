@@ -1,0 +1,19 @@
+<h1>Seguridad Web</h1>
+
+<h2>CSP Nonce</h2>
+<button (click)="generateNonce()">Generate Nonce</button>
+@if (nonceGenerated()) {
+  <p>Nonce: <code>{{ nonceGenerated() }}</code></p>
+}
+
+<h2>Safe vs Unsafe HTML</h2>
+
+<h3>Unsafe HTML (interpolated - Angular auto-escapes)</h3>
+<p>{{ unsafeHtml() }}</p>
+
+<h3>Safe HTML (bypassed - rendered raw)</h3>
+<div [innerHTML]="unsafeHtml() | safeHtml"></div>
+
+<h3>Sanitized HTML (via DomSanitizer.sanitize)</h3>
+<button (click)="sanitize()">Sanitize</button>
+<p>{{ safeHtml() }}</p>
