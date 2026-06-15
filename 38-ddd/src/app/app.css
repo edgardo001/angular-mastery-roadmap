@@ -1,0 +1,11 @@
+h1 { color: #be185d; border-bottom: 2px solid #be185d; padding-bottom: 0.5rem; }
+h2 { color: #be185d; margin: 1rem 0 0.5rem; }
+section { margin: 1rem 0; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; }
+.ubiquitous-language { background: #fdf2f8; }
+.ubiquitous-language dt { font-weight: bold; margin-top: 0.5rem; color: #9d174d; }
+.ubiquitous-language dd { margin-left: 1rem; font-size: 0.9rem; }
+code { background: #e5e7eb; padding: 0.125rem 0.25rem; border-radius: 0.25rem; }
+.actions button { margin-right: 0.5rem; padding: 0.5rem 1rem; }
+.log { background: #1e1e2e; color: #a6e3a1; font-family: monospace; }
+.log ul { list-style: none; }
+.log li { padding: 0.1rem 0; font-size: 0.85rem; }
