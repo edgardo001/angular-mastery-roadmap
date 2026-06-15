@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "name": "31-monorepo",
+  "plugins": [
+    { "plugin": "@nx/angular", "options": { "buildTargetName": "build", "serveTargetName": "serve", "testTargetName": "test" } }
+  ],
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "cache": true,
+      "inputs": ["{projectRoot}/**/*", "sharedGlobals"]
+    },
+    "test": {
+      "cache": true,
+      "inputs": ["{projectRoot}/**/*", "sharedGlobals"]
+    }
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": ["{workspaceRoot}/nx.json", "{workspaceRoot}/angular.json"]
+  },
+  "defaultBase": "main"
+}
