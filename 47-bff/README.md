@@ -182,5 +182,19 @@ BFF con Express/FastAPI que agrega datos de 3 APIs externas, implementa rate lim
 ```bash
 cd 47-bff
 npm install
-npm run dev:all
+npm run server       # BFF Express en http://localhost:3001
+# En otra terminal:
+ng serve             # Angular en http://localhost:4200
+```
+
+O todo junto:
+
+```bash
+npm run dev:all      # Express + Angular con concurrently
+```
+
+Probar el BFF directamente:
+
+```bash
+curl http://localhost:3001/api/bff/dashboard -H "x-session-id: session-123"
 ```

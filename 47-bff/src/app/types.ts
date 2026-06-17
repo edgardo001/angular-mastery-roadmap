@@ -5,6 +5,11 @@ export interface User {
   role: string;
 }
 
+export interface RawUser extends User {
+  numSeguroSocial: string;
+  tarjetaCredito: string;
+}
+
 export interface Order {
   id: number;
   userId: number;
@@ -31,4 +36,16 @@ export interface BffDashboardData {
     totalRevenue: number;
     lowStockProducts: number;
   };
+}
+
+export interface LoginResponse {
+  sessionId: string;
+  user: User;
+}
+
+export interface TransformedProduct {
+  id: number;
+  label: string;
+  priceFormatted: string;
+  available: boolean;
 }
