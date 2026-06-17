@@ -10,6 +10,18 @@ Angular Router: lazy loading, guards funcionales, data resolvers, nested routes 
 >
 > **Por qué aprenderlo:** El router es la columna vertebral de toda SPA; sin él no hay navegación, ni lazy loading, ni protección de rutas.
 
+
+```mermaid
+flowchart LR
+    URL["URL"] --> PR["provideRouter"]
+    PR --> RC["Route Config"]
+    RC --> G{"Guards"}
+    G -->|canActivate| LL["Lazy Load"]
+    G -->|canMatch ✗| RD["Redirect"]
+    LL --> CO["Componente"]
+    CO --> RO["Router Outlet"]
+```
+
 ### Conceptos Clave
 
 - **Router**: `provideRouter`, `withComponentInputBinding`, `withViewTransitions`

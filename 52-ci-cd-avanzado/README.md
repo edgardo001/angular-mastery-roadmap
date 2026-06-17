@@ -10,6 +10,18 @@ Pipelines CI/CD avanzados con GitHub Actions: blue/green deployment, canary rele
 >
 > **Por qu├® aprenderlo:** CI/CD avanzado es lo que distingue equipos maduros; permite deploys m├║ltiples por d├¡a con seguridad y trazabilidad completa.
 
+
+```mermaid
+flowchart LR
+    PUSH["git push"] --> CI["CI: Lint + Test + Build"]
+    CI --> STAGING["Deploy Staging"]
+    STAGING --> E2E["E2E Tests"]
+    E2E --> GATE{"Quality Gate"}
+    GATE -->|pass| PROD["Deploy Production"]
+    GATE -->|fail| FIX["Rollback"]
+    PROD --> MON["Monitoring + Alerts"]
+```
+
 ### Conceptos Clave
 
 - **GitHub Actions**: workflows multi-etapa, matrices, entornos

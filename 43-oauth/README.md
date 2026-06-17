@@ -10,6 +10,24 @@ OAuth 2.0 en Angular con `angular-oauth2-oidc`, Auth0, y login social (Google, G
 >
 > **Por qu├® aprenderlo:** OAuth 2.0 + OIDC es el est├índar de autenticaci├│n delegada; usado por Google, Microsoft, GitHub, y todas las plataformas que permiten "Login with...".
 
+
+```mermaid
+sequenceDiagram
+    participant SPA as Angular SPA
+    participant AS as Auth Server
+    participant API as Backend API
+    SPA->>AS: Authorization Request (PKCE)
+    AS->>SPA: Login page + code
+    SPA->>AS: Credentials
+    AS->>SPA: Authorization Code
+    SPA->>AS: Token Request (code + verifier)
+    AS->>SPA: Access Token + Refresh Token
+    SPA->>API: API Call (Bearer token)
+    API->>AS: Validate token
+    AS->>API: OK
+    API->>SPA: Protected resource
+```
+
 ### Conceptos Clave
 
 - **OAuth 2.0**: Authorization Code + PKCE flow

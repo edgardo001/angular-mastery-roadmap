@@ -10,6 +10,20 @@ Colaboraci├│n en tiempo real con Y.js, CRDTs, WebSocket y Angular. Edici├�
 >
 > **Por qu├® aprenderlo:** La colaboraci├│n en tiempo real es el nuevo est├índar (Google Docs, Figma, Notion); implementarla requiere conceptos distribuidos avanzados que pocos desarrolladores dominan.
 
+
+```mermaid
+flowchart LR
+    U1["Usuario A"] --> YDOC["Y.Doc (CRDT)"]
+    U2["Usuario B"] --> YDOC
+    YDOC --> PROV["Provider (WebSocket)"]
+    PROV --> SYNC["Auto-sync"]
+    YDOC --> AW["Awareness (cursores)"]
+    AW --> U1
+    AW --> U2
+    YDOC --> SIG["Angular Signals"]
+    SIG --> UI["UI reactiva"]
+```
+
 ### Conceptos Clave
 
 - **Y.js**: CRDT (Conflict-Free Replicated Data Type), `Y.Doc`, `Y.Map`, `Y.Array`, `Y.Text`

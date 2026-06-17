@@ -10,6 +10,18 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 >
 > **Por qué aprenderlo:** NgRx Signals es el estado global moderno de Angular; combina la reactividad de signals con la estructura predecible de NgRx, sin el boilerplate de Redux clásico.
 
+
+```mermaid
+flowchart LR
+    ACT["Acción"] --> STORE["signalStore"]
+    STORE --> COMP["computed"]
+    COMP --> C1["Componente A"]
+    COMP --> C2["Componente B"]
+    STORE --> EFF["effect / rxMethod"]
+    EFF --> API["API"]
+    API --> STORE
+```
+
 ## Development server
 
 To start a local development server, run:

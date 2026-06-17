@@ -10,6 +10,17 @@ Testing en Angular con TestBed, Jasmine/Karma, y Jest: componentes, servicios, p
 >
 > **Por qué aprenderlo:** Las pruebas unitarias son la red de seguridad del desarrollador; permiten refactorizar con confianza y son requisito en todo proyecto enterprise.
 
+
+```mermaid
+flowchart TB
+    UNIT["Unit Tests"] --> COMP18["Component Tests"]
+    COMP18 --> INT18["Integration Tests"]
+    INT18 --> E2E["E2E (Playwright)"]
+    CONF["TestBed"] --> RENDER["ComponentFixture"]
+    RENDER --> QUERY["Query DOM"]
+    QUERY --> ASSERT["Assert"]
+```
+
 ### Conceptos Clave
 
 - **TestBed**: `configureTestingModule`, `createComponent`, `inject`

@@ -10,6 +10,17 @@ GraphQL en Angular con Apollo Client: queries, mutations, suscripciones, cach├
 >
 > **Por qu├® aprenderlo:** GraphQL resuelve los problemas fundamentales de REST (over/under fetching, N+1) y es el est├índar en apps modernas con datos complejos.
 
+
+```mermaid
+flowchart LR
+    ANG["Angular Component"] --> APOLLO["Apollo Angular"]
+    APOLLO --> GQL["GraphQL Endpoint"]
+    GQL --> SCHEMA["Schema"]
+    SCHEMA --> RES["Resolvers"]
+    RES --> DB["Database"]
+    RES --> REST["REST APIs"]
+```
+
 ### Conceptos Clave
 
 - **Apollo Angular**: `APOLLO_OPTIONS`, `provideApollo`, `ApolloModule`

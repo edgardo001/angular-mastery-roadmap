@@ -10,6 +10,16 @@ Testing end-to-end con Playwright en Angular: Page Object Model, fixtures, y pru
 >
 > **Por qué aprenderlo:** E2E testing es la última línea de defensa antes de producción; Playwright es más rápido y confiable que Selenium/Cypress, con auto-wait y trazabilidad integrada.
 
+
+```mermaid
+flowchart LR
+    TEST["Test Script"] --> BROWSERS["Chromium / Firefox / WebKit"]
+    BROWSERS --> LOC["Locators (getByRole)"]
+    LOC --> ACT["Actions (click, fill)"]
+    ACT --> ASSERT["Assertions (toBeVisible)"]
+    ASSERT --> REPORT["Reporte HTML"]
+```
+
 ### Conceptos Clave
 
 - **Playwright**: instalación, `playwright.config.ts`, navegadores

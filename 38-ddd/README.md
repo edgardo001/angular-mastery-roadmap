@@ -10,6 +10,15 @@ Domain-Driven Design aplicado a Angular: Value Objects, Entities, Aggregates, Re
 >
 > **Por qué aprenderlo:** DDD es el approach más efectivo para modelar dominios complejos; usado por equipos que necesitan que el código refleje fielmente las reglas del negocio.
 
+
+```mermaid
+flowchart TB
+    PRES["Presentation (Angular)"] --> APP38["Application (Use Cases)"]
+    APP38 --> DOM38["Domain (Entities, Value Objects)"]
+    APP38 --> INFRA["Infrastructure (Repositories)"]
+    INFRA --> PERSIST["Database / APIs"]
+```
+
 ### Conceptos Clave
 
 - **Value Objects**: inmutables, sin identidad (`Email`, `Money`, `Address`)

@@ -10,6 +10,19 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 >
 > **Por qué aprenderlo:** TanStack Query es la librería estándar para estado servidor en Angular; elimina ~60% del boilerplate de llamadas HTTP y sincroniza datos automáticamente.
 
+
+```mermaid
+flowchart LR
+    CMP["Componente"] --> Q["injectQuery()"]
+    Q --> CACHE["Cache"]
+    CACHE --> FETCH["Fetch API"]
+    FETCH --> SERVER["Servidor"]
+    SERVER --> CACHE
+    CMP --> MUT["injectMutation()"]
+    MUT --> API["POST / PUT / DELETE"]
+    API --> CACHE
+```
+
 ## Development server
 
 To start a local development server, run:

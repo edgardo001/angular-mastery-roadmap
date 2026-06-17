@@ -10,6 +10,18 @@ Integraci├│n de modelos de lenguaje (LLMs) en Angular: OpenAI, Claude, Gemin
 >
 > **Por qu├® aprenderlo:** La IA generativa es la tecnolog├¡a m├ís transformadora del momento; integrarla en Angular abre posibilidades de productos inteligentes con chat, an├ílisis y automatizaci├│n.
 
+
+```mermaid
+flowchart LR
+    USER["Usuario"] --> CMP["Angular Component"]
+    CMP --> SVC["AI Service"]
+    SVC --> STREAM["API Call (streaming)"]
+    STREAM --> AI["OpenAI / Gemini / Claude"]
+    AI --> RESP["Chunks"]
+    RESP --> SIG["Signal update"]
+    SIG --> UI["UI con streaming"]
+```
+
 ### Conceptos Clave
 
 - **LLM APIs**: OpenAI (`gpt-4o`), Claude (`claude-sonnet`), Gemini

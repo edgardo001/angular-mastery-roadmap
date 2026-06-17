@@ -10,6 +10,20 @@ Gr├íficos 3D en Angular con Three.js: escenas, animaciones, part├¡culas, y
 >
 > **Por qu├® aprenderlo:** 3D en el navegador es cada vez m├ís demandado (configuradores de productos, dashboards 3D, simulaciones); Three.js es la librer├¡a 3D m├ís popular y su integraci├│n con Angular es directa via servicios.
 
+
+```mermaid
+flowchart LR
+    ANG["Angular Service"] --> SCENE["Three.js Scene"]
+    SCENE --> CAM["Camera"]
+    SCENE --> REND["Renderer"]
+    SCENE --> LIGHTS["Lights"]
+    SCENE --> MESH["Mesh (Geometry + Material)"]
+    SCENE --> ANIM["Animation Loop"]
+    ANIM --> CLOCK["Clock delta"]
+    CLOCK --> SIG["Signal update"]
+    SIG --> UI["UI reactiva"]
+```
+
 ### Conceptos Clave
 
 - **Three.js**: `Scene`, `Camera`, `Renderer`, `Mesh`, `Geometry`, `Material`

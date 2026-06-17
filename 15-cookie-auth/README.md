@@ -10,6 +10,19 @@ Autenticación con cookies HttpOnly, SameSite, XSRF/CSRF protection, y refresh d
 >
 > **Por qué aprenderlo:** Es el approach más seguro para autenticación web mitigando tanto XSS como CSRF. Preferido en apps bancarias y financieras.
 
+
+```mermaid
+flowchart TB
+    FORM["Login Form"] --> SVC["Auth Service"]
+    SVC --> API["POST /api/auth/login"]
+    API --> SESS["Servidor crea sesión"]
+    SESS --> COOKIE["Set-Cookie: HttpOnly"]
+    COOKIE --> NAV["Cookie enviada automáticamente"]
+    NAV --> VAL_S["Servidor valida sesión"]
+    VAL_S -->|válida| REST["API responde"]
+    VAL_S -->|inválida| LOGOUT["Redirigir a login"]
+```
+
 ### Conceptos Clave
 
 - **HttpOnly Cookies**: cookies no accesibles desde JavaScript

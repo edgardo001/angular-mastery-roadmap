@@ -10,6 +10,15 @@ Feature flags en Angular: activaci├│n/desactivaci├│n de funcionalidades,
 >
 > **Por qu├® aprenderlo:** Feature flags permiten despliegues continuos sin riesgo, pruebas en producci├│n con usuarios reales y release de funcionalidades bajo demanda; est├índar en equipos que practican CI/CD.
 
+
+```mermaid
+flowchart LR
+    LD["LaunchDarkly / ConfigCat"] --> PROV["Flag Provider"]
+    PROV --> SVC["Feature Flag Service"]
+    SVC --> CMP_A["Componente (flag ON)"]
+    SVC --> CMP_B["Componente (flag OFF)"]
+```
+
 ### Conceptos Clave
 
 - **Feature Flags**: `signal<boolean>` por feature, control centralizado

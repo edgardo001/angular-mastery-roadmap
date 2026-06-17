@@ -10,6 +10,21 @@ JWT con access y refresh tokens, interceptor de autenticación, renovación auto
 >
 > **Por qué aprenderlo:** JWT es el estándar de autenticación moderno; toda app que consuma APIs REST lo necesita. El patrón refresh token es crítico para UX.
 
+
+```mermaid
+flowchart TB
+    FORM["Login Form"] --> SVC["Auth Service"]
+    SVC --> API["POST /api/auth/login"]
+    API --> JWT["JWT (access + refresh)"]
+    JWT --> INT["Interceptor adjunta Bearer"]
+    INT --> REQ["Request protegido"]
+    REQ --> EXP{"Expirado?"}
+    EXP -->|No| RES["Respuesta exitosa"]
+    EXP -->|Sí| REF["Refresh token"]
+    REF --> NEW["Nuevo access token"]
+    NEW --> INT
+```
+
 ### Conceptos Clave
 
 - **JWT**: access token (corto) + refresh token (largo)

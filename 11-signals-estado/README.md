@@ -10,6 +10,17 @@ Gestión de estado con señales: `signal()`, `computed()`, `effect()`, `untracke
 >
 > **Por qué aprenderlo:** Signals componibles permiten estado reactivo sin librerías externas; linkedSignal y computed son las herramientas para estado derivado complejo.
 
+
+```mermaid
+flowchart LR
+    ACT["Acción"] --> S["signal<State>"]
+    S --> C["computed()"]
+    S --> EFF["effect()"]
+    C --> TEM["Template reactivo"]
+    EFF --> API["API"]
+    API --> S
+```
+
 ### Conceptos Clave
 
 - **`signal()`**: estado reactivo mutable

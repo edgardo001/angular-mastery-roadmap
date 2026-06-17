@@ -10,6 +10,19 @@ Autenticación básica con servicio de señales, localStorage y guard funcional.
 >
 > **Por qué aprenderlo:** La autenticación es el requisito más común en apps empresariales; este módulo sienta las bases para cualquier sistema de login.
 
+
+```mermaid
+flowchart TB
+    FORM["Login Form"] --> SVC["Auth Service"]
+    SVC --> API["POST /api/auth/login"]
+    API --> VAL{"Credenciales válidas?"}
+    VAL -->|Sí| TOKEN["Token de sesión"]
+    TOKEN --> STORE["localStorage"]
+    STORE --> GUARD["Auth Guard"]
+    GUARD --> DASH["Dashboard protegido"]
+    VAL -->|No| ERR["Mensaje de error"]
+```
+
 ### Conceptos Clave
 
 - **Servicio Auth**: estado de sesión con `signal<AuthState>`

@@ -10,6 +10,18 @@ Comunicación HTTP con Angular: `HttpClient`, interceptores funcionales, `HttpCo
 >
 > **Por qué aprenderlo:** Toda app Angular se comunica con un backend; HttpClient e interceptores son la capa de comunicación estándar y extensible.
 
+
+```mermaid
+flowchart LR
+    CMP["Componente"] --> SVC["Servicio"]
+    SVC --> HTTP["HttpClient"]
+    HTTP --> INT1["Interceptor (auth)"]
+    INT1 --> API["API REST"]
+    API --> INT2["Interceptor (error)"]
+    INT2 --> SVC
+    SVC --> CMP
+```
+
 ### Conceptos Clave
 
 - **`HttpClient`**: servicio para peticiones HTTP, tipado genérico

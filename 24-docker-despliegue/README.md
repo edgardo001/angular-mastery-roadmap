@@ -10,6 +10,17 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 >
 > **Por qué aprenderlo:** Docker es el estándar de despliegue moderno; todo proyecto Angular en producción se despliega en contenedor. GitHub Actions completa el pipeline CI/CD.
 
+
+```mermaid
+flowchart LR
+    SRC["Código Fuente"] --> BUILD["Build Stage (node:alpine)"]
+    BUILD --> DIST["dist/"]
+    DIST --> RUN["Run Stage (nginx:alpine)"]
+    RUN --> IMG["Imagen Docker"]
+    IMG --> DC["Docker Compose"]
+    DC --> BROWSER["Navegador"]
+```
+
 ## Development server
 
 To start a local development server, run:

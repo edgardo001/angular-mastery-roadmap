@@ -10,6 +10,17 @@ Aplicaci├│n full-stack con Angular + Express (Node) + FastAPI (Python), y Pr
 >
 > **Por qu├® aprenderlo:** El deploy en producci├│n requiere conocimiento de infraestructura web que no se aprende en el desarrollo; esencial para ingenieros senior y arquitectos.
 
+
+```mermaid
+flowchart LR
+    BUILD["ng build --prod"] --> DIST["dist/"]
+    DIST --> NGINX["Nginx / Apache / IIS"]
+    NGINX --> GZIP["gzip + caching"]
+    NGINX --> SSL["SSL (Let Encrypt)"]
+    SSL --> CDN["CDN (Cloudflare)"]
+    CDN --> BROWSER["Navegador"]
+```
+
 ### Conceptos Clave
 
 - **Tres backends**: mismo frontend Angular con 3 backends intercambiables

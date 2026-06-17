@@ -10,6 +10,16 @@ Accesibilidad en Angular con WCAG 2.2, ARIA, Angular CDK A11y, y mejores prácti
 >
 > **Por qué aprenderlo:** Accesibilidad es requisito legal en muchos países (ADA, EU Accessibility Act) y mejora la UX para todos. Angular CDK facilita implementar WCAG sin frameworks externos.
 
+
+```mermaid
+flowchart LR
+    HTML["HTML Semántico"] --> ARIA["ARIA Attributes"]
+    ARIA --> KB["Keyboard Navigation"]
+    KB --> SR["Screen Reader"]
+    SR --> USER["Usuario"]
+    HTML --> AUDIT["Auditoría (Lighthouse)"]
+```
+
 ### Conceptos Clave
 
 - **WCAG 2.2**: Perceptible, Operable, Comprensible, Robusto (POUR)

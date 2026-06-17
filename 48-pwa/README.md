@@ -10,6 +10,18 @@ Aplicaci├│n web progresiva con Angular: Service Worker, IndexedDB, offline-f
 >
 > **Por qu├® aprenderlo:** PWAs ofrecen experiencia nativa sin pasar por app stores; mejoran engagement (push notifications), retenci├│n (instalable) y alcance (no requiere descarga).
 
+
+```mermaid
+flowchart TB
+    APP["Angular PWA"] --> SW["Service Worker"]
+    SW --> CACHE["Cache Storage"]
+    SW --> NET["Network"]
+    CACHE --> OFF["Offline fallback"]
+    NET --> CACHE
+    SW --> PUSH["Push Notifications"]
+    APP --> MANIFEST["manifest.webmanifest"]
+```
+
 ### Conceptos Clave
 
 - **`@angular/pwa`**: `ng add @angular/pwa`, `ngsw-config.json`

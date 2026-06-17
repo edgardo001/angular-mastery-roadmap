@@ -10,6 +10,17 @@ Visualizaci├│n de datos con D3.js, ngx-charts, y Chart.js en Angular para da
 >
 > **Por qu├® aprenderlo:** Data visualization es cr├¡tica en dashboards empresariales; D3.js + Angular permite gr├íficos personalizados con reactividad y rendimiento ├│ptimo.
 
+
+```mermaid
+flowchart LR
+    RAW["Datos crudos"] --> D3["D3.js (scales, axes)"]
+    D3 --> SVG["SVG Elements"]
+    SVG --> CHART["Gráfico"]
+    CHART --> INT["Interactividad"]
+    RAW --> CHARTJS["Chart.js"]
+    CHARTJS --> CHART
+```
+
 ### Conceptos Clave
 
 - **ngx-charts**: `@swimlane/ngx-charts`, gr├íficos SVG, se├▒ales para datos

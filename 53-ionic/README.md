@@ -10,6 +10,21 @@ Aplicaciones m├│viles con Angular usando Ionic + Capacitor: navegaci├│n,
 >
 > **Por qu├® aprenderlo:** Ionic + Angular permite llegar a web, iOS y Android con el mismo c├│digo base; reducci├│n de costos del 60% vs equipos nativos separados.
 
+
+```mermaid
+flowchart TB
+    ANG["Angular Ionic"] --> ION["Ionic UI Components"]
+    ANG --> CAP["Capacitor Bridge"]
+    CAP --> NATIVE["Native Plugins"]
+    NATIVE --> CAM["Camera"]
+    NATIVE --> GPS["Geolocation"]
+    NATIVE --> STOR["Storage"]
+    CAP --> IOS["iOS (WKWebView)"]
+    CAP --> ANDROID["Android (WebView)"]
+    IOS --> APP_STORE["App Store"]
+    ANDROID --> PLAY_STORE["Play Store"]
+```
+
 ### Conceptos Clave
 
 - **Ionic**: `@ionic/angular`, componentes iOS/Android, `ion-tabs`, `ion-nav`

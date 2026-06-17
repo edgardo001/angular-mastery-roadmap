@@ -10,6 +10,15 @@ Estilos utilitarios con Tailwind CSS en proyectos Angular: configuración, respo
 >
 > **Por qué aprenderlo:** Tailwind es el framework CSS más popular; acelera el desarrollo UI en 3x y produce bundles CSS mínimos. Integración con Angular es directa vía PostCSS.
 
+
+```mermaid
+flowchart LR
+    DESIGN["Design Tokens"] --> CONFIG["tailwind.config.js"]
+    CONFIG --> UTIL["Utility Classes"]
+    UTIL --> PCSS["PostCSS"]
+    PCSS --> BUNDLE["CSS Bundle final"]
+```
+
 ### Conceptos Clave
 
 - **Instalación**: Tailwind CSS + Angular, PostCSS config

@@ -10,6 +10,15 @@ Sistema de animaciones declarativas de Angular: trigger, state, transition, keyf
 >
 > **Por qué aprenderlo:** Las animaciones mejoran la percepción de performance y UX; Angular Animations es el sistema más maduro del ecosistema frontend para animaciones declarativas.
 
+
+```mermaid
+flowchart LR
+    STATE["Cambio de estado"] --> TRIG["trigger(animación)"]
+    TRIG --> TRANS["transition(:enter)"]
+    TRANS --> ANIM["animate(300ms)"]
+    ANIM --> DOM["Elemento animado"]
+```
+
 ### Conceptos Clave
 
 - **`@angular/animations`**: `provideAnimations()`, `provideNoopAnimations()`

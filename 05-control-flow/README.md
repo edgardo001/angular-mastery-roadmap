@@ -10,6 +10,19 @@ Angular 17+ reemplazó `*ngIf`/`*ngFor`/`*ngSwitch` con el nuevo bloque de contr
 >
 > **Por qué aprenderlo:** Es el estándar desde Angular 17; el *ngIf clásico está deprecado. Más rápido, menos código, mejor legibilidad.
 
+
+```mermaid
+flowchart TB
+    DATA["Datos"] --> FOR["@for (items; track)"]
+    DATA --> IF["@if / @else"]
+    DATA --> SW["@switch / @case"]
+    FOR --> ITEM["Elemento renderizado"]
+    FOR --> EMPTY["@empty (fallback)"]
+    IF --> A["Bloque A"]
+    IF --> B["Bloque B"]
+    SW --> C["Case"]
+```
+
 ### Conceptos Clave
 
 - **`@if` / `@else`**: condicionales con bloques, else y else-if anidados

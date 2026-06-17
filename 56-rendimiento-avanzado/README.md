@@ -10,6 +10,19 @@ T├®cnicas avanzadas de rendimiento: `$effect` avanzado, `afterRender`, SSR st
 >
 > **Por qu├® aprenderlo:** La performance impacta directamente en conversi├│n (1s m├ís = 7% menos conversiones) y SEO (Core Web Vitals son factor de ranking); es la habilidad m├ís valorada en seniors.
 
+
+```mermaid
+flowchart LR
+    AUDIT["Lighthouse Audit"] --> ISSUES["Issues"]
+    ISSUES -->|LCP| IMG["NgOptimizedImage"]
+    ISSUES -->|CLS| DIM["Dimensiones fijas"]
+    ISSUES -->|TBT| LAZY["Lazy Loading"]
+    ISSUES -->|Bundle| BUDGET["Budgets"]
+    IMG --> MEASURE["Medir mejora"]
+    LAZY --> MEASURE
+    MEASURE --> PASS["Core Web Vitals ✓"]
+```
+
 ### Conceptos Clave
 
 - **`effect()` avanzado**: cleanup, `allowSignalWrites`, efectos anidados

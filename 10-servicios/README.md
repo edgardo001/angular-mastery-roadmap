@@ -10,6 +10,19 @@ Servicios en Angular con señales y RxJS: Subjects, BehaviorSubject, operadores,
 >
 > **Por qué aprenderlo:** Los servicios son el mecanismo de estado compartido en Angular; sin ellos cada componente es una isla de datos.
 
+
+```mermaid
+flowchart TB
+    C1["Componente A"] --> S["Servicio (@Injectable)"]
+    C2["Componente B"] --> S
+    S --> ST["Estado (signal)"]
+    S --> HTTP["HttpClient"]
+    S --> BUS["Lógica de negocio"]
+    HTTP --> REST["API REST"]
+    ST --> C1
+    ST --> C2
+```
+
 ### Conceptos Clave
 
 - **Servicios**: lógica compartida, estado, comunicación cross-component

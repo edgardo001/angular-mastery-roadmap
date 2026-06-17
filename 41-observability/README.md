@@ -10,6 +10,18 @@ Monitoreo y observabilidad en Angular: Sentry, OpenTelemetry, Web Vitals, logs e
 >
 > **Por qu├® aprenderlo:** La observabilidad distingue equipos profesionales de aficionados; sin ella no puedes mejorar lo que no mides y los errores en producci├│n te son desconocidos.
 
+
+```mermaid
+flowchart LR
+    ANG["Angular (RUM)"] --> OTLP["OpenTelemetry Collector"]
+    API["Backend"] --> OTLP
+    OTLP --> LOGS["Log Analytics"]
+    OTLP --> METRICS["Application Insights"]
+    OTLP --> TRACES["Distributed Tracing"]
+    LOGS --> DASH["Dashboards"]
+    METRICS --> ALERT["Alertas"]
+```
+
 ### Conceptos Clave
 
 - **Sentry**: `@sentry/angular`, `TraceService`, capture exceptions, performance

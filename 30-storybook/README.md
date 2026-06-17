@@ -10,6 +10,15 @@ Catálogo de componentes con Storybook para Angular: stories, controles, decorad
 >
 > **Por qué aprenderlo:** Storybook es el estándar de desarrollo component-driven; mejora la colaboración diseño-desarrollo y sirve como catálogo vivo de UI.
 
+
+```mermaid
+flowchart LR
+    CMP["Componente"] --> STORIES["Stories (args, controls)"]
+    STORIES --> SB["Storybook UI"]
+    SB --> DOCS["Documentación"]
+    SB --> TEST["Tests visuales"]
+```
+
 ### Conceptos Clave
 
 - **Storybook**: `npx storybook@latest init`, configuración Angular

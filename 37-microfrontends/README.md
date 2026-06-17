@@ -10,6 +10,17 @@ Microfrontends en Angular con Module Federation: host/remote, comunicación cros
 >
 > **Por qué aprenderlo:** Microfrontends son la evolución natural de microservicios al frontend; permiten escalar equipos independientemente y desplegar sin coordinar releases.
 
+
+```mermaid
+flowchart TB
+    SHELL["Shell / Host"] --> MF1["Products MFE"]
+    SHELL --> MF2["Cart MFE"]
+    SHELL --> MF3["User MFE"]
+    DEP1["Deploy independiente"] --- MF1
+    DEP2["Deploy independiente"] --- MF2
+    DEP3["Deploy independiente"] --- MF3
+```
+
 ### Conceptos Clave
 
 - **Module Federation**: `@angular-architects/module-federation`, webpack/esbuild

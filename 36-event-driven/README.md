@@ -10,6 +10,16 @@ Patrón Event-Driven con RxJS Event Bus, SAGA pattern, eventos de dominio y comu
 >
 > **Por qué aprenderlo:** Event-driven es el patrón para sistemas desacoplados y resilientes; la SAGA pattern es esencial para transacciones distribuidas en microservicios.
 
+
+```mermaid
+flowchart LR
+    C1_36["Componente A"] --> BUS["Event Bus (Subject)"]
+    C2_36["Componente B"] --> BUS
+    BUS --> H1["Handler 1 (actualiza señal)"]
+    BUS --> H2["Handler 2 (llama API)"]
+    BUS --> H3["Handler 3 (logging)"]
+```
+
 ### Conceptos Clave
 
 - **Event Bus**: servicio RxJS que emite/escucha eventos desacoplados

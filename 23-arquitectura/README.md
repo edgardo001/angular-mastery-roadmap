@@ -10,6 +10,17 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 >
 > **Por qué aprenderlo:** La estructura del proyecto determina su mantenibilidad a largo plazo; una buena arquitectura reduce el costo de cambios y facilita escalar el equipo.
 
+
+```mermaid
+flowchart TB
+    SHELL["App Shell"] --> FEAT["Feature Modules (lazy)"]
+    SHELL --> CORE["Core (singleton services)"]
+    SHELL --> SHARED["Shared (components, pipes)"]
+    FEAT --> F1["Dashboard"]
+    FEAT --> F2["Products"]
+    FEAT --> F3["Checkout"]
+```
+
 ## Development server
 
 To start a local development server, run:

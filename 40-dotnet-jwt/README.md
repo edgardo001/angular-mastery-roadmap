@@ -10,6 +10,20 @@ Backend empresarial con .NET 10 y JWT. Dos modos: Angular servido desde .NET y f
 >
 > **Por qu├® aprenderlo:** .NET + Angular es el stack enterprise por excelencia en el mundo Windows/ Azure; dominar esta integraci├│n abre puertas en consultoras y grandes empresas.
 
+
+```mermaid
+flowchart TB
+    ANG_DN["Angular"] --> POST_DN["POST /api/auth/login"]
+    POST_DN --> ID["ASP.NET Core Identity"]
+    ID --> EF["Entity Framework Core"]
+    EF --> JWT_DN["JWT Bearer Token"]
+    JWT_DN --> ANG_DN
+    ANG_DN --> REQ_DN["Request con Authorization header"]
+    REQ_DN --> MID["JWT Middleware"]
+    MID -->|válido| API_DN["API protegida"]
+    MID -->|inválido| ERR_DN["401"]
+```
+
 ### Conceptos Clave
 
 - **.NET 10**: Minimal APIs, `MapGroup`, `TypedResults`

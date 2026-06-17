@@ -10,6 +10,17 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 >
 > **Por qué aprenderlo:** TypeScript avanzado permite escribir librerías y servicios genéricos con tipado perfecto; es el nivel necesario para contribuir a frameworks y crear abstracciones elegantes.
 
+
+```mermaid
+flowchart LR
+    BASE["Tipos Base"] --> INTER["Interfaces & Types"]
+    INTER --> GENER["Genéricos <T>"]
+    GENER --> COND["Conditional Types"]
+    COND --> MAP["Mapped Types"]
+    MAP --> TEMP["Template Literal Types"]
+    TEMP --> INF["Type Inference"]
+```
+
 ## Development server
 
 To start a local development server, run:

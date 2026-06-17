@@ -10,6 +10,18 @@ Arquitectura de monolito modular en Angular: módulos independientes con sus pro
 >
 > **Por qué aprenderlo:** El 90% de las apps Angular son monolitos; modularizarlos bien es la diferencia entre un código mantenible y un legacy inmanejable.
 
+
+```mermaid
+flowchart TB
+    APP["App Shell"] --> CAT["Módulo Catalog"]
+    APP --> CART["Módulo Cart"]
+    APP --> USER["Módulo User"]
+    CAT --> SK["Shared Kernel"]
+    CART --> SK
+    USER --> SK
+    SK --> DB["Base de Datos única"]
+```
+
 ### Conceptos Clave
 
 - **Módulo independiente**: feature completo con sus propias rutas, servicios, componentes

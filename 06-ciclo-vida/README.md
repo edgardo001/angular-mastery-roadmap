@@ -10,6 +10,19 @@ Hooks de ciclo de vida, `effect()` para reactividad, y `afterNextRender`/`afterR
 >
 > **Por qué aprenderlo:** Esencial para evitar memory leaks y asegurar que los componentes se comporten correctamente durante toda su vida útil.
 
+
+```mermaid
+flowchart LR
+    CREATE["Creación"] --> ON_INIT["ngOnInit()"]
+    ON_INIT --> VIEW["afterNextRender() (DOM listo)"]
+    VIEW --> RENDER["afterRender() (post-pintado)"]
+    RENDER --> SIG_CH["Señales cambian"]
+    SIG_CH --> EFF["effect()"]
+    EFF --> RENDER
+    RENDER --> DEST["ngOnDestroy() / DestroyRef"]
+    DEST --> END["Fin"]
+```
+
 ### Conceptos Clave
 
 - **`ngOnInit()`**: inicialización del componente

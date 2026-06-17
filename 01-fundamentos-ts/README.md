@@ -10,6 +10,15 @@ TypeScript moderno es la base de Angular. Este módulo cubre desde tipos básico
 >
 > **Por qué aprenderlo:** Es la base de todo el ecosistema Angular; cada componente, servicio y pipe se escribe en TypeScript. El 90% de los errores en Angular se previenen con buen tipado.
 
+
+```mermaid
+flowchart TB
+    SRC["Código TS (tipos, interfaces, genéricos)"] --> TSC["tsc (TypeScript Compiler)"]
+    TSC --> CHK["Type Checking"]
+    CHK --> JS["JavaScript Output (.js)"]
+    JS --> ANG["Angular"]
+```
+
 ### Conceptos Clave
 
 - **Tipos básicos**: `string`, `number`, `boolean`, `null`, `undefined`, `void`, `never`

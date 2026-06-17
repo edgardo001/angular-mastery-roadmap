@@ -10,6 +10,17 @@ Renderizado del lado del servidor con Angular: Hydration, Server Routes, prerend
 >
 > **Por qué aprenderlo:** SSR es crítico para SEO, Core Web Vitals y UX; Google penaliza SPAs lentas. Angular SSR con hydration parcial es la solución más avanzada del ecosistema.
 
+
+```mermaid
+flowchart LR
+    REQ["Request"] --> SRV["Angular SSR Server"]
+    SRV --> RENDER["Renderiza HTML"]
+    RENDER --> HTML["HTML pre-renderizado"]
+    HTML --> BROWSER["Navegador (HTML inmediato)"]
+    BROWSER --> HYDRATE["Hydration"]
+    HYDRATE --> SPA["SPA interactivo"]
+```
+
 ### Conceptos Clave
 
 - **`@angular/ssr`**: configuración SSR, `provideServerRendering`

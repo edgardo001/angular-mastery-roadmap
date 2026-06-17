@@ -10,6 +10,17 @@ Señales (`signal()`) como unidad fundamental de reactividad en Angular 22. Even
 >
 > **Por qué aprenderlo:** Signals son el corazón de la reactividad en Angular moderno; reemplazan a RxJS para estado síncrono y mejoran drásticamente la performance.
 
+
+```mermaid
+flowchart LR
+    EVT["Evento del Usuario"] --> SET["signal.set() / .update()"]
+    SET --> SIG["signal<T> (estado reactivo)"]
+    SIG --> COMP["computed() (señal derivada)"]
+    COMP --> TEMP["Template actualizado"]
+    SIG --> EFF["effect() (side effects)"]
+    EFF --> PERS["localStorage / API"]
+```
+
 ### Conceptos Clave
 
 - **`signal()`**: creación, lectura (ejecución como función), `set()`, `update()`

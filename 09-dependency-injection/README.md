@@ -10,6 +10,16 @@ Sistema de inyección de dependencias de Angular: jerarquía, providers, injecti
 >
 > **Por qué aprenderlo:** Es el patrón arquitectónico central de Angular; entender DI es entender cómo Angular gestiona servicios, componentes y pipes.
 
+
+```mermaid
+flowchart TB
+    REQ["Componente pide dependencia"] --> ELEM["ElementInjector"]
+    ELEM -->|no encontrado| COM["ComponentInjector"]
+    COM -->|no encontrado| ENV["EnvironmentInjector"]
+    ENV -->|no encontrado| ROOT["RootInjector"]
+    ROOT --> RES["Servicio inyectado"]
+```
+
 ### Conceptos Clave
 
 - **`@Injectable()`**: decorador de servicios, `providedIn: 'root'`

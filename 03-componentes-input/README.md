@@ -10,6 +10,14 @@ Comunicación entre componentes con decoradores clásicos y la nueva API de señ
 >
 > **Por qué aprenderlo:** Es el patrón fundamental de composición en Angular; sin esto no se pueden construir UI modulares y reutilizables.
 
+
+```mermaid
+flowchart LR
+    PADRE["Componente Padre"] -->|input() / @Input()| HIJOS["Componente Hijo"]
+    HIJOS -->|output() / @Output()| PADRE
+    PADRE <-->|model() two-way binding| HIJOS
+```
+
 ### Conceptos Clave
 
 - **`@Input()`**: decorador para propiedades de entrada

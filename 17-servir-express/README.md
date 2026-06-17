@@ -10,6 +10,17 @@ Servir Angular desde un servidor backend: Express, FastAPI, y Spring Boot. SSR c
 >
 > **Por qué aprenderlo:** Todo proyecto Angular en producción necesita un servidor; Express es la opción más simple y flexible, y esta configuración es el puente a SSR.
 
+
+```mermaid
+flowchart LR
+    BUILD["ng build --prod"] --> DIST["dist/"]
+    DIST --> EXP["Express Server"]
+    EXP --> STATIC["Static files (SPA)"]
+    EXP --> API2["API routes"]
+    STATIC --> BROWSER["Navegador"]
+    API2 --> BROWSER
+```
+
 ### Conceptos Clave
 
 - **Servir build**: Angular build producido con `ng build`, servido estáticamente

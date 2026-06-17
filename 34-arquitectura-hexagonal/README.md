@@ -10,6 +10,25 @@ Arquitectura hexagonal en Angular: separación de dominio, aplicación e infraes
 >
 > **Por qué aprenderlo:** Es la arquitectura que permite testear lógica de negocio sin Angular y cambiar infraestructura sin tocar dominio; estándar en proyectos enterprise grandes.
 
+
+```mermaid
+flowchart TB
+    subgraph AD["Adapters"]
+        IN34["Inbound (Angular Components)"]
+        OUT34["Outbound (API, Storage)"]
+    end
+    subgraph PT["Ports"]
+        P_IN["Inbound Ports"]
+        P_OUT["Outbound Ports"]
+    end
+    subgraph DOM["Domain"]
+        ENT["Entities"]
+        UC["Use Cases"]
+    end
+    IN34 --> P_IN --> UC --> ENT
+    UC --> P_OUT --> OUT34
+```
+
 ### Conceptos Clave
 
 - **Puertos** (interfaces): `UserRepository` como interfaz, no implementación

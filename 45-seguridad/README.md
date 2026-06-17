@@ -10,6 +10,16 @@ Seguridad en aplicaciones Angular: OWASP Top 10, CSP, XSS, CSRF, sanitizaci├�
 >
 > **Por qu├® aprenderlo:** La seguridad no es opcional; una brecha de seguridad puede costar millones. Angular proporciona herramientas built-in contra XSS que todo desarrollador debe conocer.
 
+
+```mermaid
+flowchart LR
+    INPUT["Input / API"] --> SAN["DomSanitizer"]
+    SAN --> CTX["SecurityContext"]
+    CTX --> CSP["Content Security Policy"]
+    CSP --> SAFE["Output seguro"]
+    REQ["Request"] --> CSRF["CSRF Token"]
+```
+
 ### Conceptos Clave
 
 - **OWASP Top 10**: XSS, CSRF, Injection, Broken Authentication

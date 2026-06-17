@@ -10,6 +10,20 @@ Backend empresarial con Spring Boot 4.1.0 y JWT. Dos modos: Angular servido desd
 >
 > **Por qu├® aprenderlo:** Java/Spring Boot es el backend m├ís usado en empresas; tener Angular + Spring Boot integrados con JWT cubre el stack enterprise m├ís com├║n del mercado.
 
+
+```mermaid
+flowchart TB
+    ANG["Angular"] --> POST["POST /api/auth/login"]
+    POST --> SEC["Security Filter Chain"]
+    SEC --> AUTH["AuthenticationManager"]
+    AUTH --> JWT["JWT Provider"]
+    JWT --> ANG
+    ANG --> REQ["Request con Bearer"]
+    REQ --> FILT["JwtAuthenticationFilter"]
+    FILT -->|válido| API["API protegida"]
+    FILT -->|inválido| ERR["401"]
+```
+
 ### Conceptos Clave
 
 - **Spring Boot 4.1.0**: REST API, Spring Security, JWT

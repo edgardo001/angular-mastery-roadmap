@@ -10,6 +10,17 @@ Optimización de renderizado: ChangeDetectionStrategy.OnPush, @defer, signals, y
 >
 > **Por qué aprenderlo:** La performance de renderizado impacta directamente en Core Web Vitals y UX; @defer solo está disponible desde Angular 17 y es clave para Lighthouse scores altos.
 
+
+```mermaid
+flowchart LR
+    TRIG["CD Trigger"] --> ZONE["Zone.js"]
+    ZONE --> CD{"Estrategia"}
+    CD -->|"Default"| FULL["Marca todo el árbol"]
+    CD -->|"OnPush"| LOCAL["Solo inputs/signals"]
+    FULL --> DOM["Actualizar DOM"]
+    LOCAL --> DOM
+```
+
 ### Conceptos Clave
 
 - **`ChangeDetectionStrategy.OnPush`**: detección solo cuando inputs/señales cambian

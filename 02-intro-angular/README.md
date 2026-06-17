@@ -10,6 +10,17 @@ Primeros pasos con Angular 22: CLI, proyectos standalone, componentes, templates
 >
 > **Por qué aprenderlo:** Es la puerta de entrada al framework más completo para SPAs empresariales. Establece el patrón mental para todo el desarrollo Angular.
 
+
+```mermaid
+flowchart TB
+    CLI["Angular CLI (ng new, ng serve)"] --> BOOT["bootstrapApplication"]
+    BOOT --> CMP1["@Component (Standalone)"]
+    CMP1 --> TPL["Template HTML (interpolación, binding)"]
+    CMP1 --> STL["Styles (scoped)"]
+    CMP1 --> LOG["Logic (TypeScript)"]
+    TPL --> DOM["DOM del Navegador"]
+```
+
 ### Conceptos Clave
 
 - **Angular CLI**: `ng new`, `ng generate`, `ng serve`, `ng build`

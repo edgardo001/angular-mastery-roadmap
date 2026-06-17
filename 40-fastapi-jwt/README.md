@@ -10,6 +10,19 @@ Backend empresarial con Python FastAPI y JWT. Dos modos: Angular servido desde F
 >
 > **Por qu├® aprenderlo:** FastAPI es el framework Python m├ís r├ípido para APIs; su integraci├│n con Angular JWT es directa y moderna, ideal para startups y equipos Python.
 
+
+```mermaid
+flowchart TB
+    ANG_FA["Angular"] --> POST_FA["POST /api/auth/login"]
+    POST_FA --> OAUTH["OAuth2PasswordBearer"]
+    OAUTH --> JWT_FA["create_access_token()"]
+    JWT_FA --> SQLA["SQLAlchemy"]
+    SQLA --> ANG_FA
+    ANG_FA --> REQ_FA["Request con Bearer"]
+    REQ_FA --> DEP["get_current_user"]
+    DEP --> PROT["Ruta protegida"]
+```
+
 ### Conceptos Clave
 
 - **FastAPI**: async Python, Pydantic models, `FastAPI()`, `APIRouter`

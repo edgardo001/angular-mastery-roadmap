@@ -10,6 +10,18 @@ Tabla de datos completa: búsqueda, ordenamiento, paginación, y Angular CDK Tab
 >
 > **Por qué aprenderlo:** Las tablas de datos son el componente UI más usado en apps empresariales; dominar su implementación es indispensable para dashboards y paneles de administración.
 
+
+```mermaid
+flowchart LR
+    API["API REST"] --> SVC["Data Service"]
+    SVC --> SIG["signal"]
+    SIG --> TBL["Tabla Maestra"]
+    TBL --> SORT["Ordenar"]
+    TBL --> FILTER["Filtrar"]
+    TBL --> PAGE["Paginación"]
+    TBL --> SEARCH["Buscar"]
+```
+
 ### Conceptos Clave
 
 - **`@angular/cdk/table`**: `CdkTable`, columnas dinámicas

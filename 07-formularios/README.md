@@ -10,6 +10,19 @@ Reactive Forms en Angular: FormGroup, FormControl, FormArray, validación síncr
 >
 > **Por qué aprenderlo:** Los formularios son la interacción más común en apps empresariales; Angular Forms es el sistema más maduro del ecosistema frontend.
 
+
+```mermaid
+flowchart TB
+    FB["FormBuilder"] --> FG["FormGroup"]
+    FG --> FC["FormControl"]
+    FC --> VAL["Validadores"]
+    FG --> FORM["<form [formGroup]>"]
+    FC --> INP["<input formControlName>"]
+    VAL --> ERR["Mensajes de error"]
+    FORM --> SUB["submit()"]
+    SUB --> MODEL["Modelo de datos"]
+```
+
 ### Conceptos Clave
 
 - **`FormControl`**: control individual con valor y validación

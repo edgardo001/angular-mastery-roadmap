@@ -10,6 +10,16 @@ Creaci├│n de un Design System completo con Angular CDK, Angular Material, de
 >
 > **Por qu├® aprenderlo:** Los Design Systems son el est├índar en organizaciones con m├║ltiples equipos/productos; reducen el tiempo de desarrollo UI en un 50% y garantizan consistencia visual.
 
+
+```mermaid
+flowchart LR
+    TOKENS["Design Tokens"] --> CDK["Angular CDK"]
+    CDK --> MAT["Angular Material"]
+    MAT --> CUSTOM["Custom Components"]
+    CUSTOM --> PATTERNS["Patterns (layouts, forms)"]
+    PATTERNS --> SB["Storybook"]
+```
+
 ### Conceptos Clave
 
 - **Angular CDK**: `@angular/cdk`, `overlay`, `portal`, `drag-drop`, `a11y`, `table`

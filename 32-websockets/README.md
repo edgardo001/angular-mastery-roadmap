@@ -10,6 +10,17 @@ Comunicación en tiempo real con RxJS WebSocket y Socket.io + Angular.
 >
 > **Por qué aprenderlo:** Tiempo real es requisito creciente (chats, notificaciones, dashboards); webSocket + RxJS es la combinación más potente para streaming en Angular.
 
+
+```mermaid
+flowchart LR
+    C1["Cliente A"] --> WS["WebSocket Server"]
+    WS --> C2["Cliente B"]
+    WS --> C3["Cliente C"]
+    C1 -->|mensaje| WS
+    WS -->|broadcast| C2
+    WS -->|broadcast| C3
+```
+
 ### Conceptos Clave
 
 - **`WebSocketSubject`**: `webSocket()` de RxJS, multicasting

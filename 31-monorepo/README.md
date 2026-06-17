@@ -10,6 +10,18 @@ Monorepos con Nx para proyectos Angular: generadores, executors, caching distrib
 >
 > **Por qué aprenderlo:** Nx es el estándar de monorepos Angular; usado por Google, Netflix y grandes empresas. Reduce tiempos de CI en 70% y facilita compartir código entre equipos.
 
+
+```mermaid
+flowchart TB
+    NX["Nx Workspace"] --> APPS["Apps"]
+    NX --> LIBS["Libraries"]
+    APPS --> ANG["angular-app"]
+    APPS --> API["api (Express)"]
+    LIBS --> UI["shared/ui"]
+    LIBS --> UTIL["shared/utils"]
+    LIBS --> FEAT["feature/catalog"]
+```
+
 ### Conceptos Clave
 
 - **Nx**: `npx create-nx-workspace`, `--preset=angular-monorepo`

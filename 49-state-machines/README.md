@@ -10,6 +10,16 @@ State machines con XState + Angular: flujos complejos, checkouts multi-paso, y m
 >
 > **Por qu├® aprenderlo:** State machines eliminan estados imposibles de ra├¡z; XState es el est├índar para flujos complejos (onboarding, checkout, multi-step forms) en producci├│n.
 
+
+```mermaid
+flowchart LR
+    IDLE["idle"] -->|FETCH| LOAD["loading"]
+    LOAD -->|SUCCESS| SUCC["success"]
+    LOAD -->|ERROR| ERR["error"]
+    ERR -->|RETRY| LOAD
+    SUCC -->|RETRY| LOAD
+```
+
 ### Conceptos Clave
 
 - **XState**: `createMachine`, `interpret`, `useMachine`/`useInterpret`
