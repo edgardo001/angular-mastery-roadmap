@@ -23,6 +23,9 @@
 | 2025-06 | Comentarios desde cero | Todo archivo .ts debe tener comentarios explicativos |
 | 2025-06 | Archivos del Proyecto | Tabla en README listando cada archivo |
 | 2025-06 | 10 agentes de revisión | Líder Técnico, Arquitecto, Profesor, etc. |
+| 2026-06 | Builder moderno | Usar @angular/build (no @angular-devkit/build-angular) |
+| 2026-06 | Conceptos y Ejercicios | Todo README debe tener secciones Conceptos y Ejercicios |
+| 2026-06 | Comentarios educativos completos | Todo .ts debe tener analogías del mundo real y explicación de keywords |
 
 ## Auditoría Completa — Proyectos 11 al 57
 
@@ -30,13 +33,13 @@
 Se revisaron 47 proyectos del 11 al 57. Todos compilan exitosamente. 5 problemas transversales detectados.
 
 ### Problemas Transversales
-| # | Problema | Afectados | Prioridad |
-|---|----------|-----------|-----------|
-| 1 | Falta rootDir en tsconfig.json | 47/47 (100%) | Critico |
-| 2 | README sin tabla Archivos del Proyecto | 47/47 (100%) | Critico |
-| 3 | Código sin comentarios educativos | 47/47 (100%) | Critico |
-| 4 | Builder legacy (@angular-devkit) | 22/47 (47%) | Alto |
-| 5 | README incompleto (sin Conceptos/Ejercicios) | 11-24 | Alto |
+| # | Problema | Afectados | Prioridad | Estado |
+|---|----------|-----------|-----------|--------|
+| 1 | Falta rootDir en tsconfig.json | 47/47 (100%) | Critico | RESUELTO (commit 98af775) |
+| 2 | README sin tabla Archivos del Proyecto | 47/47 (100%) | Critico | RESUELTO (commit ee13ac0) |
+| 3 | Código sin comentarios educativos | 47/47 (100%) | Critico | RESUELTO (agentes paralelos) |
+| 4 | Builder legacy (@angular-devkit) | 9/58 (16%) | Alto | RESUELTO módulos 02-10 (agentes paralelos) |
+| 5 | README incompleto (sin Conceptos/Ejercicios) | 11-24 | Alto | RESUELTO (agentes paralelos) |
 
 ### Bugs / Issues por Proyecto
 - 19-render-performance: Sin script test en package.json
@@ -53,21 +56,29 @@ Se revisaron 47 proyectos del 11 al 57. Todos compilan exitosamente. 5 problemas
 - 42-feature-flags: Flags solo locales, sin API remota
 - 43-oauth: Sin PKCE visible, sin login social
 - 44-graphql: URL placeholder, sin subscriptions
-- 45-seguridad: BUG: sanitize(0,...) debe ser sanitize(SecurityContext.HTML,...)
+- 45-seguridad: BUG: sanitize(0,...) debe ser sanitize(SecurityContext.HTML,...) — RESUELTO (commit 7a64c2e)
 - 46-design-system: Sin CDK/Material, sin Storybook
 - 48-pwa: Sin VAPID keys, sin IndexedDB/Dexie
 - 49-state-machines: Sin guards/actions/invoke reales
 - 50-data-viz: Sin D3.js, solo Chart.js
-- 53-ionic: Falta capacitor.config.ts, faltan @capacitor/* deps
+- 53-ionic: Falta capacitor.config.ts — RESUELTO (commit f9afee1)
 - 54-ai-integration: API key via prompt() inseguro, sin backend proxy
 - 55-real-time-collab: CRDT custom en vez de Y.js
 - 57-threejs: Budget warning 707kB excede 500kB
 
-### Acciones Recomendadas (Lider Tecnico)
-1. Agregar rootDir a los 47 tsconfig.json (tarea masiva con script)
-2. Actualizar builder a @angular/build en los 22 proyectos legacy
-3. Agregar tabla Archivos del Proyecto a todos los README
-4. Agregar comentarios educativos a todos los archivos .ts
-5. Corregir BUG en 45-seguridad (sanitize pipe)
-6. Implementar Module Federation real en 37-microfrontends
-7. Agregar capacitor.config.ts en 53-ionic
+### Acciones Completadas (2026-06-30)
+1. Agregar rootDir a los 47 tsconfig.json — RESUELTO
+2. Actualizar builder a @angular/build en módulos 02-10 — RESUELTO
+3. Agregar tabla Archivos del Proyecto a todos los README — RESUELTO
+4. Agregar comentarios educativos a todos los archivos .ts — RESUELTO (58/58 módulos)
+5. Completar READMEs 11-24 con Conceptos y Ejercicios — RESUELTO
+6. Corregir BUG en 45-seguridad (sanitize pipe) — RESUELTO
+7. Agregar capacitor.config.ts en 53-ionic — RESUELTO
+
+### Acciones Pendientes (Lider Tecnico)
+1. Implementar Module Federation real en 37-microfrontends
+2. Implementar Nx real en 31-monorepo (apps/libs, pnpm-workspace)
+3. Corregir issues menores de los módulos 39/40 (encoding README, builder legacy)
+4. Agregar D3.js a 50-data-viz
+5. Agregar VAPID keys y Dexie a 48-pwa
+6. Reducir bundle size de 57-threejs (707kB → <500kB)
