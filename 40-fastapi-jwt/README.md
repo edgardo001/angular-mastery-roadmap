@@ -1,14 +1,14 @@
-## 40 ÔÇö FastAPI + JWT + Angular
+## 40 — FastAPI + JWT + Angular
 
 Backend empresarial con Python FastAPI y JWT. Dos modos: Angular servido desde FastAPI y frontend/backend separados.
 
-> **Prop├│sito:** Construir un backend moderno con FastAPI + JWT + Angular: async Python, OAuth2 password flow, SQLAlchemy y despliegue Docker.
+> **Propósito:** Construir un backend moderno con FastAPI + JWT + Angular: async Python, OAuth2 password flow, SQLAlchemy y despliegue Docker.
 >
-> **Problema que resuelve:** Python/FastAPI es una alternativa creciente a Java/Spring para backends; sin ejemplos de integraci├│n con Angular JWT, los teams Python no tienen referencia.
+> **Problema que resuelve:** Python/FastAPI es una alternativa creciente a Java/Spring para backends; sin ejemplos de integración con Angular JWT, los teams Python no tienen referencia.
 >
-> **C├│mo lo resuelve:** FastAPI con OAuth2PasswordBearer, JWT access/refresh tokens, SQLAlchemy async para base de datos, y Docker Compose para despliegue integrado con Angular.
+> **Cómo lo resuelve:** FastAPI con OAuth2PasswordBearer, JWT access/refresh tokens, SQLAlchemy async para base de datos, y Docker Compose para despliegue integrado con Angular.
 >
-> **Por qu├® aprenderlo:** FastAPI es el framework Python m├ís r├ípido para APIs; su integraci├│n con Angular JWT es directa y moderna, ideal para startups y equipos Python.
+> **Por qué aprenderlo:** FastAPI es el framework Python más rápido para APIs; su integración con Angular JWT es directa y moderna, ideal para startups y equipos Python.
 
 
 ```mermaid
@@ -32,7 +32,7 @@ flowchart TB
 - **SQLAlchemy + Alembic**: modelos ORM, migraciones, seed
 - **Modo integrado**: FastAPI sirve Angular con `StaticFiles` + `mount`
 - **Modo separado**: FastAPI en puerto 8000, Angular en 4200, CORS configurado
-- **Async SQLAlchemy**: `AsyncSession`, conexiones as├¡ncronas
+- **Async SQLAlchemy**: `AsyncSession`, conexiones asíncronas
 - **Docker**: Dockerfile multi-stage, docker-compose FastAPI + Angular + PostgreSQL
 
 ### Proyecto
@@ -47,7 +47,7 @@ API REST con FastAPI + JWT + Angular. Ambos modos de despliegue: integrado (Fast
 4. Configura FastAPI para servir Angular build con StaticFiles
 5. Despliega con Docker Compose (FastAPI + Angular + PostgreSQL)
 
-### C├│mo ejecutar
+### Cómo ejecutar
 
 ```bash
 cd 40-fastapi-jwt

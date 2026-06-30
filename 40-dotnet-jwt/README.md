@@ -1,14 +1,14 @@
-## 40 ÔÇö .NET 10 + JWT + Angular
+## 40 — .NET 10 + JWT + Angular
 
 Backend empresarial con .NET 10 y JWT. Dos modos: Angular servido desde .NET y frontend separado.
 
-> **Prop├│sito:** Construir un backend enterprise con .NET 10 + JWT + Angular: ASP.NET Core Identity, JWT bearer, Entity Framework y Docker.
+> **Propósito:** Construir un backend enterprise con .NET 10 + JWT + Angular: ASP.NET Core Identity, JWT bearer, Entity Framework y Docker.
 >
-> **Problema que resuelve:** .NET es el backend est├índar en grandes corporaciones; sin ejemplos de integraci├│n JWT con Angular, los equipos .NET carecen de referencia actualizada.
+> **Problema que resuelve:** .NET es el backend estándar en grandes corporaciones; sin ejemplos de integración JWT con Angular, los equipos .NET carecen de referencia actualizada.
 >
-> **C├│mo lo resuelve:** ASP.NET Core con JWT bearer authentication, Identity para gesti├│n de usuarios, Entity Framework para base de datos, y Docker Compose para despliegue.
+> **Cómo lo resuelve:** ASP.NET Core con JWT bearer authentication, Identity para gestión de usuarios, Entity Framework para base de datos, y Docker Compose para despliegue.
 >
-> **Por qu├® aprenderlo:** .NET + Angular es el stack enterprise por excelencia en el mundo Windows/ Azure; dominar esta integraci├│n abre puertas en consultoras y grandes empresas.
+> **Por qué aprenderlo:** .NET + Angular es el stack enterprise por excelencia en el mundo Windows/ Azure; dominar esta integración abre puertas en consultoras y grandes empresas.
 
 
 ```mermaid
@@ -29,8 +29,8 @@ flowchart TB
 - **.NET 10**: Minimal APIs, `MapGroup`, `TypedResults`
 - **JWT**: `Microsoft.AspNetCore.Authentication.JwtBearer`
 - **Identity**: `Microsoft.AspNetCore.Identity`, roles, claims
-- **Pol├¡ticas**: `AddPolicy`, `RequireRole`, `RequireClaim`
-- **Refresh tokens**: `RefreshToken` entity, rotaci├│n, revocaci├│n
+- **Políticas**: `AddPolicy`, `RequireRole`, `RequireClaim`
+- **Refresh tokens**: `RefreshToken` entity, rotación, revocación
 - **Modo integrado**: Angular build en `wwwroot/`, `UseStaticFiles()`, `UseSpa()`
 - **Modo separado**: .NET API + Angular con CORS
 - **Entity Framework Core**: migrations, SQL Server / PostgreSQL
@@ -48,7 +48,7 @@ API REST con .NET 10 + JWT + Angular. Ambos modos de despliegue: integrado y sep
 4. Integra Angular en .NET con StaticFiles + SPA
 5. Despliega con Docker Compose (.NET + Angular + SQL Server)
 
-### C├│mo ejecutar
+### Cómo ejecutar
 
 ```bash
 cd 40-dotnet-jwt
