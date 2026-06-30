@@ -1,3 +1,19 @@
+/**
+ * PROYECTO 08 — Routing y Navegación
+ *
+ * Componente raíz que contiene la barra de navegación y el <router-outlet>.
+ * Demuestra:
+ * - RouterLink: navegación declarativa
+ * - RouterLinkActive: clase CSS activa según la ruta actual
+ * - router-outlet: donde se renderiza el componente de la ruta activa
+ * - @if para mostrar links según el rol del usuario
+ *
+ * ANLOGÍA: Piensa en el router como un GPS:
+ * - Las rutas son las carreteras
+ * - router-outlet es la pantalla donde se muestra el mapa actual
+ * - Los guards son los controles de acceso en ciertas carreteras
+ */
+
 import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from './auth.service';
@@ -7,21 +23,32 @@ import { AuthService } from './auth.service';
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
   template: `
+    <!-- Barra de navegación sticky (se queda arriba al hacer scroll) -->
     <nav class="navbar">
       <div class="nav-inner">
-        <span class="brand">🚀 Routing</span>
+        <span class="brand">Routing</span>
+
+        <!-- Links de navegación -->
         <div class="nav-links">
+          <!--
+            routerLink: navega a la ruta indicada (como href pero sin recargar la página)
+            routerLinkActive: agrega la clase "active" cuando la ruta coincide
+            [routerLinkActiveOptions]="{ exact: true }": solo activo si la ruta es EXACTAMENTE "/"
+          -->
           <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
           <a routerLink="/products" routerLinkActive="active">Productos</a>
           <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+          <!-- @if: solo muestra link de admin si el rol es 'admin' -->
           @if (authService.role() === 'admin') {
             <a routerLink="/admin" routerLinkActive="active">Admin</a>
           }
         </div>
+
+        <!-- Botones de autenticación -->
         <div class="auth-area">
           @if (authService.isLoggedIn()) {
             <span class="user-info">
-              {{ authService.role() === 'admin' ? '👑 Admin' : '👤 User' }}
+              {{ authService.role() === 'admin' ? 'Admin' : 'User' }}
             </span>
             <button class="btn btn-logout" (click)="logout()">Logout</button>
           } @else {
@@ -31,6 +58,12 @@ import { AuthService } from './auth.service';
         </div>
       </div>
     </nav>
+
+    <!--
+      <router-outlet> es el placeholder donde Angular renderiza
+      el componente de la ruta activa. Es como un "portal" que
+      cambia de contenido según la URL.
+    -->
     <main>
       <router-outlet />
     </main>
@@ -56,16 +89,23 @@ import { AuthService } from './auth.service';
   `],
 })
 export class AppComponent {
+  /**
+   * inject() es la forma moderna de obtener dependencias.
+   * Reemplaza al constructor DI (más limpio, más legible).
+   */
   authService = inject(AuthService);
 
+  /** Login como usuario normal */
   loginAsUser() {
     this.authService.login('user');
   }
 
+  /** Login como administrador (acceso a /admin) */
   loginAsAdmin() {
     this.authService.login('admin');
   }
 
+  /** Cierra sesión y redirige */
   logout() {
     this.authService.logout();
   }

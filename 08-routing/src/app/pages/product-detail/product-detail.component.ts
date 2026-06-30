@@ -1,3 +1,15 @@
+/**
+ * Página de detalle de un producto individual.
+ *
+ * Demuestra:
+ * - @Input() con withComponentInputBinding(): recibe el parámetro :id como input
+ * - @if/@else para manejar producto no encontrado
+ * - @let para crear alias de una propiedad en el template
+ *
+ * ANLOGÍA: Es como la "ficha técnica" de un producto en una tienda:
+ * muestras todos los datos cuando el cliente selecciona uno específico.
+ */
+
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
@@ -9,6 +21,7 @@ interface Product {
   version: string;
 }
 
+/** Base de datos local de productos (simula una API) */
 const ALL_PRODUCTS: Product[] = [
   { id: 1, name: 'Angular Framework', description: 'Plataforma de desarrollo frontend con TypeScript', category: 'Framework', version: '22.0' },
   { id: 2, name: 'RxJS', description: 'Programación reactiva para JavaScript', category: 'Librería', version: '7.8' },
@@ -22,7 +35,13 @@ const ALL_PRODUCTS: Product[] = [
   imports: [RouterLink],
   template: `
     <div class="page">
+      <!--
+        Con withComponentInputBinding(), el parámetro :id de la URL
+        se inyecta automáticamente como @Input() id.
+        No necesitas usar ActivatedRoute.params — Angular lo hace por ti.
+      -->
       @if (product) {
+        <!-- @let crea un alias local para product (evita repetir product. múltiples veces) -->
         @let p = product;
         <h1>{{ p.name }}</h1>
         <div class="detail-card">
@@ -34,6 +53,7 @@ const ALL_PRODUCTS: Product[] = [
         </div>
         <a routerLink="/products" class="back-link">← Volver a productos</a>
       } @else {
+        <!-- Si no se encuentra el producto, muestra este fallback -->
         <div class="not-found">
           <h2>Producto no encontrado</h2>
           <p>No existe un producto con el ID "{{ id }}"</p>
@@ -54,8 +74,18 @@ const ALL_PRODUCTS: Product[] = [
   `],
 })
 export class ProductDetailComponent {
+  /**
+   * @Input() recibe el ID del producto desde la URL.
+   * Con withComponentInputBinding(), Angular vincula :id → id automáticamente.
+   */
   @Input() id!: string;
 
+  /**
+   * Getter que busca el producto por ID.
+   * Se recalcula cada vez que id cambia.
+   *
+   * ANLOGÍA: Es como buscar en una caja de archivos por número de expediente.
+   */
   get product(): Product | undefined {
     return ALL_PRODUCTS.find((p) => p.id === Number(this.id));
   }

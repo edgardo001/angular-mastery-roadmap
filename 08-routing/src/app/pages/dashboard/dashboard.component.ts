@@ -1,3 +1,13 @@
+/**
+ * Página de Dashboard — protegida por authGuardFn.
+ *
+ * Solo se puede acceder si el usuario está autenticado.
+ * Muestra el rol actual y si tiene permisos de admin.
+ *
+ * ANLOGÍA: Es como la sala de control de un edificio:
+ * solo los empleados autorizados pueden entrar y ver los monitores.
+ */
+
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../auth.service';
 
@@ -8,12 +18,19 @@ import { AuthService } from '../../auth.service';
   template: `
     <div class="page">
       <h1>Dashboard</h1>
+
+      <!-- @let crea un alias para authService.role() (evita repetir la llamada) -->
       @let role = authService.role();
       <p class="subtitle">Panel protegido — solo visible para usuarios autenticados</p>
+
       <div class="info-card">
         <div class="field"><strong>Estado:</strong> <span class="badge logged-in">Autenticado</span></div>
-        <div class="field"><strong>Rol:</strong> <span class="badge" [class.admin]="role === 'admin'" [class.user]="role === 'user'">{{ role }}</span></div>
+        <div class="field">
+          <strong>Rol:</strong>
+          <span class="badge" [class.admin]="role === 'admin'" [class.user]="role === 'user'">{{ role }}</span>
+        </div>
       </div>
+
       <div class="admin-note">
         @if (role === 'admin') {
           <p>Tienes permisos de administrador. La ruta <code>/admin</code> también está disponible.</p>
@@ -39,5 +56,6 @@ import { AuthService } from '../../auth.service';
   `],
 })
 export class DashboardComponent {
+  /** Servicio de autenticación inyectado */
   authService = inject(AuthService);
 }

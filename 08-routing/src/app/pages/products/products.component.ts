@@ -1,3 +1,16 @@
+/**
+ * Página de lista de productos.
+ *
+ * Demuestra:
+ * - @for para renderizar una lista
+ * - routerLink para navegar al detalle de cada producto
+ * - [routerLink] con parámetros dinámicos ['/products', product.id]
+ *
+ * ANLOGÍA: Es como el menú de un restaurante:
+ * cada plato tiene un número de fila y al tocarlo te llevan
+ * a la "ficha técnica" de ese plato.
+ */
+
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
@@ -16,6 +29,11 @@ interface Product {
       <h1>Productos</h1>
       <p class="subtitle">Selecciona un producto para ver sus detalles</p>
       <div class="product-list">
+        <!--
+          @for itera sobre products y crea un card por cada uno.
+          track product.id le dice a Angular cómo identificar cada card.
+          [routerLink]="['/products', product.id]" genera una URL dinámica.
+        -->
         @for (product of products; track product.id) {
           <a [routerLink]="['/products', product.id]" class="product-card">
             <h3>{{ product.name }}</h3>
@@ -39,6 +57,7 @@ interface Product {
   `],
 })
 export class ProductsComponent {
+  /** Lista estática de productos (en una app real vendría de un servicio HTTP) */
   products: Product[] = [
     { id: 1, name: 'Angular Framework', description: 'Plataforma de desarrollo frontend con TypeScript' },
     { id: 2, name: 'RxJS', description: 'Programación reactiva para JavaScript' },

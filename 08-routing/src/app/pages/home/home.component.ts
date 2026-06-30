@@ -1,3 +1,12 @@
+/**
+ * Página de inicio del proyecto de Routing.
+ *
+ * Demuestra @let (variable reactiva en template) y DatePipe.
+ *
+ * ANLOGÍA: Es como la "página de bienvenida" de un edificio:
+ * te muestra qué hay en cada piso y cómo navegar.
+ */
+
 import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
@@ -9,8 +18,17 @@ import { DatePipe } from '@angular/common';
     <div class="page">
       <h1>Bienvenido</h1>
       <p class="subtitle">Demostración de Routing y Navegación en Angular</p>
+
+      <!--
+        @let es una variable reactiva en el template (Angular 18+).
+        Es como declarar una variable local que se actualiza cuando cambia.
+        Aquí, todayDate es una propiedad de la clase, no una signal,
+        pero @let permite reutilizarla sin repetir la expresión.
+      -->
       @let today = todayDate;
       <p class="date"><strong>Hoy:</strong> {{ today | date:'fullDate' }}</p>
+
+      <!-- Grid de features del proyecto -->
       <div class="features">
         <div class="feature-card">
           <h3>provideRouter</h3>
@@ -44,5 +62,6 @@ import { DatePipe } from '@angular/common';
   `],
 })
 export class HomeComponent {
+  /** Fecha actual para mostrar en el template */
   todayDate = new Date();
 }
