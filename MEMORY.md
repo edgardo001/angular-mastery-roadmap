@@ -41,26 +41,26 @@ Se revisaron 47 proyectos del 11 al 57. Todos compilan exitosamente. 5 problemas
 | 4 | Builder legacy (@angular-devkit) | 9/58 (16%) | Alto | RESUELTO módulos 02-10 (agentes paralelos) |
 | 5 | README incompleto (sin Conceptos/Ejercicios) | 11-24 | Alto | RESUELTO (agentes paralelos) |
 
-### Bugs / Issues por Proyecto
-- 19-render-performance: Sin script test en package.json
+### Bugs / Issues por Proyecto (Actualizado 2026-06-30)
+- 19-render-performance: Sin script test en package.json — RESUELTO
 - 20-angular-query: README formato generico Angular CLI
 - 22-typescript-avanzado: Sin paths/baseUrl en tsconfig
-- 30-storybook: Builder legacy
-- 31-monorepo: No es Nx real (sin apps/libs, sin pnpm-workspace)
-- 32-websockets: Builder legacy, sin reconexion
-- 33-accesibilidad: Builder legacy, falta FocusTrap/LiveAnnouncer
+- 30-storybook: Builder legacy — RESUELTO (reemplazado @angular-devkit por @angular/build)
+- 31-monorepo: No es Nx real — RESUELTO (implementado Nx real con apps/libs)
+- 32-websockets: Builder legacy — RESUELTO (reemplazado @angular-devkit por @angular/build)
+- 33-accesibilidad: Builder legacy — RESUELTO (reemplazado @angular-devkit por @angular/build)
 - 35-monolito-modular: README ingles/espanol mezclado
-- 37-microfrontends: Sin Module Federation (falso microfrontend)
-- 39/40-springboot-dotnet-fastapi: Encoding corrupto en README, builder legacy
+- 37-microfrontends: Sin Module Federation — RESUELTO (implementado con @angular-architects/module-federation)
+- 39/40-springboot-dotnet-fastapi: Encoding corrupto en README, builder legacy — RESUELTO
 - 41-observability: Sentry solo, sin OpenTelemetry real
 - 42-feature-flags: Flags solo locales, sin API remota
 - 43-oauth: Sin PKCE visible, sin login social
-- 44-graphql: URL placeholder, sin subscriptions
-- 45-seguridad: BUG: sanitize(0,...) debe ser sanitize(SecurityContext.HTML,...) — RESUELTO (commit 7a64c2e)
-- 46-design-system: Sin CDK/Material, sin Storybook
-- 48-pwa: Sin VAPID keys, sin IndexedDB/Dexie
+- 44-graphql: URL placeholder, sin subscriptions — RESUELTO (API real countries.trevorblades.com)
+- 45-seguridad: BUG sanitize — RESUELTO (commit 7a64c2e)
+- 46-design-system: Sin CDK/Material, sin Storybook — RESUELTO (agregado @angular/cdk, @angular/material, Storybook)
+- 48-pwa: Sin VAPID keys, sin IndexedDB/Dexie — RESUELTO (implementado Dexie.js + VAPID keys + notificaciones push)
 - 49-state-machines: Sin guards/actions/invoke reales
-- 50-data-viz: Sin D3.js, solo Chart.js
+- 50-data-viz: Sin D3.js — RESUELTO (implementado con gráficos D3: bar, line, pie)
 - 53-ionic: Falta capacitor.config.ts — RESUELTO (commit f9afee1)
 - 54-ai-integration: API key via prompt() inseguro, sin backend proxy
 - 55-real-time-collab: CRDT custom en vez de Y.js
@@ -74,11 +74,25 @@ Se revisaron 47 proyectos del 11 al 57. Todos compilan exitosamente. 5 problemas
 5. Completar READMEs 11-24 con Conceptos y Ejercicios — RESUELTO
 6. Corregir BUG en 45-seguridad (sanitize pipe) — RESUELTO
 7. Agregar capacitor.config.ts en 53-ionic — RESUELTO
+8. Implementar Module Federation REAL en 37-microfrontends — RESUELTO
+9. Implementar Nx REAL en 31-monorepo con apps/libs — RESUELTO
+10. Agregar D3.js a 50-data-viz (bar, line, pie charts) — RESUELTO
+11. Agregar VAPID keys y Dexie.js a 48-pwa — RESUELTO
+12. Corregir URL GraphQL + subscriptions en 44-graphql — RESUELTO
+13. Agregar CDK/Material + Storybook a 46-design-system — RESUELTO
+14. Limpiar dependencias residual builder en 30, 32, 33 — RESUELTO
+15. Corregir encoding README en 39, 40-dotnet, 40-fastapi — RESUELTO
+16. Agregar rootDir en tsconfig de 39, 40-dotnet, 40-fastapi — RESUELTO
+17. Agregar script test en 19-render-performance — RESUELTO
 
 ### Acciones Pendientes (Lider Tecnico)
-1. Implementar Module Federation real en 37-microfrontends
-2. Implementar Nx real en 31-monorepo (apps/libs, pnpm-workspace)
-3. Corregir issues menores de los módulos 39/40 (encoding README, builder legacy)
-4. Agregar D3.js a 50-data-viz
-5. Agregar VAPID keys y Dexie a 48-pwa
-6. Reducir bundle size de 57-threejs (707kB → <500kB)
+1. Reducir bundle size de 57-threejs (707kB → <500kB)
+2. 20-angular-query: Corregir README formato genérico
+3. 22-typescript-avanzado: Agregar paths/baseUrl en tsconfig
+4. 35-monolito-modular: Unificar idioma en README
+5. 41-observability: Agregar OpenTelemetry real
+6. 42-feature-flags: Agregar API remota
+7. 43-oauth: Implementar PKCE y login social
+8. 49-state-machines: Agregar guards/actions/invoke reales
+9. 54-ai-integration: Crear backend proxy seguro
+10. 55-real-collab: Implementar Y.js
