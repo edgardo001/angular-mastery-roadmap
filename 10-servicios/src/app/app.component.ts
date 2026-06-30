@@ -1,11 +1,26 @@
+/**
+ * PROYECTO 10 — Servicios y RxJS
+ *
+ * Este componente demuestra un Carrito de Compras usando:
+ * - Un servicio (CartService) con signals y RxJS
+ * - Búsqueda con debounce usando Subject + operadores RxJS
+ * - computed() para totales derivados
+ * - toSignal() y toObservable() para convertir entre signals y observables
+ *
+ * ANLOGÍA: El servicio es como un "mayordomo" que lleva la cuenta
+ * de todo lo que compras. Los componentes solo le dicen "agrega esto"
+ * o "quita esto", y el mayordomo mantiene todo organizado.
+ */
+
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CartService, CartItem } from './services/cart.service';
 
+/** Interfaz de producto (sin quantity — se agrega al carrito con quantity: 1) */
 interface Product {
   id: number;
   name: string;
@@ -15,14 +30,15 @@ interface Product {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CurrencyPipe, FormsModule],
   template: `
     <div class="container">
       <header>
-        <h1>🛒 Carrito de Compras</h1>
+        <h1>Carrito de Compras</h1>
         <p class="subtitle">Servicios Angular con RxJS y Signals</p>
       </header>
 
+      <!-- Campo de búsqueda con debounce -->
       <section class="search-box">
         <input
           type="text"
@@ -33,15 +49,21 @@ interface Product {
       </section>
 
       <div class="layout">
+        <!-- Lista de productos disponibles -->
         <section class="products">
           <h2>Productos</h2>
           @if (filteredProducts().length === 0) {
             <p class="empty">No se encontraron productos.</p>
           }
+          <!--
+            @for itera sobre filteredProducts().
+            track product.id permite a Angular identificar cada card.
+          -->
           @for (product of filteredProducts(); track product.id) {
             <div class="card">
               <div class="card-body">
                 <strong>{{ product.name }}</strong>
+                <!-- CurrencyPipe formatea el precio como moneda USD -->
                 <span>{{ product.price | currency:'USD' }}</span>
               </div>
               <button class="btn primary" (click)="addToCart(product)">
@@ -51,6 +73,7 @@ interface Product {
           }
         </section>
 
+        <!-- Carrito de compras -->
         <section class="cart">
           <h2>Carrito</h2>
 
@@ -58,6 +81,7 @@ interface Product {
             <p class="empty">El carrito está vacío.</p>
           }
 
+          <!-- Cada item del carrito con controles +/- -->
           @for (item of cartService.items(); track item.id) {
             <div class="card">
               <div class="card-body">
@@ -76,6 +100,7 @@ interface Product {
             </div>
           }
 
+          <!-- Resumen del carrito (solo si tiene items) -->
           @if (cartService.items().length > 0) {
             <div class="totals">
               <p>Artículos: <strong>{{ cartService.itemCount() }}</strong></p>
@@ -114,6 +139,7 @@ interface Product {
       outline: none;
       border-color: #6366f1;
     }
+    /* Grid de 2 columnas: productos | carrito */
     .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
     @media (max-width: 640px) { .layout { grid-template-columns: 1fr; } }
     section h2 {
@@ -175,14 +201,29 @@ interface Product {
   `],
 })
 export class AppComponent {
+  /** Servicio de carrito inyectado (contiene toda la lógica) */
   cartService = inject(CartService);
+
+  /** DestroyRef para limpiar suscripciones automáticamente */
   private destroyRef = inject(DestroyRef);
 
+  /**
+   * Subject de RxJS para la búsqueda con debounce.
+   *
+   * ANLOGÍA: Es como un "filtro de ruido" — solo procesa la búsqueda
+   * cuando el usuario deja de escribir por 300ms.
+   *
+   * Flujo: input → Subject → debounceTime(300) → distinctUntilChanged → switchMap → resultado
+   */
   private searchSubject = new Subject<string>();
 
+  /** Signal con el texto de búsqueda actual */
   searchQuery = signal('');
+
+  /** Signal con los productos filtrados */
   filteredProducts = signal<Product[]>([]);
 
+  /** Base de datos local de productos */
   private availableProducts: Product[] = [
     { id: 1, name: 'Laptop', price: 1200 },
     { id: 2, name: 'Mouse', price: 25 },
@@ -195,6 +236,17 @@ export class AppComponent {
   ];
 
   constructor() {
+    /**
+     * Pipeline de búsqueda reactiva con RxJS:
+     *
+     * 1. debounceTime(300): espera 300ms después de la última tecla
+     * 2. distinctUntilChanged(): solo emite si el texto cambió
+     * 3. switchMap(): cancela la búsqueda anterior si llega una nueva
+     * 4. takeUntilDestroyed(): limpia la suscripción cuando el componente se destruye
+     *
+     * ANLOGÍA: Es como un portero que no abre la puerta en cada paso,
+     * solo cuando alguien se queda parado un momento (debounce).
+     */
     this.searchSubject.pipe(
       debounceTime(300),
       distinctUntilChanged(),
@@ -207,14 +259,21 @@ export class AppComponent {
       takeUntilDestroyed(this.destroyRef),
     ).subscribe((result) => this.filteredProducts.set(result));
 
+    // Mostrar todos los productos al inicio
     this.filteredProducts.set(this.availableProducts);
   }
 
+  /**
+   * Maneja el evento de búsqueda: actualiza la signal y emite al Subject.
+   */
   onSearch(value: string): void {
     this.searchQuery.set(value);
     this.searchSubject.next(value);
   }
 
+  /**
+   * Agrega un producto al carrito usando el servicio.
+   */
   addToCart(product: Product): void {
     this.cartService.addItem(product);
   }
