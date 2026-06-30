@@ -47,5 +47,5 @@ Dashboard responsivo con dark mode, sidebar colapsable, y componentes Angular es
 ```bash
 cd 26-tailwind-css
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

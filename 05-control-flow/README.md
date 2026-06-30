@@ -50,5 +50,5 @@ Lista de tareas (todo-list) con filtros, búsqueda y estados vacíos usando solo
 ```bash
 cd 05-control-flow
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

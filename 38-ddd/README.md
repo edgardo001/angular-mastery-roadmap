@@ -48,5 +48,5 @@ Sistema de pedidos DDD: Value Objects (Money, Email, Address), Entities (User, P
 ```bash
 cd 38-ddd
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

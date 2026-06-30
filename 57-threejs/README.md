@@ -54,5 +54,5 @@ Visualizador 3D interactivo: modelos GLTF, iluminaci├│n, controles orbitales
 ```bash
 cd 57-threejs
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

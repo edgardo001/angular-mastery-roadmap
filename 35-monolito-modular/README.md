@@ -50,5 +50,5 @@ App e-commerce con módulos Auth, Catalog, Cart, Checkout independientes. Cada u
 ```bash
 cd 35-monolito-modular
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

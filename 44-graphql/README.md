@@ -50,5 +50,5 @@ GitHub API Explorer: buscar repositorios, ver detalles, paginaci├│n con curs
 ```bash
 cd 44-graphql
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

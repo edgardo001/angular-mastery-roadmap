@@ -50,5 +50,5 @@ Chat en tiempo real con salas, notificaciones de typing, mensajes con timestamp,
 ```bash
 cd 32-websockets
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

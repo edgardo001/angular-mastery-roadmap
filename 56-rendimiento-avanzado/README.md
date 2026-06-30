@@ -53,5 +53,5 @@ Auditor├¡a y optimizaci├│n completa de rendimiento: profiling, ISR, virtu
 ```bash
 cd 56-rendimiento-avanzado
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

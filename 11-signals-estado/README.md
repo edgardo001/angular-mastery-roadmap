@@ -49,5 +49,5 @@ Gestor de tareas avanzado con señales: filtros, búsqueda, persistencia, histor
 ```bash
 cd 11-signals-estado
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

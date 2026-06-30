@@ -51,5 +51,5 @@ Configuraci├│n completa de observabilidad: Sentry + Web Vitals + OpenTelemet
 ```bash
 cd 41-observability
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

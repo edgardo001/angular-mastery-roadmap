@@ -51,5 +51,5 @@ App multi-página con lazy loading: Home, Productos (con detalle), Auth (login/r
 ```bash
 cd 08-routing
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

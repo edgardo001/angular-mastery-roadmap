@@ -4,7 +4,7 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 > **Propósito:** Desplegar Angular en producción con Docker multi-stage (node → nginx), docker-compose multi-servicio y CI/CD con GitHub Actions.
 >
-> **Problema que resuelve:** ng serve/build no produce un artefacto desplegable portable; sin Docker, el entorno de producción difiere del desarrollo causando errores inesperados.
+> **Problema que resuelve:** ng serve --host 0.0.0.0 --port 8080/build no produce un artefacto desplegable portable; sin Docker, el entorno de producción difiere del desarrollo causando errores inesperados.
 >
 > **Cómo lo resuelve:** Docker multi-stage build (compile con node, sirve con nginx), docker-compose orquesta Angular + API + DB, y GitHub Actions automatiza build/test/deploy.
 >
@@ -26,7 +26,7 @@ flowchart LR
 To start a local development server, run:
 
 ```bash
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.

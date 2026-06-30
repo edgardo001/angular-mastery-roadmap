@@ -1,7 +1,7 @@
 {
   "name": "05-control-flow",
   "version": "0.0.0",
-  "scripts": { "ng": "ng", "start": "ng serve", "build": "ng build" },
+  "scripts": { "ng": "ng", "start": "ng serve --host 0.0.0.0 --port 8080", "build": "ng build" },
   "private": true,
   "dependencies": {
     "@angular/common": "^22.0.0",

@@ -57,5 +57,5 @@ Sistema de usuarios con 3 adaptadores intercambiables: InMemory, Http, y Mock. C
 ```bash
 cd 34-arquitectura-hexagonal
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

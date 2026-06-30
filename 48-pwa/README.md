@@ -51,5 +51,5 @@ App de notas offline-first con Angular PWA: crear/editar offline, sincronizar al
 ```bash
 cd 48-pwa
 npm install
-ng build && ng serve --configuration production
+ng build && ng serve --host 0.0.0.0 --port 8080 --configuration production
 ```

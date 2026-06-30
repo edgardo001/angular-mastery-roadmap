@@ -10,7 +10,7 @@ Angular es un framework opinionado para SPAs. A diferencia de React o Vue, Angul
 
 ```mermaid
 flowchart TB
-    CLI["Angular CLI\n(ng new, ng serve)"] --> BOOT["bootstrapApplication\n(main.ts)"]
+    CLI["Angular CLI\n(ng new, ng serve --host 0.0.0.0 --port 8080)"] --> BOOT["bootstrapApplication\n(main.ts)"]
     BOOT --> ROOT["AppComponent\n(raíz del árbol)"]
     ROOT --> HDR["HeaderComponent\n(navegación)"]
     ROOT --> HERO["HeroComponent\n(sección principal)"]
@@ -31,7 +31,7 @@ flowchart TB
 | Comando | Qué hace |
 |---|---|
 | `ng new <nombre>` | Crea un proyecto nuevo con toda la configuración |
-| `ng serve` | Inicia el servidor de desarrollo con hot reload |
+| `ng serve --host 0.0.0.0 --port 8080` | Inicia el servidor de desarrollo con hot reload |
 | `ng build` | Compila el proyecto para producción |
 | `ng generate component <nombre>` | Genera un componente con su template, estilos y spec |
 
@@ -41,7 +41,7 @@ ng new mi-proyecto --standalone
 # --standalone: genera componentes standalone por defecto (Angular 22+)
 
 # Iniciar servidor de desarrollo
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 # Abre en http://localhost:4200
 # Hot reload: los cambios se reflejan automáticamente
 
@@ -324,7 +324,7 @@ Windows Firewall bloquea puertos 4200/4201. Soluciones:
 
 ```bash
 # Opción 1: usar un puerto diferente (8080 funciona)
-ng serve --host 0.0.0.0 --port 8080
+ng serve --host 0.0.0.0 --port 8080 --host 0.0.0.0 --port 8080
 
 # Opción 2: agregar regla de firewall (como Administrador)
 netsh advfirewall firewall add rule name="Angular Dev" dir=in action=allow protocol=TCP localport=4200-4210
@@ -357,7 +357,7 @@ npx tsx src/index.ts
 ```bash
 cd 02-intro-angular
 npm install
-ng serve --host 0.0.0.0 --port 8080
+ng serve --host 0.0.0.0 --port 8080 --host 0.0.0.0 --port 8080
 ```
 
 Abrir en `http://localhost:8080`

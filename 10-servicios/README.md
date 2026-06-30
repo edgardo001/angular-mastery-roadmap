@@ -53,5 +53,5 @@ Servicio de carrito de compras con señales y RxJS: agregar/remover items, total
 ```bash
 cd 10-servicios
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

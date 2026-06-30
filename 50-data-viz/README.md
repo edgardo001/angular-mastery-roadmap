@@ -49,5 +49,5 @@ Dashboard ejecutivo con KPIs, gr├íficos de barras/l├¡neas/circular, mapa d
 ```bash
 cd 50-data-viz
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

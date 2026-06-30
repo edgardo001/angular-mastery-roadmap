@@ -49,5 +49,5 @@ Auditor├¡a de seguridad de la app: implementar CSP headers, sanitizar HTML ex
 ```bash
 cd 45-seguridad
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

@@ -184,7 +184,7 @@ cd 47-bff
 npm install
 npm run server       # BFF Express en http://localhost:3001
 # En otra terminal:
-ng serve             # Angular en http://localhost:4200
+ng serve --host 0.0.0.0 --port 8080             # Angular en http://localhost:4200
 ```
 
 O todo junto:

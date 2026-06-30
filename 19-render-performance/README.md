@@ -50,5 +50,5 @@ Dashboard con componentes pesados cargados con @defer, OnPush en todos los compo
 ```bash
 cd 19-render-performance
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

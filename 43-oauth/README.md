@@ -57,5 +57,5 @@ Login con Google y GitHub usando Auth0 + `angular-oauth2-oidc`. Backend protegid
 ```bash
 cd 43-oauth
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

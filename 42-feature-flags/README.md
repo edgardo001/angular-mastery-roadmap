@@ -47,5 +47,5 @@ App con 3 feature flags (modo oscuro, checkout nuevo, b├║squeda avanzada) co
 ```bash
 cd 42-feature-flags
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

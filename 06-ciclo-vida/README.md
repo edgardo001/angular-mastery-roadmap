@@ -51,5 +51,5 @@ Cronómetro con efectos: start/stop, tiempo transcurrido, log de vueltas, persis
 ```bash
 cd 06-ciclo-vida
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

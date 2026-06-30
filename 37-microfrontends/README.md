@@ -51,7 +51,7 @@ Shell host + 2 remotos (Dashboard + Admin). Comunicación por Event Bus y estado
 cd 37-microfrontends
 npm install
 # En terminal 1: shell host
-ng serve shell
+ng serve --host 0.0.0.0 --port 8080 shell
 # En terminal 2: remote
-ng serve remote
+ng serve --host 0.0.0.0 --port 8080 remote
 ```

@@ -46,5 +46,5 @@ Dashboard de tarjetas de producto con componente `ProductCard` configurable via 
 ```bash
 cd 03-componentes-input
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

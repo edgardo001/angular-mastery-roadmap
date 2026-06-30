@@ -48,5 +48,5 @@ Sistema de pedidos con SAGA: OrderPlaced -> PaymentProcessed -> InventoryUpdated
 ```bash
 cd 36-event-driven
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

@@ -7,7 +7,7 @@ REMOTE_PATH="/var/www/staging"
 echo "Building application..."
 npm run build
 
-echo "Copying files to staging server..."
+echo "Copying files to staging serve --host 0.0.0.0 --port 8080r..."
 rsync -avz --delete dist/ "$SERVER:$REMOTE_PATH"
 
 echo "Restarting application..."

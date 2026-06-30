@@ -53,5 +53,5 @@ Auth completo con login, registro, dashboard por rol (admin/user), refresh autom
 ```bash
 cd 14-login-jwt
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

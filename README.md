@@ -222,10 +222,10 @@ cd angular
 # 2. Cada carpeta contiene su propio proyecto (Angular CLI)
 cd 02-intro-angular
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 
 # 3. Para proyectos especiales:
-#    Módulo 25 (SSR):        ng serve
+#    Módulo 25 (SSR):        ng serve --host 0.0.0.0 --port 8080
 #    Módulo 53 (Ionic):      ionic serve
 #    Módulos 39/40/40 (backends): docker compose up
 #    Módulos 47, 51, 54, 55: npm run dev:all (frontend + servidor)

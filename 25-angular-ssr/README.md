@@ -50,5 +50,5 @@ Blog con SSR + Hydration, prerendering para páginas estáticas, y streaming par
 ```bash
 cd 25-angular-ssr
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

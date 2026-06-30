@@ -48,5 +48,5 @@ Página de productos con animaciones: entrada escalonada, hover, carrito con fly
 ```bash
 cd 28-animaciones
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

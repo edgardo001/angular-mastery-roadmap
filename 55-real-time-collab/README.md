@@ -6,7 +6,7 @@ Colaboraci├│n en tiempo real con Y.js, CRDTs, WebSocket y Angular. Edici├�
 >
 > **Problema que resuelve:** La edici├│n concurrente sin un sistema de resoluci├│n de conflictos resulta en datos corruptos; WebRTC es complejo de configurar (STUN/TURN, signaling, SDP exchange).
 >
-> **C├│mo lo resuelve:** CRDT para resoluci├│n autom├ítica de conflictos sin servidor central, WebRTC con peer-to-peer via signaling server, Operational Transform para edici├│n de texto colaborativa.
+> **C├│mo lo resuelve:** CRDT para resoluci├│n autom├ítica de conflictos sin servidor central, WebRTC con peer-to-peer via signaling serve --host 0.0.0.0 --port 8080r, Operational Transform para edici├│n de texto colaborativa.
 >
 > **Por qu├® aprenderlo:** La colaboraci├│n en tiempo real es el nuevo est├índar (Google Docs, Figma, Notion); implementarla requiere conceptos distribuidos avanzados que pocos desarrolladores dominan.
 

@@ -50,5 +50,5 @@ Checkout multi-paso como m├íquina de estados: carrito -> env├¡o -> pago ->
 ```bash
 cd 49-state-machines
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

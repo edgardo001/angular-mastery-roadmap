@@ -4,7 +4,7 @@ Servir Angular desde un servidor backend: Express, FastAPI, y Spring Boot. SSR c
 
 > **Propósito:** Servir una aplicación Angular desde Express.js con SPA fallback, proxy de API y preparación para SSR.
 >
-> **Problema que resuelve:** ng serve no es apto para producción; necesitas un servidor web que sirva archivos estáticos, maneje rutas SPA (fallback a index.html) y proxyee peticiones API.
+> **Problema que resuelve:** ng serve --host 0.0.0.0 --port 8080 no es apto para producción; necesitas un servidor web que sirva archivos estáticos, maneje rutas SPA (fallback a index.html) y proxyee peticiones API.
 >
 > **Cómo lo resuelve:** Express.js con express.static para assets, catch-all route para SPA fallback, proxy.conf.json para desarrollo, y estructura preparada para Angular Universal/SSR.
 >

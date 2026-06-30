@@ -50,5 +50,5 @@ Login básico con email/contraseña, sesión persistente, dashboard protegido y 
 ```bash
 cd 13-login-basico
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

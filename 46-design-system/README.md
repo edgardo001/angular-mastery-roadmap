@@ -50,5 +50,5 @@ Design System completo con 10+ componentes, theming din├ímico con se├▒ale
 ```bash
 cd 46-design-system
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

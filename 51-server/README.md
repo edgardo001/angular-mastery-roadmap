@@ -4,7 +4,7 @@ Aplicaci├│n full-stack con Angular + Express (Node) + FastAPI (Python), y Pr
 
 > **Prop├│sito:** Desplegar Angular en producci├│n con servidores reales: Nginx, Apache, IIS, PM2, certificados SSL, CDN y optimizaci├│n de entrega de assets.
 >
-> **Problema que resuelve:** ng serve/build no considera configuraciones de servidor real (compresi├│n gzip, caching headers, SSL termination, CDN distribution, load balancing).
+> **Problema que resuelve:** ng serve --host 0.0.0.0 --port 8080/build no considera configuraciones de servidor real (compresi├│n gzip, caching headers, SSL termination, CDN distribution, load balancing).
 >
 > **C├│mo lo resuelve:** Nginx con gzip, browser caching, SPA fallback, SSL con Let's Encrypt; PM2 para Node.js; configuraci├│n de CDN (Cloudflare/CloudFront); headers de seguridad y performance.
 >

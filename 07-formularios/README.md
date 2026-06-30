@@ -53,5 +53,5 @@ Formulario de registro multi-step con validación: datos personales, dirección,
 ```bash
 cd 07-formularios
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```

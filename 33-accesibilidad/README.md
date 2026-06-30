@@ -50,5 +50,5 @@ Auditoría y mejora de accesibilidad del design system: contraste, foco, ARIA, s
 ```bash
 cd 33-accesibilidad
 npm install
-ng serve
+ng serve --host 0.0.0.0 --port 8080
 ```
