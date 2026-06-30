@@ -25,16 +25,134 @@ flowchart TB
     NEW --> INT
 ```
 
-### Conceptos Clave
+### Conceptos
 
-- **JWT**: access token (corto) + refresh token (largo)
-- **`HttpInterceptorFn`**: attach Bearer token a cada petición
-- **Refresh flow**: interceptor detecta 401, renueva token, reintenta
-- **Decodificación**: `jwtDecode` para leer payload sin verificar
-- **`canActivateFn`**: guard con verificación de rol
-- **`canMatchFn`**: guard para rutas específicas por rol
-- **Login/Register**: formularios reactivos con validación
-- **Backends**: Spring Boot 4.1.0, .NET 10 o FastAPI (uno a elegir en backend/)
+#### 1. JWT — Access Token y Refresh Token
+
+- **Qué es:** Tokens de autenticación: el access token expira rápido (minutos), el refresh token dura horas/días para renovar el access.
+- **Por qué importa:** El patrón refresh token evita que el usuario deba hacer login constantemente; mejora la UX sin comprometer seguridad.
+- **Código:**
+  ```typescript
+  interface AuthState {
+    user: User | null;
+    accessToken: string | null;   // Corta duración
+    refreshToken: string | null;  // Larga duración
+  }
+  
+  login(email: string, password: string) {
+    return this.http.post<AuthState>('/api/auth/login', { email, password }).pipe(
+      tap(res => this.state.set(res)),
+    );
+  }
+  
+  refreshTokens() {
+    return this.http.post<{ accessToken: string; refreshToken: string }>(
+      '/api/auth/refresh',
+      { refreshToken: this.state().refreshToken }
+    ).pipe(
+      tap(res => this.state.update(s => ({ ...s, ...res }))),
+    );
+  }
+  ```
+- **Analogía:** El access token es como un pase de un día, y el refresh token es como tu credencial permanente que te permite obtener pases nuevos.
+
+#### 2. Interceptor JWT con Refresh Automático
+
+- **Qué es:** Interceptor que detecta errores 401, renueva el token y reintenta la petición original.
+- **Por qué importa:** El usuario no percibe la expiración del token; la renovación es transparente.
+- **Código:**
+  ```typescript
+  export const authInterceptor: HttpInterceptorFn = (req, next) => {
+    const auth = inject(AuthService);
+    const token = auth.getAccessToken();
+    if (token) {
+      req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+    }
+    return next(req).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401 && !req.url.includes('/auth/refresh')) {
+          return auth.refreshTokens().pipe(
+            switchMap(() => {
+              const newToken = auth.getAccessToken();
+              return next(req.clone({
+                setHeaders: { Authorization: `Bearer ${newToken}` }
+              }));
+            }),
+            catchError(() => { auth.logout(); return throwError(() => error); }),
+          );
+        }
+        return throwError(() => error);
+      }),
+    );
+  };
+  ```
+- **Analogía:** Como un asistente personal que siempre lleva tu credencial, y si te rechazan, obtiene una nueva sin que te des cuenta.
+
+#### 3. `canMatchFn` y `canActivateFn` — Guards por Rol
+
+- **Qué es:** Dos tipos de guards: uno verifica acceso (canActivate), el otro verifica si la ruta puede coincidir (canMatch) según el rol.
+- **Por qué importa:** Permite rutas diferentes según el rol (admin vs user) sin duplicar lógica de verificación.
+- **Código:**
+  ```typescript
+  // Verifica que esté autenticado
+  export const authGuard: CanActivateFn = () => {
+    const auth = inject(AuthService);
+    if (auth.isLoggedIn()) return true;
+    return inject(Router).parseUrl('/login');
+  };
+  
+  // Verifica que sea admin
+  export const adminGuard: CanMatchFn = () => {
+    return inject(AuthService).isAdmin();
+  };
+  
+  // En rutas
+  { path: 'admin', canMatch: [adminGuard], loadComponent: ... }
+  ```
+- **Analogía:** `authGuard` es el portero del edificio, `adminGuard` es el guardia del piso de ejecutivos.
+
+#### 4. Decodificación de JWT con `jwtDecode`
+
+- **Qué es:** Extraer el payload (datos) de un JWT sin verificar la firma, para obtener roles y datos del usuario.
+- **Por qué importa:** Permite saber el rol del usuario y personalizar la UI sin hacer una petición extra al servidor.
+- **Código:**
+  ```typescript
+  decodeToken(token: string): Record<string, unknown> | null {
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) return null;
+      return JSON.parse(atob(parts[1]));
+    } catch {
+      return null;
+    }
+  }
+  
+  // Computed derivado
+  isAdmin = computed(() => this.state().user?.role === 'admin');
+  ```
+- **Analogía:** Como abrir un sobre para ver su contenido sin verificar el sello.
+
+#### 5. Mock Backend Interceptor — Desarrollo Sin Servidor
+
+- **Qué es:** Interceptor que simula respuestas del servidor en el navegador para desarrollo.
+- **Por qué importa:** Permite desarrollar y probar la autenticación completa sin un backend real.
+- **Código:**
+  ```typescript
+  export const mockBackendInterceptor: HttpInterceptorFn = (req, next) => {
+    if (req.url.endsWith('/api/auth/login') && req.method === 'POST') {
+      const user = USERS.find(u => u.email === email && u.password === password);
+      if (user) {
+        return of(new HttpResponse({
+          status: 200,
+          body: { user, accessToken: createFakeJwt(payload), refreshToken: ... }
+        }));
+      }
+      return throwError(() => new HttpResponse({ status: 401 }));
+    }
+    return next(req); // Peticiones no mockeadas pasan al servidor real
+  };
+  ```
+- **Analogía:** Como un actor que interpreta al servidor; responde como si fuera real, pero todo es una simulación.
 
 ### Proyecto
 
@@ -42,11 +160,11 @@ Auth completo con login, registro, dashboard por rol (admin/user), refresh autom
 
 ### Ejercicios
 
-1. Configura interceptor JWT para attach token
-2. Implementa refresh automático en interceptor
-3. Crea `canActivateFn` con verificación de rol
-4. Decodifica JWT para obtener datos del usuario
-5. Maneja expiración de sesión con redirect a login
+1. **Interceptor JWT:** Crea un interceptor que extraiga el access token del AuthService y lo agregue como header `Authorization: Bearer` en cada petición. Verifica que no se agregue si el token es null.
+2. **Refresh automático:** Modifica el interceptor para que, al recibir un 401, llame a `auth.refreshTokens()` con `switchMap`, clone la petición con el nuevo token y la reenvíe. Si el refresh falla, ejecuta `auth.logout()`.
+3. **Guard por rol:** Crea un `adminGuard: CanMatchFn` que verifique `auth.isAdmin()`. Registra una ruta `/admin` con `canMatch: [adminGuard]` que cargue un componente de panel de administración.
+4. **Decodificación de token:** Implementa `decodeToken()` que extraiga el payload de un JWT usando `atob()` y `JSON.parse()`. Crea un `computed isAdmin` que lea el rol del token decodificado.
+5. **Mock backend:** Crea un interceptor mock que simule `/api/auth/login` y `/api/auth/refresh`, retornando JWTs falsos con payloads que incluyan `role: 'user' | 'admin'`.
 
 ### Cómo ejecutar
 

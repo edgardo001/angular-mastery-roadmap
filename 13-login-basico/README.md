@@ -23,15 +23,109 @@ flowchart TB
     VAL -->|No| ERR["Mensaje de error"]
 ```
 
-### Conceptos Clave
+### Conceptos
 
-- **Servicio Auth**: estado de sesión con `signal<AuthState>`
-- **`canActivateFn`**: guard funcional que verifica autenticación
-- **Persistencia**: `localStorage` para token/estado
-- **Login/Logout**: formulario reactivo + servicio
-- **Rutas protegidas**: redirect a login si no autenticado
-- **HttpClient interceptor**: attach token automáticamente
-- **Auth signals**: `isLoggedIn`, `currentUser`, `isLoading`
+#### 1. Servicio Auth con `signal<AuthState>` — Estado de Sesión
+
+- **Qué es:** Un servicio que encapsula el estado de autenticación (usuario, token) en un signal reactivo.
+- **Por qué importa:** Centraliza la lógica de login/logout y permite que cualquier componente reaccione a cambios de sesión.
+- **Código:**
+  ```typescript
+  private state = signal<AuthState | null>(null);
+  
+  readonly isLoggedIn = computed(() => this.state() !== null);
+  readonly currentUser = computed(() => this.state());
+  
+  login(email: string, password: string): boolean {
+    const token = btoa(`${email}:${Date.now()}`);
+    this.state.set({ email, name: email.split('@')[0], token });
+    return true;
+  }
+  
+  logout() {
+    this.state.set(null);
+  }
+  ```
+- **Analogía:** Como una caja que puede estar vacía (no autenticado) o tener datos del usuario (autenticado).
+
+#### 2. `canActivateFn` — Guard Funcional de Rutas
+
+- **Qué es:** Una función que se ejecuta ANTES de que el usuario acceda a una ruta, verificando si tiene permiso.
+- **Por qué importa:** Protege rutas privadas sin lógica en cada componente; redirige automáticamente a login si no autenticado.
+- **Código:**
+  ```typescript
+  export const authGuardFn = () => {
+    const auth = inject(AuthService);
+    const router = inject(Router);
+    if (auth.isLoggedIn()) return true;
+    return router.parseUrl('/login');
+  };
+  
+  // En rutas
+  { path: 'dashboard', canActivate: [authGuardFn], ... }
+  ```
+- **Analogía:** Como un portero que verifica tu credencial antes de dejarte entrar al edificio.
+
+#### 3. Persistencia con `effect()` y `localStorage`
+
+- **Qué es:** Usar un effect para guardar/cargar automáticamente el estado de sesión en localStorage.
+- **Por qué importa:** Mantiene la sesión entre recargas de página sin lógica repetitiva en cada componente.
+- **Código:**
+  ```typescript
+  constructor() {
+    // Cargar sesión al iniciar
+    const stored = localStorage.getItem('auth_user');
+    if (stored) this.state.set(JSON.parse(stored));
+    
+    // Guardar automáticamente cuando cambia
+    effect(() => {
+      const user = this.state();
+      if (user) {
+        localStorage.setItem('auth_user', JSON.stringify(user));
+      } else {
+        localStorage.removeItem('auth_user');
+      }
+    });
+  }
+  ```
+- **Analogía:** Como llegar a la oficina y revisar si quedaron tareas anotadas de ayer.
+
+#### 4. Lazy Loading de Rutas
+
+- **Qué es:** Cargar componentes solo cuando se visita su ruta, no al inicio de la app.
+- **Por qué importa:** Reduce el tamaño inicial del bundle y mejora el tiempo de carga de la aplicación.
+- **Código:**
+  ```typescript
+  export const routes: Routes = [
+    {
+      path: 'dashboard',
+      loadComponent: () => import('./pages/dashboard/dashboard.component')
+        .then(m => m.DashboardComponent),
+      canActivate: [authGuardFn],
+    },
+  ];
+  ```
+- **Analogía:** Como abrir un capítulo del libro solo cuando lo necesitas, no todos a la vez.
+
+#### 5. Formulario Reactivo de Login
+
+- **Qué es:** Formulario con validación en tiempo real usando `FormsModule` y two-way binding.
+- **Por qué importa:** Los formularios reactivos son la forma estándar de capturar datos del usuario con validación integrada.
+- **Código:**
+  ```typescript
+  // En el template
+  <input [(ngModel)]="email" type="email" required />
+  <input [(ngModel)]="password" type="password" required />
+  <button (click)="onLogin()">Iniciar Sesión</button>
+  
+  // En el componente
+  onLogin() {
+    if (this.auth.login(this.email, this.password)) {
+      this.router.navigate(['/dashboard']);
+    }
+  }
+  ```
+- **Analogía:** Como llenar un formulario de recepción donde debes escribir tu nombre y motivo de visita.
 
 ### Proyecto
 
@@ -39,11 +133,11 @@ Login básico con email/contraseña, sesión persistente, dashboard protegido y 
 
 ### Ejercicios
 
-1. Crea `AuthService` con `signal<AuthState>()`
-2. Implementa formulario reactivo de login
-3. Crea `canActivateFn` para proteger rutas
-4. Persiste sesión en `localStorage` con `effect()`
-5. Muestra usuario autenticado en navbar
+1. **AuthService con signals:** Crea un `AuthService` con `signal<AuthState | null>`, `computed isLoggedIn` y `computed currentUser`. Implementa `login()` que establezca el state y `logout()` que lo limpie a null.
+2. **Formulario reactivo:** Implementa un `LoginComponent` con campos email y password usando `[(ngModel)]`. Valida que ambos campos estén presentes antes de llamar a `authService.login()`.
+3. **Guard funcional:** Crea un `authGuardFn` que use `inject(AuthService)` y `inject(Router)`. Si el usuario no está autenticado, redirige a `/login` con `router.parseUrl()`.
+4. **Persistencia en localStorage:** Agrega un `effect()` en el constructor del AuthService que guarde el state en `localStorage` cuando hay usuario, y lo elimine cuando no. Carga los datos al iniciar.
+5. **Dashboard protegido:** Crea un `DashboardComponent` que muestre el nombre del usuario desde `auth.currentUser()` y un botón de logout. Registra la ruta con `canActivate: [authGuardFn]`.
 
 ### Cómo ejecutar
 
