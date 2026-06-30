@@ -8,32 +8,36 @@
  * Analogía: Es como configurar una conexión a una base de datos.
  * Le dices al cliente a qué servidor conectarse (uri), cómo almacenar
  * los datos localmente (cache), y qué estrategia usar para obtener datos.
+ *
+ * GraphQL permite al cliente especificar exactamente qué datos necesita.
+ * A diferencia de REST (múltiples endpoints), GraphQL usa UN solo endpoint
+ * y el cliente define la "forma" de la respuesta.
  */
 
 // APOLLO_OPTIONS: Token de inyección que define la configuración de Apollo.
-// Apollo: Servicio principal de Apollo Angular para ejecutar consultas y mutaciones.
-import { APOLLO_OPTIONS, Apollo } from 'apollo-angular';
+import { APOLLO_OPTIONS } from 'apollo-angular';
 
-// HttpLink: Servicio de Apollo que crea conexiones HTTP al servidor GraphQL.
+// HttpLink: Crea conexiones HTTP al servidor GraphQL para queries y mutations.
 import { HttpLink } from 'apollo-angular/http';
 
-// InMemoryCache: Caché en memoria que almacena los resultados de las consultas.
+// InMemoryCache: Caché en memoria que almacena resultados de consultas.
 // Cuando haces la misma consulta dos veces, Apollo usa la caché en lugar
 // de hacer otra petición al servidor (si los datos no han cambiado).
 import { InMemoryCache } from '@apollo/client/core';
 
 /**
- * appApolloOptions: Array de providers que configuran Apollo Angular.
+ * appApolloOptions: Configuración de Apollo Angular.
  *
- * Este array contiene dos elementos:
- * 1. Apollo: El servicio principal de Apollo
- * 2. Un objeto de configuración que define:
- *    - provide: APOLLO_OPTIONS (token de configuración)
- *    - useFactory: Función que crea la configuración
- *    - deps: Dependencias que la factory necesita (HttpLink)
+ * Usa la API pública de países de Trevor Blades:
+ * https://countries.trevorblades.com/graphql
+ *
+ * Esta API es ideal para aprender porque:
+ * - No requiere autenticación (API key)
+ * - Tiene datos reales de todos los países del mundo
+ * - Soporta queries, mutations y subscriptions
+ * - Es gratuita y está siempre disponible
  */
 export const appApolloOptions = [
-  Apollo,
   {
     provide: APOLLO_OPTIONS,
     /**
@@ -56,8 +60,15 @@ export const appApolloOptions = [
          * link: Conexión al servidor GraphQL.
          * httpLink.create({ uri: '...' }) crea una conexión HTTP
          * a la URL del servidor GraphQL.
+         *
+         * Usamos la API pública de países de Trevor Blades que:
+         * - Contiene datos de todos los países del mundo
+         * - No requiere autenticación
+         * - Soporta queries complejas con filtros
          */
-        link: httpLink.create({ uri: 'https://graphqlplaceholder.example.com/graphql' }),
+        link: httpLink.create({
+          uri: 'https://countries.trevorblades.com/graphql',
+        }),
 
         /**
          * defaultOptions: Opciones por defecto para todas las consultas.

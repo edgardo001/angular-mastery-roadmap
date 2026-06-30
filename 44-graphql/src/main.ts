@@ -9,6 +9,10 @@
  * mediante la librería Apollo Angular. GraphQL es un lenguaje de consultas
  * alternativo a REST que permite al cliente solicitar exactamente los datos
  * que necesita, ni más ni menos.
+ *
+ * API usada: https://countries.trevorblades.com/graphql
+ * - Gratuita, no requiere autenticación
+ * - Datos reales de todos los países del mundo
  */
 
 // bootstrapApplication: Función de Angular que inicializa una aplicación standalone.
@@ -18,12 +22,12 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 
 // Importamos el componente raíz de la aplicación.
-import { App } from './app/app';
+import { AppComponent } from './app/app';
 
 /**
  * bootstrapApplication arranca la aplicación Angular con:
- * 1. El componente raíz (App) - el primer componente que se renderiza
+ * 1. El componente raíz (AppComponent) - el primer componente que se renderiza
  * 2. La configuración (appConfig) - lista de providers (servicios, interceptores, etc.)
  */
-bootstrapApplication(App, appConfig)
+bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));
