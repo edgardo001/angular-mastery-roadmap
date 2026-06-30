@@ -52,3 +52,24 @@ cd 49-state-machines
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Carpeta | Propósito |
+|---------|---------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Raíz | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Raíz | Configuración base de TypeScript |
+| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
+| `package-lock.json` | Raíz | Bloqueo de versiones de dependencias |
+| `src/index.html` | `src/` | HTML principal de la aplicación |
+| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
+| `src/styles.css` | `src/` | Estilos globales |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
+| `src/app/app.ts` | `src/app/` | Componente raíz de la aplicación |
+| `src/app/checkout.ts` | `src/app/` | Componente de checkout multi-paso |
+| `src/app/traffic-light.ts` | `src/app/` | Componente semáforo con máquina de estados |
+| `src/machines/checkout.machine.ts` | `src/machines/` | Máquina de estados XState para checkout |
+| `src/machines/traffic-light.machine.ts` | `src/machines/` | Máquina de estados XState para semáforo |
+| `src/services/machine.service.ts` | `src/services/` | Servicio de interpretación de máquinas XState |

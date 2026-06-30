@@ -53,3 +53,28 @@ API REST con FastAPI + JWT + Angular. Ambos modos de despliegue: integrado (Fast
 cd 40-fastapi-jwt
 docker compose up
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Stack | Propósito |
+|---------|-------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Frontend | Configuración del workspace Angular |
+| `package.json` | Frontend | Dependencias y scripts del frontend |
+| `tsconfig.json` | Frontend | Configuración base de TypeScript |
+| `tsconfig.app.json` | Frontend | Configuración de TypeScript para la app |
+| `package-lock.json` | Frontend | Bloqueo de versiones de dependencias |
+| `proxy.conf.json` | Frontend | Configuración de proxy para desarrollo |
+| `src/index.html` | Frontend | HTML principal de la aplicación |
+| `src/main.ts` | Frontend | Punto de entrada de la aplicación |
+| `src/styles.css` | Frontend | Estilos globales |
+| `src/app/app.config.ts` | Frontend | Configuración de providers de Angular |
+| `src/app/app.component.ts` | Frontend | Componente raíz de la aplicación |
+| `src/app/app.routes.ts` | Frontend | Configuración de rutas |
+| `src/app/auth.service.ts` | Frontend | Servicio de autenticación JWT |
+| `src/app/jwt.interceptor.ts` | Frontend | Interceptor HTTP que adjunta token JWT |
+| `backend/main.py` | Backend | Punto de entrada de la API FastAPI |
+| `backend/auth.py` | Backend | Lógica de autenticación JWT |
+| `backend/database.py` | Backend | Configuración de base de datos SQLAlchemy |
+| `backend/models.py` | Backend | Modelos ORM con SQLAlchemy |
+| `backend/requirements.txt` | Backend | Dependencias Python del backend |

@@ -59,3 +59,30 @@ cd 34-arquitectura-hexagonal
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Capa | Propósito |
+|---------|------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Raíz | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Raíz | Configuración base de TypeScript |
+| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
+| `package-lock.json` | Raíz | Bloqueo de versiones de dependencias |
+| `public/favicon.ico` | `public/` | Favicon de la aplicación |
+| `src/index.html` | `src/` | HTML principal de la aplicación |
+| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
+| `src/styles.css` | `src/` | Estilos globales |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
+| `src/app/app.ts` | `src/app/` | Componente raíz de la aplicación |
+| `src/app/app.css` | `src/app/` | Estilos del componente raíz |
+| `src/app/app.html` | `src/app/` | Template del componente raíz |
+| `src/app/domain/entities/user.entity.ts` | `domain/` | Entidad de dominio User |
+| `src/app/domain/ports/user-repository.port.ts` | `domain/` | Puerto (interfaz) del repositorio de usuarios |
+| `src/app/domain/value-objects/email.value-object.ts` | `domain/` | Value Object Email con validación |
+| `src/app/domain/value-objects/user-id.value-object.ts` | `domain/` | Value Object UserId |
+| `src/app/application/create-user.use-case.ts` | `application/` | Caso de uso para crear usuario |
+| `src/app/application/get-users.use-case.ts` | `application/` | Caso de uso para listar usuarios |
+| `src/app/infrastructure/adapters/http-user-repository.adapter.ts` | `infrastructure/` | Adaptador HTTP del repositorio de usuarios |
+| `src/app/infrastructure/adapters/in-memory-user-repository.adapter.ts` | `infrastructure/` | Adaptador en memoria del repositorio de usuarios |

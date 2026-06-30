@@ -50,3 +50,33 @@ cd 38-ddd
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Capa | Propósito |
+|---------|------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Raíz | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Raíz | Configuración base de TypeScript |
+| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
+| `package-lock.json` | Raíz | Bloqueo de versiones de dependencias |
+| `src/index.html` | `src/` | HTML principal de la aplicación |
+| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
+| `src/styles.css` | `src/` | Estilos globales |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
+| `src/app/app.ts` | `src/app/` | Componente raíz de la aplicación |
+| `src/app/app.css` | `src/app/` | Estilos del componente raíz |
+| `src/app/app.html` | `src/app/` | Template del componente raíz |
+| `src/app/domain/entities/order.ts` | `domain/entities` | Entidad Order (Aggregate Root) |
+| `src/app/domain/entities/product.ts` | `domain/entities` | Entidad Product |
+| `src/app/domain/entities/user.ts` | `domain/entities` | Entidad User |
+| `src/app/domain/events/domain-event.ts` | `domain/events` | Interfaz base para eventos de dominio |
+| `src/app/domain/events/order-placed-event.ts` | `domain/events` | Evento de dominio OrderPlaced |
+| `src/app/domain/repositories/order-repository.ts` | `domain/repositories` | Puerto del repositorio de pedidos |
+| `src/app/domain/repositories/product-repository.ts` | `domain/repositories` | Puerto del repositorio de productos |
+| `src/app/domain/repositories/user-repository.ts` | `domain/repositories` | Puerto del repositorio de usuarios |
+| `src/app/domain/repositories/in-memory-order-repository.ts` | `domain/repositories` | Implementación en memoria del repositorio de pedidos |
+| `src/app/domain/value-objects/address.ts` | `domain/value-objects` | Value Object Address |
+| `src/app/domain/value-objects/email.ts` | `domain/value-objects` | Value Object Email con validación |
+| `src/app/domain/value-objects/money.ts` | `domain/value-objects` | Value Object Money con operaciones |

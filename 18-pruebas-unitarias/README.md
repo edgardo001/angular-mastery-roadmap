@@ -52,3 +52,24 @@ cd 18-pruebas-unitarias
 npm install
 ng test
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Propósito | Ruta |
+|---------|-----------|------|
+| `angular.json` | Configuración del proyecto Angular | `angular.json` |
+| `package.json` | Dependencias y scripts del proyecto | `package.json` |
+| `tsconfig.json` | Configuración base de TypeScript | `tsconfig.json` |
+| `tsconfig.app.json` | Configuración TypeScript de la aplicación | `tsconfig.app.json` |
+| `tsconfig.spec.json` | Configuración TypeScript para pruebas | `tsconfig.spec.json` |
+| `src/index.html` | Punto de entrada HTML de la aplicación | `src/index.html` |
+| `src/main.ts` | Punto de entrada principal de Angular | `src/main.ts` |
+| `src/styles.css` | Estilos globales de la aplicación | `src/styles.css` |
+| `src/test.ts` | Punto de entrada de pruebas unitarias | `src/test.ts` |
+| `src/app/app.config.ts` | Configuración de providers de la aplicación | `src/app/app.config.ts` |
+| `src/app/app.component.ts` | Componente raíz de la aplicación | `src/app/app.component.ts` |
+| `src/app/calculator.service.ts` | Servicio de calculadora para pruebas | `src/app/calculator.service.ts` |
+| `src/app/calculator.service.spec.ts` | Pruebas unitarias del servicio calculadora | `src/app/calculator.service.spec.ts` |
+| `src/app/calculator.component.spec.ts` | Pruebas unitarias del componente calculadora | `src/app/calculator.component.spec.ts` |
+| `src/app/user.service.ts` | Servicio de usuarios para pruebas | `src/app/user.service.ts` |
+| `src/app/user.service.spec.ts` | Pruebas unitarias del servicio de usuarios | `src/app/user.service.spec.ts` |

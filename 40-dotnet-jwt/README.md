@@ -55,3 +55,30 @@ cd 40-dotnet-jwt
 # Modo separado: backend + frontend
 docker compose up
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Stack | Propósito |
+|---------|-------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Frontend | Configuración del workspace Angular |
+| `package.json` | Frontend | Dependencias y scripts del frontend |
+| `tsconfig.json` | Frontend | Configuración base de TypeScript |
+| `tsconfig.app.json` | Frontend | Configuración de TypeScript para la app |
+| `package-lock.json` | Frontend | Bloqueo de versiones de dependencias |
+| `proxy.conf.json` | Frontend | Configuración de proxy para desarrollo |
+| `src/index.html` | Frontend | HTML principal de la aplicación |
+| `src/main.ts` | Frontend | Punto de entrada de la aplicación |
+| `src/styles.css` | Frontend | Estilos globales |
+| `src/app/app.config.ts` | Frontend | Configuración de providers de Angular |
+| `src/app/app.component.ts` | Frontend | Componente raíz de la aplicación |
+| `src/app/app.routes.ts` | Frontend | Configuración de rutas |
+| `src/app/auth.service.ts` | Frontend | Servicio de autenticación JWT |
+| `src/app/jwt.interceptor.ts` | Frontend | Interceptor HTTP que adjunta token JWT |
+| `backend/DotnetJwt.csproj` | Backend | Archivo de proyecto .NET |
+| `backend/Program.cs` | Backend | Punto de entrada de la API .NET |
+| `backend/appsettings.json` | Backend | Configuración de la aplicación .NET |
+| `backend/Controllers/AuthController.cs` | Backend | Controlador de autenticación |
+| `backend/Models/LoginRequest.cs` | Backend | Modelo de solicitud de login |
+| `backend/Models/User.cs` | Backend | Modelo de entidad User |
+| `backend/Services/JwtService.cs` | Backend | Servicio de generación/validación JWT |

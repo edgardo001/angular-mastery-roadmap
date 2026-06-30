@@ -52,3 +52,24 @@ cd 46-design-system
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Carpeta | Propósito |
+|---------|---------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Raíz | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Raíz | Configuración base de TypeScript |
+| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
+| `package-lock.json` | Raíz | Bloqueo de versiones de dependencias |
+| `src/index.html` | `src/` | HTML principal de la aplicación |
+| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
+| `src/styles.css` | `src/` | Estilos globales |
+| `src/styles/tokens.css` | `src/styles/` | Design tokens (variables CSS) |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
+| `src/app/app.ts` | `src/app/` | Componente raíz del design system |
+| `src/app/badge/badge.ts` | `src/app/badge/` | Componente Badge del design system |
+| `src/app/button/button.ts` | `src/app/button/` | Componente Button con variantes |
+| `src/app/card/card.ts` | `src/app/card/` | Componente Card del design system |
+| `src/app/input/input.ts` | `src/app/input/` | Componente Input con ControlValueAccessor |

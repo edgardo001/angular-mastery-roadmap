@@ -53,3 +53,24 @@ cd 31-monorepo
 npm install
 nx serve client
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Carpeta | Propósito |
+|---------|---------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Raíz | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `nx.json` | Raíz | Configuración de Nx workspace |
+| `tsconfig.json` | Raíz | Configuración base de TypeScript |
+| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
+| `package-lock.json` | Raíz | Bloqueo de versiones de dependencias |
+| `src/index.html` | `src/` | HTML principal de la aplicación |
+| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
+| `src/styles.css` | `src/` | Estilos globales |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
+| `src/app/app.component.ts` | `src/app/` | Componente raíz de la aplicación |
+| `apps/README.md` | `apps/` | Documentación de las aplicaciones |
+| `apps/my-app/README.md` | `apps/my-app/` | Documentación de la app my-app |
+| `libs/README.md` | `libs/` | Documentación de las librerías |
+| `libs/shared/README.md` | `libs/shared/` | Documentación de librería compartida |

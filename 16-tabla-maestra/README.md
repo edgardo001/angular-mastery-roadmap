@@ -52,3 +52,19 @@ cd 16-tabla-maestra
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Propósito | Ruta |
+|---------|-----------|------|
+| `angular.json` | Configuración del proyecto Angular | `angular.json` |
+| `package.json` | Dependencias y scripts del proyecto | `package.json` |
+| `tsconfig.json` | Configuración base de TypeScript | `tsconfig.json` |
+| `tsconfig.app.json` | Configuración TypeScript de la aplicación | `tsconfig.app.json` |
+| `src/index.html` | Punto de entrada HTML de la aplicación | `src/index.html` |
+| `src/main.ts` | Punto de entrada principal de Angular | `src/main.ts` |
+| `src/styles.css` | Estilos globales de la aplicación | `src/styles.css` |
+| `src/app/app.config.ts` | Configuración de providers con CDK y Material | `src/app/app.config.ts` |
+| `src/app/app.component.ts` | Componente raíz con la tabla maestra | `src/app/app.component.ts` |
+| `src/app/models/user.model.ts` | Modelo de datos de usuario | `src/app/models/user.model.ts` |
+| `src/app/services/user.service.ts` | Servicio de usuarios con datos mock | `src/app/services/user.service.ts` |

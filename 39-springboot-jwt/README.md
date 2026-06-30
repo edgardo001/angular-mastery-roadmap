@@ -55,3 +55,33 @@ cd 39-springboot-jwt
 # Modo separado: backend + frontend
 docker compose up
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Stack | Propósito |
+|---------|-------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Frontend | Configuración del workspace Angular |
+| `package.json` | Frontend | Dependencias y scripts del frontend |
+| `tsconfig.json` | Frontend | Configuración base de TypeScript |
+| `tsconfig.app.json` | Frontend | Configuración de TypeScript para la app |
+| `package-lock.json` | Frontend | Bloqueo de versiones de dependencias |
+| `proxy.conf.json` | Frontend | Configuración de proxy para desarrollo |
+| `src/index.html` | Frontend | HTML principal de la aplicación |
+| `src/main.ts` | Frontend | Punto de entrada de la aplicación |
+| `src/styles.css` | Frontend | Estilos globales |
+| `src/app/app.config.ts` | Frontend | Configuración de providers de Angular |
+| `src/app/app.component.ts` | Frontend | Componente raíz de la aplicación |
+| `src/app/app.routes.ts` | Frontend | Configuración de rutas |
+| `src/app/auth.service.ts` | Frontend | Servicio de autenticación JWT |
+| `src/app/jwt.interceptor.ts` | Frontend | Interceptor HTTP que adjunta token JWT |
+| `backend/pom.xml` | Backend | Configuración Maven de Spring Boot |
+| `backend/src/main/resources/application.properties` | Backend | Configuración de Spring Boot |
+| `backend/src/main/java/com/example/SpringbootJwtApplication.java` | Backend | Clase principal de Spring Boot |
+| `backend/src/main/java/com/example/AuthController.java` | Backend | Controlador de autenticación (login/register) |
+| `backend/src/main/java/com/example/JwtAuthFilter.java` | Backend | Filtro de seguridad JWT |
+| `backend/src/main/java/com/example/JwtUtil.java` | Backend | Utilidad para generar/validar JWT |
+| `backend/src/main/java/com/example/SecurityConfig.java` | Backend | Configuración de Spring Security |
+| `backend/src/main/java/com/example/User.java` | Backend | Entidad User JPA |
+| `backend/src/main/java/com/example/UserDetailsServiceImpl.java` | Backend | Implementación de UserDetailsService |
+| `backend/src/main/java/com/example/UserRepository.java` | Backend | Repositorio JPA de usuarios |

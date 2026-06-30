@@ -54,3 +54,22 @@ cd 12-http-client
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Propósito | Ruta |
+|---------|-----------|------|
+| `angular.json` | Configuración del proyecto Angular | `angular.json` |
+| `package.json` | Dependencias y scripts del proyecto | `package.json` |
+| `tsconfig.json` | Configuración base de TypeScript | `tsconfig.json` |
+| `tsconfig.app.json` | Configuración TypeScript de la aplicación | `tsconfig.app.json` |
+| `src/index.html` | Punto de entrada HTML de la aplicación | `src/index.html` |
+| `src/main.ts` | Punto de entrada principal de Angular | `src/main.ts` |
+| `src/styles.css` | Estilos globales de la aplicación | `src/styles.css` |
+| `src/app/app.config.ts` | Configuración de providers con HttpClient | `src/app/app.config.ts` |
+| `src/app/app.component.ts` | Componente raíz de la aplicación | `src/app/app.component.ts` |
+| `src/app/services/product.service.ts` | Servicio CRUD de productos con HttpClient | `src/app/services/product.service.ts` |
+| `src/app/interceptors/auth.interceptor.ts` | Interceptor funcional para token Bearer | `src/app/interceptors/auth.interceptor.ts` |
+| `src/app/interceptors/error.interceptor.ts` | Interceptor funcional para manejo global de errores | `src/app/interceptors/error.interceptor.ts` |
+| `src/app/interceptors/logging.interceptor.ts` | Interceptor funcional para logging de peticiones | `src/app/interceptors/logging.interceptor.ts` |
+| `src/app/interceptors/skip-auth.context.ts` | Token HttpContext para saltar autenticación | `src/app/interceptors/skip-auth.context.ts` |

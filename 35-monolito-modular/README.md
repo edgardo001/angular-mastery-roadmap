@@ -52,3 +52,41 @@ cd 35-monolito-modular
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Módulo | Propósito |
+|---------|--------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Raíz | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Raíz | Configuración base de TypeScript |
+| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
+| `package-lock.json` | Raíz | Bloqueo de versiones de dependencias |
+| `public/favicon.ico` | `public/` | Favicon de la aplicación |
+| `src/index.html` | `src/` | HTML principal de la aplicación |
+| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
+| `src/styles.css` | `src/` | Estilos globales |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
+| `src/app/app.ts` | `src/app/` | Componente raíz de la aplicación |
+| `src/app/app.css` | `src/app/` | Estilos del componente raíz |
+| `src/app/app.html` | `src/app/` | Template del componente raíz |
+| `src/app/app.routes.ts` | `src/app/` | Configuración de rutas principales |
+| `src/app/shared/contracts.ts` | `shared/` | Contratos e interfaces compartidas |
+| `src/app/shared/index.ts` | `shared/` | Barrel exports del shared kernel |
+| `src/app/shared/types.ts` | `shared/` | Tipos compartidos entre módulos |
+| `src/app/billing/billing.component.ts` | `billing/` | Componente del módulo de facturación |
+| `src/app/billing/billing.component.html` | `billing/` | Template del módulo de facturación |
+| `src/app/billing/billing.component.css` | `billing/` | Estilos del módulo de facturación |
+| `src/app/billing/billing.service.ts` | `billing/` | Servicio del módulo de facturación |
+| `src/app/billing/billing.routes.ts` | `billing/` | Rutas del módulo de facturación |
+| `src/app/inventory/inventory.component.ts` | `inventory/` | Componente del módulo de inventario |
+| `src/app/inventory/inventory.component.html` | `inventory/` | Template del módulo de inventario |
+| `src/app/inventory/inventory.component.css` | `inventory/` | Estilos del módulo de inventario |
+| `src/app/inventory/inventory.service.ts` | `inventory/` | Servicio del módulo de inventario |
+| `src/app/inventory/inventory.routes.ts` | `inventory/` | Rutas del módulo de inventario |
+| `src/app/orders/orders.component.ts` | `orders/` | Componente del módulo de pedidos |
+| `src/app/orders/orders.component.html` | `orders/` | Template del módulo de pedidos |
+| `src/app/orders/orders.component.css` | `orders/` | Estilos del módulo de pedidos |
+| `src/app/orders/orders.service.ts` | `orders/` | Servicio del módulo de pedidos |
+| `src/app/orders/orders.routes.ts` | `orders/` | Rutas del módulo de pedidos |

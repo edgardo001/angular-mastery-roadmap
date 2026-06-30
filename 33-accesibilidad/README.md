@@ -52,3 +52,22 @@ cd 33-accesibilidad
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Carpeta | Propósito |
+|---------|---------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Raíz | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Raíz | Configuración base de TypeScript |
+| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
+| `package-lock.json` | Raíz | Bloqueo de versiones de dependencias |
+| `src/index.html` | `src/` | HTML principal de la aplicación |
+| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
+| `src/styles.css` | `src/` | Estilos globales |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
+| `src/app/app.component.ts` | `src/app/` | Componente raíz de la aplicación |
+| `src/app/announcer.component.ts` | `src/app/` | Componente de LiveAnnouncer para screen readers |
+| `src/app/contrast-card.component.ts` | `src/app/` | Componente que verifica contraste de colores |
+| `src/app/modal.component.ts` | `src/app/` | Componente modal con FocusTrap |

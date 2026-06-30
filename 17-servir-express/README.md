@@ -51,3 +51,19 @@ cd 17-servir-express
 npm install
 ng build && node server.js
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Propósito | Ruta |
+|---------|-----------|------|
+| `angular.json` | Configuración del proyecto Angular | `angular.json` |
+| `package.json` | Dependencias y scripts del proyecto | `package.json` |
+| `tsconfig.json` | Configuración base de TypeScript | `tsconfig.json` |
+| `tsconfig.app.json` | Configuración TypeScript de la aplicación | `tsconfig.app.json` |
+| `proxy.conf.json` | Configuración de proxy para desarrollo local | `proxy.conf.json` |
+| `server.js` | Servidor Express para servir Angular en producción | `server.js` |
+| `src/index.html` | Punto de entrada HTML de la aplicación | `src/index.html` |
+| `src/main.ts` | Punto de entrada principal de Angular | `src/main.ts` |
+| `src/styles.css` | Estilos globales de la aplicación | `src/styles.css` |
+| `src/app/app.config.ts` | Configuración de providers de la aplicación | `src/app/app.config.ts` |
+| `src/app/app.component.ts` | Componente raíz de la aplicación | `src/app/app.component.ts` |

@@ -52,3 +52,20 @@ cd 19-render-performance
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Propósito | Ruta |
+|---------|-----------|------|
+| `angular.json` | Configuración del proyecto Angular | `angular.json` |
+| `package.json` | Dependencias y scripts del proyecto | `package.json` |
+| `tsconfig.json` | Configuración base de TypeScript | `tsconfig.json` |
+| `tsconfig.app.json` | Configuración TypeScript de la aplicación | `tsconfig.app.json` |
+| `src/index.html` | Punto de entrada HTML de la aplicación | `src/index.html` |
+| `src/main.ts` | Punto de entrada principal de Angular | `src/main.ts` |
+| `src/styles.css` | Estilos globales de la aplicación | `src/styles.css` |
+| `src/app/app.config.ts` | Configuración de providers de la aplicación | `src/app/app.config.ts` |
+| `src/app/app.component.ts` | Componente raíz con dashboard de rendimiento | `src/app/app.component.ts` |
+| `src/app/expensive.component.ts` | Componente pesado para pruebas de `@defer` | `src/app/expensive.component.ts` |
+| `src/app/heavy-data.service.ts` | Servicio con datos simulados pesados | `src/app/heavy-data.service.ts` |
+| `src/app/stats.component.ts` | Componente de estadísticas de rendimiento | `src/app/stats.component.ts` |

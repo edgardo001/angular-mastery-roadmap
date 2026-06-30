@@ -198,3 +198,23 @@ Probar el BFF directamente:
 ```bash
 curl http://localhost:3001/api/bff/dashboard -H "x-session-id: session-123"
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Stack | Propósito |
+|---------|-------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Frontend | Configuración del workspace Angular |
+| `package.json` | Frontend | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Frontend | Configuración base de TypeScript |
+| `tsconfig.app.json` | Frontend | Configuración de TypeScript para la app |
+| `package-lock.json` | Frontend | Bloqueo de versiones de dependencias |
+| `proxy.conf.json` | Frontend | Configuración de proxy para desarrollo |
+| `src/index.html` | Frontend | HTML principal de la aplicación |
+| `src/main.ts` | Frontend | Punto de entrada de la aplicación |
+| `src/styles.css` | Frontend | Estilos globales |
+| `src/app/app.config.ts` | Frontend | Configuración de providers de Angular |
+| `src/app/app.ts` | Frontend | Componente raíz de la aplicación |
+| `src/app/types.ts` | Frontend | Tipos compartidos entre BFF y Angular |
+| `src/app/bff.service.ts` | Frontend | Servicio que consume el BFF |
+| `server.js` | BFF | Servidor BFF con Express (agregación + rate limiting) |

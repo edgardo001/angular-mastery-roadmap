@@ -55,3 +55,25 @@ cd 52-ci-cd-avanzado
 # Deploy manual:
 docker compose -f docker-compose.blue.yml up -d
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Carpeta | Propósito |
+|---------|---------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Raíz | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Raíz | Configuración base de TypeScript |
+| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
+| `tsconfig.spec.json` | Raíz | Configuración de TypeScript para tests |
+| `package-lock.json` | Raíz | Bloqueo de versiones de dependencias |
+| `.github/workflows/ci.yml` | CI | Pipeline de integración continua (lint, test, build) |
+| `.github/workflows/cd.yml` | CD | Pipeline de despliegue continuo (blue/green) |
+| `deploy/deploy-staging.sh` | Deploy | Script de despliegue a staging |
+| `deploy/deploy-production.sh` | Deploy | Script de despliegue a producción |
+| `src/index.html` | `src/` | HTML principal de la aplicación |
+| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
+| `src/styles.css` | `src/` | Estilos globales |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
+| `src/app/app.ts` | `src/app/` | Componente raíz de la aplicación |
+| `src/app/app.routes.ts` | `src/app/` | Configuración de rutas |

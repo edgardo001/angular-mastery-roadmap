@@ -51,3 +51,25 @@ cd 45-seguridad
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Carpeta | Propósito |
+|---------|---------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Raíz | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Raíz | Configuración base de TypeScript |
+| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
+| `package-lock.json` | Raíz | Bloqueo de versiones de dependencias |
+| `src/index.html` | `src/` | HTML principal de la aplicación |
+| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
+| `src/styles.css` | `src/` | Estilos globales |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
+| `src/app/app.ts` | `src/app/` | Componente raíz de la aplicación |
+| `src/app/app.css` | `src/app/` | Estilos del componente raíz |
+| `src/app/app.html` | `src/app/` | Template del componente raíz |
+| `src/app/csp.service.ts` | `src/app/` | Servicio de Content Security Policy |
+| `src/app/sanitize.pipe.ts` | `src/app/` | Pipe de sanitización de contenido HTML |
+| `src/app/security-headers.ts` | `src/app/` | Configuración de headers de seguridad |
+| `src/app/xss-protection.interceptor.ts` | `src/app/` | Interceptor HTTP para protección XSS |

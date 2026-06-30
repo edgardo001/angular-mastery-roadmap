@@ -53,3 +53,24 @@ cd 48-pwa
 npm install
 ng build && ng serve --host 0.0.0.0 --port 8080 --configuration production
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Carpeta | Propósito |
+|---------|---------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Raíz | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Raíz | Configuración base de TypeScript |
+| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
+| `package-lock.json` | Raíz | Bloqueo de versiones de dependencias |
+| `ngsw-config.json` | Raíz | Configuración del Service Worker de Angular |
+| `src/index.html` | `src/` | HTML principal de la aplicación |
+| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
+| `src/styles.css` | `src/` | Estilos globales |
+| `src/manifest.webmanifest` | `src/` | Manifest de aplicación web progresiva |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
+| `src/app/app.ts` | `src/app/` | Componente raíz de la aplicación |
+| `src/app/check-for-update.service.ts` | `src/app/` | Servicio de detección de actualizaciones del SW |
+| `public/icon-192x192.png` | `public/` | Icono PWA 192x192 |
+| `public/icon-512x512.png` | `public/` | Icono PWA 512x512 |

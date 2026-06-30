@@ -55,3 +55,25 @@ cd 55-real-time-collab
 npm install
 npm run dev:all
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Carpeta | Propósito |
+|---------|---------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Raíz | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Raíz | Configuración base de TypeScript |
+| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
+| `tsconfig.spec.json` | Raíz | Configuración de TypeScript para tests |
+| `package-lock.json` | Raíz | Bloqueo de versiones de dependencias |
+| `src/index.html` | `src/` | HTML principal de la aplicación |
+| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
+| `src/styles.css` | `src/` | Estilos globales |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
+| `src/app/app.ts` | `src/app/` | Componente raíz de la aplicación |
+| `src/app/app.routes.ts` | `src/app/` | Configuración de rutas |
+| `src/app/editor.ts` | `src/app/` | Editor colaborativo de documentos |
+| `src/app/collab.service.ts` | `src/app/` | Servicio de colaboración con Y.js |
+| `src/app/cursor.service.ts` | `src/app/` | Servicio de awareness y cursores multi-usuario |
+| `src/app/doc.service.ts` | `src/app/` | Servicio de gestión de documentos compartidos |

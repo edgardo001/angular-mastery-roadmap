@@ -54,3 +54,23 @@ npm run dev:express
 # Con FastAPI:
 npm run dev:fastapi
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Stack | Propósito |
+|---------|-------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Frontend | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Frontend | Configuración base de TypeScript |
+| `tsconfig.app.json` | Frontend | Configuración de TypeScript para la app |
+| `tsconfig.spec.json` | Frontend | Configuración de TypeScript para tests |
+| `package-lock.json` | Frontend | Bloqueo de versiones de dependencias |
+| `src/index.html` | Frontend | HTML principal de la aplicación |
+| `src/main.ts` | Frontend | Punto de entrada de la aplicación |
+| `src/styles.css` | Frontend | Estilos globales |
+| `src/app/app.config.ts` | Frontend | Configuración de providers de Angular |
+| `src/app/app.ts` | Frontend | Componente raíz de la aplicación |
+| `src/app/app.routes.ts` | Frontend | Configuración de rutas |
+| `server.js` | Backend | Servidor Express con Prisma |
+| `nginx.conf` | Infra | Configuración de Nginx para producción |

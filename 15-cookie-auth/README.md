@@ -53,3 +53,23 @@ cd 15-cookie-auth
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Propósito | Ruta |
+|---------|-----------|------|
+| `angular.json` | Configuración del proyecto Angular | `angular.json` |
+| `package.json` | Dependencias y scripts del proyecto | `package.json` |
+| `tsconfig.json` | Configuración base de TypeScript | `tsconfig.json` |
+| `tsconfig.app.json` | Configuración TypeScript de la aplicación | `tsconfig.app.json` |
+| `.gitignore` | Archivos ignorados por Git | `.gitignore` |
+| `src/index.html` | Punto de entrada HTML de la aplicación | `src/index.html` |
+| `src/main.ts` | Punto de entrada principal de Angular | `src/main.ts` |
+| `src/styles.css` | Estilos globales de la aplicación | `src/styles.css` |
+| `src/app/app.config.ts` | Configuración de providers con XSRF y withCredentials | `src/app/app.config.ts` |
+| `src/app/app.component.ts` | Componente raíz de la aplicación | `src/app/app.component.ts` |
+| `src/app/interceptors/cookie.interceptor.ts` | Interceptor para manejo de cookies HttpOnly | `src/app/interceptors/cookie.interceptor.ts` |
+| `src/app/services/auth.service.ts` | Servicio de autenticación con cookies | `src/app/services/auth.service.ts` |
+| `src/app/services/api.service.ts` | Servicio de API con withCredentials | `src/app/services/api.service.ts` |
+| `src/app/pages/login.component.ts` | Componente de formulario de login | `src/app/pages/login.component.ts` |
+| `src/app/pages/dashboard.component.ts` | Componente de dashboard protegido | `src/app/pages/dashboard.component.ts` |

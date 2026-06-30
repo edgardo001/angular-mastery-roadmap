@@ -50,3 +50,25 @@ cd 36-event-driven
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Capa | Propósito |
+|---------|------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Raíz | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Raíz | Configuración base de TypeScript |
+| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
+| `public/favicon.ico` | `public/` | Favicon de la aplicación |
+| `src/index.html` | `src/` | HTML principal de la aplicación |
+| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
+| `src/styles.css` | `src/` | Estilos globales |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
+| `src/app/app.ts` | `src/app/` | Componente raíz de la aplicación |
+| `src/app/app.css` | `src/app/` | Estilos del componente raíz |
+| `src/app/app.html` | `src/app/` | Template del componente raíz |
+| `src/app/events/domain-events.ts` | `events/` | Definición de eventos de dominio tipados |
+| `src/app/events/event-bus.ts` | `events/` | EventBus con RxJS Subject para comunicación desacoplada |
+| `src/app/events/event-logger.ts` | `events/` | Middleware de logging para eventos |
+| `src/app/sagas/order-saga.ts` | `sagas/` | SAGA pattern para flujo de pedidos multi-paso |

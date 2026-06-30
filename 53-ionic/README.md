@@ -59,3 +59,26 @@ ionic serve
 # Para nativo:
 ionic build && npx cap open android
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Carpeta | Propósito |
+|---------|---------|-----------|
+| `README.md` | Raíz | Documentación del proyecto |
+| `angular.json` | Raíz | Configuración del workspace Angular |
+| `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `tsconfig.json` | Raíz | Configuración base de TypeScript |
+| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
+| `tsconfig.spec.json` | Raíz | Configuración de TypeScript para tests |
+| `package-lock.json` | Raíz | Bloqueo de versiones de dependencias |
+| `capacitor.config.ts` | Raíz | Configuración de Capacitor para build nativo |
+| `src/index.html` | `src/` | HTML principal de la aplicación |
+| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
+| `src/styles.css` | `src/` | Estilos globales |
+| `src/declarations.d.ts` | `src/` | Declaraciones de tipos para plugins nativos |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
+| `src/app/app.ts` | `src/app/` | Componente raíz Ionic |
+| `src/app/app.routes.ts` | `src/app/` | Configuración de rutas con tabs |
+| `src/app/home/home.ts` | `src/app/home/` | Pantalla principal de la app |
+| `src/app/camera/camera.ts` | `src/app/camera/` | Componente de cámara con Capacitor plugin |
+| `src/app/gps/gps.ts` | `src/app/gps/` | Componente de geolocalización con Capacitor |

@@ -78,3 +78,28 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+### Archivos del Proyecto
+
+| Archivo | Propósito | Ruta |
+|---------|-----------|------|
+| `angular.json` | Configuración del proyecto Angular | `angular.json` |
+| `package.json` | Dependencias y scripts del proyecto | `package.json` |
+| `tsconfig.json` | Configuración base de TypeScript | `tsconfig.json` |
+| `tsconfig.app.json` | Configuración TypeScript de la aplicación | `tsconfig.app.json` |
+| `tsconfig.spec.json` | Configuración TypeScript para pruebas | `tsconfig.spec.json` |
+| `.editorconfig` | Configuración del editor de código | `.editorconfig` |
+| `.gitignore` | Archivos ignorados por Git | `.gitignore` |
+| `.prettierrc` | Configuración de formateo Prettier | `.prettierrc` |
+| `.vscode/extensions.json` | Extensiones recomendadas de VSCode | `.vscode/extensions.json` |
+| `.vscode/launch.json` | Configuración de depuración en VSCode | `.vscode/launch.json` |
+| `.vscode/tasks.json` | Tareas automatizadas de VSCode | `.vscode/tasks.json` |
+| `public/favicon.ico` | Icono de la aplicación | `public/favicon.ico` |
+| `src/index.html` | Punto de entrada HTML de la aplicación | `src/index.html` |
+| `src/main.ts` | Punto de entrada principal de Angular | `src/main.ts` |
+| `src/styles.css` | Estilos globales de la aplicación | `src/styles.css` |
+| `src/app/app.ts` | Componente raíz de la aplicación | `src/app/app.ts` |
+| `src/app/app.html` | Template del componente raíz | `src/app/app.html` |
+| `src/app/app.css` | Estilos del componente raíz | `src/app/app.css` |
+| `src/app/app.config.ts` | Configuración de providers de la aplicación | `src/app/app.config.ts` |
+| `src/app/app.spec.ts` | Pruebas unitarias del componente raíz | `src/app/app.spec.ts` |

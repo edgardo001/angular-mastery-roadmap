@@ -55,3 +55,28 @@ cd 14-login-jwt
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Propósito | Ruta |
+|---------|-----------|------|
+| `angular.json` | Configuración del proyecto Angular | `angular.json` |
+| `package.json` | Dependencias y scripts del proyecto | `package.json` |
+| `tsconfig.json` | Configuración base de TypeScript | `tsconfig.json` |
+| `tsconfig.app.json` | Configuración TypeScript de la aplicación | `tsconfig.app.json` |
+| `.gitignore` | Archivos ignorados por Git | `.gitignore` |
+| `src/index.html` | Punto de entrada HTML de la aplicación | `src/index.html` |
+| `src/main.ts` | Punto de entrada principal de Angular | `src/main.ts` |
+| `src/styles.css` | Estilos globales de la aplicación | `src/styles.css` |
+| `src/app/app.config.ts` | Configuración de providers de la aplicación | `src/app/app.config.ts` |
+| `src/app/app.component.ts` | Componente raíz de la aplicación | `src/app/app.component.ts` |
+| `src/app/app.routes.ts` | Definición de rutas con lazy loading | `src/app/app.routes.ts` |
+| `src/app/guards/auth.guard.ts` | Guard funcional con verificación de roles JWT | `src/app/guards/auth.guard.ts` |
+| `src/app/interceptors/auth.interceptor.ts` | Interceptor que adjunta token JWT Bearer | `src/app/interceptors/auth.interceptor.ts` |
+| `src/app/interceptors/mock-backend.interceptor.ts` | Interceptor mock para desarrollo sin backend real | `src/app/interceptors/mock-backend.interceptor.ts` |
+| `src/app/services/auth.service.ts` | Servicio de autenticación JWT con refresh token | `src/app/services/auth.service.ts` |
+| `src/app/services/user.service.ts` | Servicio de usuarios | `src/app/services/user.service.ts` |
+| `src/app/pages/login/login.component.ts` | Componente de formulario de login | `src/app/pages/login/login.component.ts` |
+| `src/app/pages/dashboard/dashboard.component.ts` | Componente de dashboard según rol | `src/app/pages/dashboard/dashboard.component.ts` |
+| `src/app/pages/admin/admin.component.ts` | Componente de panel de administración | `src/app/pages/admin/admin.component.ts` |
+| `src/app/pages/profile/profile.component.ts` | Componente de perfil de usuario | `src/app/pages/profile/profile.component.ts` |
