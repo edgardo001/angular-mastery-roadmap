@@ -5,6 +5,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "rootDir": "./src",
     "skipLibCheck": true,
     "isolatedModules": true,
     "experimentalDecorators": true,
@@ -27,3 +28,4 @@
     }
   ]
 }
+

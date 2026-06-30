@@ -15,6 +15,7 @@
     "target": "ES2022",
     "module": "ES2022",
     "lib": ["ES2022", "dom"],
+    "rootDir": "./src",
     "skipLibCheck": true
   },
   "angularCompilerOptions": {
@@ -24,3 +25,4 @@
     "strictTemplates": true
   }
 }
+
