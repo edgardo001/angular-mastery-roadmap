@@ -2,12 +2,10 @@
 // product-card.component.ts — Tarjeta de producto (hijo)
 // ──────────────────────────────────────────────
 //
-// Este componente demuestra la NUEVA API de signals para
-// comunicación entre componentes en Angular 17+:
+// Este componente demuestra la comunicación entre componentes:
 //
-// - input(): recibe datos del padre (reemplaza @Input)
-// - output(): envía eventos al padre (reemplaza @Output)
-// - input.required(): input obligatorio
+// - input(): recibe datos del padre
+// - output(): envía eventos al padre
 //
 // Flujo de datos:
 //   Padre → [product], [showQuantity], [quantity] → Hijo  (datos bajan)
@@ -16,7 +14,7 @@
 import { Component, input, output } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 
-// Interface: define la forma de un producto
+// interface: define la forma de un producto
 // Se exporta para que el padre pueda importarla
 export interface Product {
   id: number;
@@ -30,72 +28,56 @@ export interface Product {
   standalone: true,
 
   // CurrencyPipe: pipe para formatear números como moneda
-  // Debe importarse explícitamente en standalone components
-  // Uso en template: {{ product().price | currency }} → "$1,499.00"
+  // Uso en template: {{ product.price | currency }} → "$1,499.00"
   imports: [CurrencyPipe],
 
   template: `
     <div class="card">
       <!--
-        Property binding con signal:
-        [src]="product().image" → accede al valor del signal product()
-        product() es una FUNCIÓN que retorna el objeto Product
-        Angular sabe cuándo llamarla y cuándo re-renderizar
+        [src]="product().image" → le digo al navegador:
+        "pon la imagen que está en product().image"
+
+        product() es una función que retorna el objeto Product
       -->
       <img [src]="product().image" [alt]="product().name" class="image" />
       <div class="body">
-        <!--
-          Interpolación con signal:
-          {{ product().name }} → "Laptop Pro"
-          Cada vez que product() cambie, Angular actualiza el DOM
-        -->
+        <!-- {{ product().name }} → muestra el nombre del producto -->
         <h3>{{ product().name }}</h3>
 
-        <!--
-          Pipe currency:
-          {{ product().price | currency }} → "$1,499.00"
-          El pipe formatea el número como moneda localizada
-        -->
+        <!-- {{ product().price | currency }} → precio formateado: $1,499.00 -->
         <p class="price">{{ product().price | currency }}</p>
 
         <div class="actions">
           <!--
-            Event binding + output():
-            (click)="addToCart.emit(product())" → emite el objeto Product al padre
-            El padre recibe el evento en: (addToCart)="onAddToCart($event)"
+            (click)="addToCart.emit(product())" → cuando hacen click:
+            1. llamo a addToCart.emit() para avisar al padre
+            2. le paso el producto completo
           -->
           <button class="btn" (click)="addToCart.emit(product())">
             Agregar al carrito
           </button>
 
           <!--
-            Event binding + output():
-            (click)="viewDetails.emit(product().id)" → emite solo el ID
-            El padre recibe: (viewDetails)="onViewDetails($event)"
+            (click)="viewDetails.emit(product().id)" → aviso al padre
+            con solo el ID del producto
           -->
           <button class="btn secondary" (click)="viewDetails.emit(product().id)">
             Detalles
           </button>
         </div>
 
-        <!--
-          @if control flow:
-          Renderiza el input de cantidad SOLO si showQuantity() es true
-          showQuantity() es un signal que el padre puede configurar
-        -->
+        <!-- @if (showQuantity()) → solo muestro esto SI showQuantity() es true -->
         @if (showQuantity()) {
           <div class="quantity">
             <label>Cantidad:</label>
             <!--
-              Input de cantidad:
-              [value]="quantity()" → muestra el valor actual del signal
-              (input)="quantityChange.emit(Number($event.target))" → emite el nuevo valor
-              Number() convierte el string del input a number
+              [value]="quantity()" → muestra el valor actual
+              (input)="quantityChange.emit(Number($event.target.value))" → aviso al padre
             -->
             <input
               type="number"
               [value]="quantity()"
-              (input)="quantityChange.emit(Number($event.target))"
+              (input)="quantityChange.emit(Number($event.target.value))"
               min="1"
             />
           </div>
@@ -122,65 +104,39 @@ export interface Product {
 })
 export class ProductCardComponent {
   // ═══════════════════════════════════════════════════════════════
-  // INPUTS (datos que vienen del padre)
+  // INPUTS: datos que recibo del padre
   // ═══════════════════════════════════════════════════════════════
   //
-  // input() y input.required() son signals que Angular gestiona.
-  // El padre pasa datos con property binding: [product]="product"
-  //
-  // Diferencia con @Input():
-  // - input() retorna un Signal<T>, no una propiedad directa
-  // - Se accede con product() en el template (paréntesis)
-  // - Angular sabe automáticamente cuándo cambió (reactividad)
+  // El padre me pasa datos con property binding: [product]="product"
+  // Yo los recibo con input() o input.required()
 
   // input.required<Product>(): input OBLIGATORIO de tipo Product
-  // Si el padre no pasa [product], Angular lanza error en compilación
-  //
-  // Uso en template: product().image, product().name, product().price
+  // Si el padre no pasa [product], Angular lanza error
   readonly product = input.required<Product>();
 
   // input(false): input OPCIONAL con valor por defecto false
   // Si el padre no pasa [showQuantity], se usa false
-  //
-  // Uso en template: @if (showQuantity()) { ... }
   readonly showQuantity = input(false);
 
   // input(1): input OPCIONAL con valor por defecto 1
-  // Se usa para la cantidad de productos
   readonly quantity = input(1);
 
   // ═══════════════════════════════════════════════════════════════
-  // OUTPUTS (eventos que van al padre)
+  // OUTPUTS: eventos que le aviso al padre
   // ═══════════════════════════════════════════════════════════════
   //
-  // output() crea un EventEmitter tipado.
-  // Se usa con .emit() para enviar datos al padre.
-  //
-  // El padre escucha con event binding:
-  //   (addToCart)="onAddToCart($event)"
-  //   (viewDetails)="onViewDetails($event)"
+  // Yo le aviso al padre con .emit()
+  // El padre escucha con event binding: (addToCart)="onAddToCart($event)"
 
-  // output<Product>(): emite un objeto Product cuando el usuario
-  // hace click en "Agregar al carrito"
+  // output<Product>(): emite un objeto Product
   readonly addToCart = output<Product>();
 
-  // output<number>(): emite el ID del producto (number)
-  // cuando el usuario hace click en "Detalles"
+  // output<number>(): emite el ID del producto
   readonly viewDetails = output<number>();
 
-  // output<number>(): emite la nueva cantidad (number)
-  // cuando el usuario cambia el input de cantidad
+  // output<number>(): emite la nueva cantidad
   readonly quantityChange = output<number>();
 
-  // ═══════════════════════════════════════════════════════════════
-  // UTILIDADES
-  // ═══════════════════════════════════════════════════════════════
-  //
-  // Number: referencia al constructor Number global
-  // Se expone para usarlo en el template:
-  //   (input)="quantityChange.emit(Number($event.target))"
-  //
-  // ¿Por qué? $event.target es un HTMLElement, no un número.
-  // Number() convierte el valor string del input a number.
+  // Number: se usa para convertir el valor del input a número
   protected readonly Number = Number;
 }

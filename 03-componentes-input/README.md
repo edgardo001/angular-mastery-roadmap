@@ -2,51 +2,171 @@
 
 ### ¿Qué vamos a aprender?
 
-Cómo hacer que dos componentes Angular se comuniquen entre sí. Uno le pasa datos al otro, y el otro le responde con eventos.
+Cómo funcionan los componentes Angular y cómo se comunican entre sí.
 
 ```mermaid
-graph LR
-    subgraph "Conceptos que aprenderás"
-        A["input()"]
-        B["output()"]
-        C["model()"]
-        D["Signals"]
-        E["Pipes"]
-        F["@for / @if"]
-    end
-
-    A -->|"Padre → Hijo<br/>(datos)"| G["Comunicación"]
-    B -->|"Hijo → Padre<br/>(eventos)"| G
-    C -->|"Bidireccional<br/>(dos vías)"| G
-    D -->|"Reactivo<br/>(automático)"| G
-    E -->|"Transforma<br/>(formato)"| G
-    F -->|"Controla<br/>(flujo)"| G
+graph TD
+    A["Un componente = un bloque de LEGO<br/>con su HTML, CSS y lógica"] --> B["Los componentes se anidan<br/>padre contiene hijos"]
+    B --> C["El padre le pasa datos al hijo<br/>con INPUT"]
+    B --> D["El hijo le avisa al padre<br/>con OUTPUT"]
 
     style A fill:#667eea,color:#fff
     style B fill:#764ba2,color:#fff
-    style C fill:#fdd835,color:#333
-    style D fill:#51cf66,color:#fff
-    style E fill:#ffa94d,color:#fff
-    style F fill:#ff6b6b,color:#fff
-    style G fill:#333,color:#fff
+    style C fill:#51cf66,color:#fff
+    style D fill:#ffa94d,color:#fff
 ```
+
+---
+
+### Glosario Básico
+
+#### `interface` — Contrato de datos
+
+Define **qué datos tiene un objeto**. Es como un formulario que dice "este objeto debe tener un nombre, un precio y una imagen".
+
+```typescript
+interface Product {
+  id: number;      // debe tener un id que es número
+  name: string;    // debe tener un name que es texto
+  price: number;   // debe tener un price que es número
+  image: string;   // debe tener un image que es texto (URL)
+}
+```
+
+Si intentas crear un objeto que no cumple el contrato, TypeScript da error:
+
+```typescript
+const producto: Product = { id: 1, name: 'Laptop' };
+// ❌ Error: falta 'price' e 'image'
+```
+
+---
+
+#### `@Component` — Decorador
+
+Es una **etiqueta** que le dice a Angular: "esta clase es un componente". Sin este decorador, Angular no sabe que existe.
+
+```typescript
+@Component({
+  selector: 'app-product-card',   // nombre del componente en HTML
+  standalone: true,                // es independiente (no necesita módulo)
+  template: `<h1>Hola</h1>`,      // HTML del componente
+  styles: [`h1 { color: red; }`]   // CSS del componente
+})
+export class ProductCardComponent { }
+```
+
+El decorador es como una **ficha técnica**: le da al componente su nombre, su HTML y sus estilos.
+
+---
+
+#### `template` — El HTML del componente
+
+Es el **HTML que se muestra en pantalla**.
+
+```typescript
+template: `
+  <div class="card">
+    <h3>{{ product.name }}</h3>        <!-- {{ }} = mostrar dato -->
+    <button (click)="onSubmit()">OK</button>  <!-- (click) = escuchar click -->
+  </div>
+`
+```
+
+- `{{ product.name }}` → muestra el valor de la propiedad
+- `[src]="product.image"` → enlaza un atributo HTML
+- `(click)="onSubmit()"` → ejecuta una función cuando hacen click
+
+---
+
+#### `styles` — El CSS del componente
+
+Son los estilos que aplican **solo a este componente**. No se filtran a otros.
+
+```typescript
+styles: [`
+  .card { border: 1px solid #ccc; border-radius: 8px; }
+  h3 { color: #333; }
+`]
+```
+
+---
+
+#### `export class` — La clase del componente
+
+Es el **código TypeScript** que define qué datos tiene el componente y qué hace.
+
+```typescript
+export class ProductCardComponent {
+  name = 'Laptop';      // propiedad
+  price = 999;          // propiedad
+  onSubmit() { }        // método
+}
+```
+
+- `export` → permite que otros archivos importen esta clase
+- `class` → define un objeto con propiedades y métodos
+
+---
+
+#### `standalone: true` — Componente independiente
+
+Significa que el componente **no necesita un NgModule** para funcionar. Es la forma moderna de Angular (17+).
+
+---
+
+#### `imports` — Componentes hijos
+
+Lista los componentes que este componente **usa en su template**.
+
+```typescript
+@Component({
+  imports: [HeaderComponent, FooterComponent],
+  template: `
+    <app-header />
+    <app-footer />
+  `
+})
+```
+
+Es como decir: "para usar `<app-header>` en mi HTML, necesito importarlo aquí".
+
+---
+
+#### `selector` — Nombre del componente en HTML
+
+```typescript
+@Component({ selector: 'app-product-card' })
+// En el HTML: <app-product-card />
+```
+
+---
 
 ### ¿Qué es un componente?
 
-Un componente es un **bloque de LEGO** con su propia lógica y apariencia. Cada bloque tiene:
-- Un **template** (HTML) → cómo se ve
-- Un **estilo** (CSS) → cómo se diseña
-- Una **clase** (TypeScript) → qué hace
+Un componente es un **bloque de LEGO** con su propia lógica y apariencia.
+
+```mermaid
+graph LR
+    subgraph "Un componente tiene 3 partes"
+        A["Template<br/>(HTML)"] --> D["Componente"]
+        B["Styles<br/>(CSS)"] --> D
+        C["Class<br/>(TypeScript)"] --> D
+    end
+
+    style D fill:#667eea,color:#fff
+    style A fill:#51cf66,color:#fff
+    style B fill:#ffa94d,color:#fff
+    style C fill:#764ba2,color:#fff
+```
 
 Ejemplo: una tarjeta de producto es un componente. Tiene imagen, nombre, precio y un botón.
 
-### ¿Por qué necesitan comunicarse?
+---
 
-Imagina que tienes un carrito de compras:
-- El **padre** muestra la lista de productos
-- Cada **hijo** es una tarjeta de producto
+### ¿Cómo se organizan los componentes?
 
-Cuando haces click en "Agregar al carrito" en un hijo, el padre necesita saberlo para actualizar el total. Eso es **comunicación**.
+Los componentes se organizan como un **árbol familiar**: un padre que contiene hijos.
 
 ```mermaid
 graph TD
@@ -60,29 +180,40 @@ graph TD
     style D fill:#764ba2,color:#fff
 ```
 
+- **Padre (AppComponent)**: tiene la lista de productos y maneja los eventos
+- **Hijos (ProductCard)**: cada uno muestra una tarjeta con su producto
+
 ---
 
-### Concepto 1: `input()` — El padre le pasa datos al hijo
+### ¿Por qué necesitan comunicarse?
+
+Imagina que tienes un carrito de compras:
+- El **padre** muestra la lista de productos
+- Cada **hijo** es una tarjeta de producto
+
+Cuando haces click en "Agregar al carrito" en un hijo, el padre necesita saberlo para actualizar el total. Eso es **comunicación**.
+
+```mermaid
+sequenceDiagram
+    participant U as Usuario
+    participant H as Hijo (ProductCard)
+    participant P as Padre (AppComponent)
+
+    Note over P: Tiene la lista de productos
+
+    P->>H: Le paso el producto con input()
+    Note over H: Muestra: Laptop Pro, $1,499.00
+
+    U->>H: Click en "Agregar al carrito"
+    H->>P: Le aviso con output()
+    Note over P: Actualiza: "Laptop Pro agregado"
+```
+
+---
+
+### Concepto 1: Input — El padre le pasa datos al hijo
 
 **Analogía:** Como cuando le pasas una pelota a alguien. Tú le das el dato, él lo recibe.
-
-```typescript
-// EN EL HIJO (product-card.component.ts)
-// "Yo necesito que me pases un producto y si quiero mostrar cantidad"
-product = input.required<Product>();  // obligatorio
-showQuantity = input(false);          // opcional, valor por defecto false
-```
-
-```typescript
-// EN EL PADRE (app.component.ts)
-// Le paso los datos al hijo
-<app-product-card
-  [product]="producto1"          ← le paso el producto
-  [showQuantity]="true"          ← le paso si muestra cantidad
-/>
-```
-
-**¿Cómo funciona?**
 
 ```mermaid
 sequenceDiagram
@@ -90,47 +221,45 @@ sequenceDiagram
     participant H as Hijo
 
     P->>H: [product]="producto1"
-    Note over H: product = input.required()
+    Note over H: Recibe el producto
     H->>H: Usa product() en template
     Note over H: {{ product().name }} → "Laptop Pro"
 ```
+
+**En el hijo** (define qué datos necesita recibir):
+
+```typescript
+export class ProductCardComponent {
+  // "Necesito que el padre me pase un Product"
+  product = input.required<Product>();
+
+  // "Si el padre no me dice nada, uso false"
+  showQuantity = input(false);
+}
+```
+
+**En el padre** (le pasa los datos al hijo):
+
+```typescript
+template: `
+  <app-product-card
+    [product]="producto1"           ← le paso el producto
+    [showQuantity]="true"           ← le paso si muestra cantidad
+  />
+`
+```
+
+**¿Cómo funciona?**
 
 1. El padre dice: `[product]="producto1"` → "hijo, toma este producto"
 2. El hijo recibe: `product = input.required<Product>()` → "ok, tengo el producto"
 3. El hijo lo usa en su template: `{{ product().name }}` → "Laptop Pro"
 
-**Nota:** Los paréntesis `()` en `product()` son porque `input()` retorna una **función**. Es como llamar a una caja para sacar el valor.
-
 ---
 
-### Concepto 2: `output()` — El hijo le avisa al padre
+### Concepto 2: Output — El hijo le avisa al padre
 
 **Analogía:** Como cuando alguien te llama por tu nombre. Él hace algo y te avisa.
-
-```typescript
-// EN EL HIJO (product-card.component.ts)
-// "Cuando el usuario haga click, le aviso al padre"
-addToCart = output<Product>();   // emite un Producto
-viewDetails = output<number>();  // emite un ID (número)
-```
-
-```typescript
-// EN EL HIJO (template)
-<!-- Cuando hacen click, emito el producto al padre -->
-<button (click)="addToCart.emit(product())">Agregar al carrito</button>
-```
-
-```typescript
-// EN EL PADRE (app.component.ts)
-// "Cuando el hijo me avise, yo hago algo"
-<app-product-card (addToCart)="onAddToCart($event)" />
-
-onAddToCart(product: Product) {
-  alert(`Agregaste ${product.name}`);
-}
-```
-
-**¿Cómo funciona?**
 
 ```mermaid
 sequenceDiagram
@@ -139,181 +268,52 @@ sequenceDiagram
     participant P as Padre
 
     U->>H: Click en "Agregar al carrito"
-    H->>P: addToCart.emit(product())
+    H->>P: addToCart.emit(product)
     Note over P: onAddToCart($event)
-    P->>P: alert("Agregaste Laptop Pro")
+    P->>P: Muestra: "Laptop Pro agregado"
 ```
+
+**En el hijo** (define qué eventos puede emitir):
+
+```typescript
+export class ProductCardComponent {
+  // "Puedo emitir un Product al padre"
+  addToCart = output<Product>();
+
+  // "Puedo emitir un number al padre"
+  viewDetails = output<number>();
+}
+```
+
+**En el hijo** (template, emite el evento):
+
+```typescript
+template: `
+  <!-- Cuando hacen click, emito el producto al padre -->
+  <button (click)="addToCart.emit(product)">Agregar al carrito</button>
+`
+```
+
+**En el padre** (escucha el evento):
+
+```typescript
+template: `
+  <app-product-card (addToCart)="onAddToCart($event)" />
+`
+
+onAddToCart(product: Product) {
+  alert(`Agregaste ${product.name}`);
+}
+```
+
+**¿Cómo funciona?**
 
 1. El usuario hace click en "Agregar al carrito"
-2. El hijo ejecuta: `addToCart.emit(product())` → "¡padre, mira este producto!"
+2. El hijo ejecuta: `addToCart.emit(product)` → "¡padre, mira este producto!"
 3. Angular detecta el evento y llama: `onAddToCart($event)`
-4. El padre ejecuta: `alert(`Agregaste ${product.name}`)`
+4. El padre ejecuta: `alert("Agregaste Laptop Pro")`
 
 **¿Qué es `$event`?** Es el dato que el hijo envió. En este caso, el objeto `Product`.
-
----
-
-### Concepto 3: Signals — La novedad de Angular 17+
-
-**Antes (Angular < 17):**
-```typescript
-@Input() product!: Product;    // decorador clásico
-@Output() addToCart = new EventEmitter<Product>();
-```
-
-**Ahora (Angular 17+):**
-```typescript
-product = input.required<Product>();  // signal
-addToCart = output<Product>();         // signal
-```
-
-```mermaid
-graph LR
-    subgraph "Antes (@Input/@Output)"
-        A1["@Input() product"] --> A2["Decorador"]
-        A3["@Output() addToCart"] --> A4["EventEmitter"]
-    end
-
-    subgraph "Ahora (input/output)"
-        B1["product = input()"] --> B2["Signal"]
-        B3["addToCart = output()"] --> B4["Signal"]
-    end
-
-    style A1 fill:#ff6b6b,color:#fff
-    style A3 fill:#ff6b6b,color:#fff
-    style B1 fill:#51cf66,color:#fff
-    style B3 fill:#51cf66,color:#fff
-```
-
-**¿Por qué es mejor?**
-- `input()` es un **Signal**: Angular sabe automáticamente cuándo cambió
-- No necesita `ngOnChanges` para detectar cambios
-- Más corto y limpio
-- TypeScript infiere el tipo solo
-
-**Signals son como interruptores de luz:**
-- Cuando cambias el valor del interruptor, la luz se enciende automáticamente
-- No necesitas avisarle a nadie, Angular lo detecta solo
-
----
-
-### Concepto 4: `model()` — Two-Way Binding
-
-**Analogía:** Como un elevador: tú presionas un piso y el elevador te lleva. Tú cambias el valor, el elevador se actualiza.
-
-```mermaid
-sequenceDiagram
-    participant P as Padre
-    participant H as Hijo (contador)
-
-    P->>H: [(count)]="total"
-    Note over H: count = model(0)
-
-    H->>H: count.update(v => v + 1)
-    H->>P: total se actualiza a 1
-
-    H->>H: count.update(v => v + 1)
-    H->>P: total se actualiza a 2
-```
-
-```typescript
-// EN EL HIJO
-count = model<number>(0);  // valor inicial 0
-
-// EN EL PADRE
-<app-contador [(count)]="total" />
-// total se actualiza automáticamente cuando el hijo cambia count
-```
-
-**¿Cuándo usar `model()` vs `output()`?**
-- `model()` → cuando el padre necesita el valor modificado en tiempo real
-- `output()` → cuando el padre solo necesita saber que pasó algo
-
----
-
-### Concepto 5: Pipes — Traductores de datos
-
-**Analogía:** es como un traductor: convierte un dato de un formato a otro.
-
-```typescript
-// Sin pipe: 1499 (número feo)
-// Con pipe: $1,499.00 (número bonito)
-{{ product().price | currency }}
-```
-
-```mermaid
-graph LR
-    A["1499"] --> B["| currency"]
-    B --> C["$1,499.00"]
-
-    D["2026-01-15"] --> E["| date"]
-    E --> F["enero 15, 2026"]
-
-    G["hola"] --> H["| uppercase"]
-    H --> I["HOLA"]
-
-    style A fill:#667eea,color:#fff
-    style B fill:#ffa94d,color:#fff
-    style C fill:#51cf66,color:#fff
-    style D fill:#667eea,color:#fff
-    style E fill:#ffa94d,color:#fff
-    style F fill:#51cf66,color:#fff
-    style G fill:#667eea,color:#fff
-    style H fill:#ffa94d,color:#fff
-    style I fill:#51cf66,color:#fff
-```
-
-**Pipes comunes:**
-| Pipe | Qué hace | Ejemplo |
-|---|---|---|
-| `currency` | Convierte a moneda | `1499` → `$1,499.00` |
-| `date` | Convierte a fecha | `2026-01-15` → `enero 15, 2026` |
-| `uppercase` | Convierte a mayúsculas | `hola` → `HOLA` |
-| `json` | Muestra JSON formateado | `{name: "Ana"}` → `{ "name": "Ana" }` |
-
----
-
-### Concepto 6: `@for` y `@if` — Repetir y decidir
-
-**`@for` — Repetir algo:**
-```typescript
-// "Por cada producto en la lista, crea una tarjeta"
-@for (product of products; track product.id) {
-  <app-product-card [product]="product" />
-}
-```
-
-```mermaid
-graph TD
-    A["products = [Laptop, Teclado, Monitor]"] --> B["@for"]
-    B --> C["ProductCard 1: Laptop"]
-    B --> D["ProductCard 2: Teclado"]
-    B --> E["ProductCard 3: Monitor"]
-
-    style A fill:#667eea,color:#fff
-    style B fill:#ffa94d,color:#fff
-    style C fill:#51cf66,color:#fff
-    style D fill:#51cf66,color:#fff
-    style E fill:#51cf66,color:#fff
-```
-
-**`@if` — Mostrar algo solo si se cumple una condición:**
-```typescript
-// "Solo muestra el log si hay una acción"
-@if (lastAction) {
-  <div>Última acción: {{ lastAction }}</div>
-}
-```
-
-```mermaid
-graph TD
-    A{"lastAction tiene contenido?"} -->|Sí| B["Muestra el div"]
-    A -->|No| C["No muestra nada"]
-
-    style A fill:#ffa94d,color:#fff
-    style B fill:#51cf66,color:#fff
-    style C fill:#ff6b6b,color:#fff
-```
 
 ---
 
@@ -324,16 +324,16 @@ sequenceDiagram
     participant P as AppComponent (padre)
     participant H as ProductCard (hijo)
 
-    Note over P,H: Flujo de datos con input()
+    Note over P,H: Flujo de datos con INPUT
 
     P->>H: [product]="producto1"
     P->>H: [showQuantity]="true"
 
     Note over H: El hijo muestra la tarjeta
 
-    Note over P,H: Flujo de eventos con output()
+    Note over P,H: Flujo de eventos con OUTPUT
 
-    H->>P: addToCart.emit(product())
+    H->>P: addToCart.emit(product)
     P->>P: onAddToCart(product)
     P->>P: Muestra: "Laptop Pro agregado"
 
@@ -342,9 +342,15 @@ sequenceDiagram
     P->>P: Muestra: "Cantidad cambiada a: 3"
 ```
 
+**Regla de oro:**
+- **Datos** → van de padre a hijo (con `[property]`)
+- **Eventos** → van de hijo a padre (con `(event)`)
+
 ---
 
 ### Código completo del proyecto
+
+Veamos el código línea por línea.
 
 #### 1. El hijo: `product-card.component.ts`
 
@@ -352,7 +358,8 @@ sequenceDiagram
 import { Component, input, output } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 
-// Interface: define qué datos tiene un producto
+// interface: define la forma de un objeto
+// Es como un molde que dice "todo producto debe tener id, name, price, image"
 export interface Product {
   id: number;
   name: string;
@@ -364,36 +371,45 @@ export interface Product {
   selector: 'app-product-card',
   standalone: true,
   imports: [CurrencyPipe],
+
   template: `
     <div class="card">
-      <!-- Le digo al padre que pase la imagen -->
+      <!--
+        [src]="product().image" → le digo al navegador:
+        "pon la imagen que está en product().image"
+      -->
       <img [src]="product().image" [alt]="product().name" />
 
       <div class="body">
+        <!-- {{ product().name }} → muestra el nombre -->
         <h3>{{ product().name }}</h3>
 
-        <!-- Pipe: convierte 1499 a $1,499.00 -->
+        <!-- {{ product().price | currency }} → precio formateado: $1,499.00 -->
         <p class="price">{{ product().price | currency }}</p>
 
-        <!-- Botón que le avisa al padre -->
+        <!--
+          (click)="addToCart.emit(product())" → cuando hacen click:
+          1. llamo a addToCart.emit() para avisar al padre
+          2. le paso el producto completo
+        -->
         <button (click)="addToCart.emit(product())">Agregar al carrito</button>
 
-        <!-- Si showQuantity es true, muestro el input -->
+        <!-- @if (showQuantity()) → solo muestro esto SI showQuantity() es true -->
         @if (showQuantity()) {
           <input type="number" [value]="quantity()"
-                 (input)="quantityChange.emit(Number($event.target))" />
+                 (input)="quantityChange.emit(Number($event.target.value))" />
         }
       </div>
     </div>
   `
 })
 export class ProductCardComponent {
-  // Inputs: datos que recibo del padre
-  readonly product = input.required<Product>();
-  readonly showQuantity = input(false);
-  readonly quantity = input(1);
+  // ─── INPUTS: datos que recibo del padre ───
+  readonly product = input.required<Product>();  // obligatorio
+  readonly showQuantity = input(false);          // opcional, default false
+  readonly quantity = input(1);                  // opcional, default 1
 
-  // Outputs: eventos que le aviso al padre
+  // ─── OUTPUTS: eventos que le aviso al padre ───
   readonly addToCart = output<Product>();
   readonly viewDetails = output<number>();
   readonly quantityChange = output<number>();
@@ -412,29 +428,33 @@ import { ProductCardComponent, Product } from './product-card/product-card.compo
   selector: 'app-root',
   standalone: true,
   imports: [ProductCardComponent],
+
   template: `
     <h1>Catálogo de Productos</h1>
 
     <div class="grid">
-      <!-- Por cada producto, creo una tarjeta y le paso datos -->
+      <!--
+        @for → por cada producto, creo un <app-product-card>
+        y le paso datos con [property]
+      -->
       @for (product of products; track product.id) {
         <app-product-card
-          [product]="product"              ← le paso el producto
-          [showQuantity]="true"            ← le digo que muestre cantidad
-          (addToCart)="onAddToCart($event)" ← escucho cuando agrega al carrito
-          (quantityChange)="onQuantityChange($event)" ← escucho cuando cambia cantidad
+          [product]="product"
+          [showQuantity]="true"
+          (addToCart)="onAddToCart($event)"
+          (quantityChange)="onQuantityChange($event)"
         />
       }
     </div>
 
-    <!-- Muestro la última acción si existe -->
+    <!-- @if → solo muestro esto si hay una acción -->
     @if (lastAction) {
       <div class="log">{{ lastAction }}</div>
     }
   `
 })
 export class AppComponent {
-  // Lista de productos (datos hardcodeados, en una app real viene de una API)
+  // Lista de productos
   readonly products: Product[] = [
     { id: 1, name: 'Laptop Pro', price: 1499, image: 'https://picsum.photos/seed/laptop/400/300' },
     { id: 2, name: 'Teclado Mecánico', price: 129, image: 'https://picsum.photos/seed/keyboard/400/300' },
@@ -461,7 +481,7 @@ export class AppComponent {
 
 1. Crea un componente `ProductCard` con `input()` y `output()`
 2. Pásale datos desde el padre con `[product]="producto"`
-3. Emite un evento con `addToCart.emit(product())`
+3. Emite un evento con `addToCart.emit(product)`
 4. Escucha el evento en el padre con `(addToCart)="onAddToCart($event)"`
 5. Usa un pipe `currency` para mostrar el precio formateado
 
