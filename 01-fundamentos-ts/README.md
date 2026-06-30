@@ -1,13 +1,23 @@
 ## 01 — Fundamentos de TypeScript para Angular
 
-### Objetivo de Aprendizaje
+### Propósito
 
-Dominar los conceptos de TypeScript que Angular usa diariamente. No se trata de memorizar sintaxis, sino de entender **por qué** TypeScript previene errores que JavaScript permite pasar silenciosamente.
+Aprender los conceptos de TypeScript que Angular usa diariamente: tipos, interfaces, genéricos, async/await y type guards.
 
-### Por Qué TypeScript Importa en Angular
+### Problema que resuelve
 
-Angular está escrito en TypeScript. Cada componente, servicio, pipe y directiva se define con tipos. Sin TypeScript sólido:
+Sin TypeScript, JavaScript permite errores silenciosos que aparecen solo en el navegador:
+- Mezclar tipos sin aviso (`let x = 'hola'; x = 42;` → sin error hasta runtime)
+- Pasar objetos incompletos a funciones → errores inesperados
+- No saber qué tipo de datos devuelve una función → código frágil
 
+### Cómo lo resuelve
+
+TypeScript añade **tipado estático**: el compilador verifica los tipos **antes** de ejecutar el código. Si algo está mal, lo atrapa en el editor, no en producción.
+
+### Por qué aprenderlo
+
+Angular está escrito en TypeScript. Cada componente, servicio y pipe usa tipos. Sin TypeScript sólido:
 - `HttpClient.get()` devuelve `Observable<any>` → pierdes autocomplete y type checking
 - Los inputs de componentes no están validados → errores en runtime
 - Los servicios no pueden reutilizarse con diferentes tipos → código duplicado

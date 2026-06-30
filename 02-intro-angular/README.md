@@ -1,16 +1,24 @@
 ## 02 — Introducción a Angular con CLI
 
-### Objetivo de Aprendizaje
+### Propósito
 
-Crear tu primera aplicación Angular 22 usando componentes standalone, entender cómo Angular organiza el código y cómo los componentes se comunican entre sí con property binding y event binding.
+Crear tu primera aplicación Angular 22 usando componentes standalone, entender cómo Angular organiza el código y cómo los componentes se comunican entre sí.
 
-### Por Qué Angular
+### Problema que resuelve
 
-Angular es un framework opinionado para SPAs. A diferencia de React o Vue, Angular impone una estructura clara: componentes, servicios, dependencias inyectadas. Esto facilita el trabajo en equipos grandes pero tiene una curva de aprendizaje más pronunciada.
+Desarrollar SPAs vanilla JavaScript lleva a código desorganizado, sin estructura clara y difícil de escalar. No hay separación de responsabilidades, no hay reutilización de componentes y el debugging es un infierno.
+
+### Cómo lo resuelve
+
+Angular impone una arquitectura basada en componentes: cada pieza de la UI es un bloque independiente con su HTML, CSS y lógica. Los componentes se anidan como bloques de LEGO y se comunican de forma predecible.
+
+### Por qué aprenderlo
+
+Es la puerta de entrada al framework más completo para SPAs empresariales. Establece el patrón mental para todo el desarrollo Angular: componentes, templates, binding y bootstrapping.
 
 ```mermaid
 flowchart TB
-    CLI["Angular CLI\n(ng new, ng serve --host 0.0.0.0 --port 8080)"] --> BOOT["bootstrapApplication\n(main.ts)"]
+    CLI["Angular CLI\n(ng new, ng serve)"] --> BOOT["bootstrapApplication\n(main.ts)"]
     BOOT --> ROOT["AppComponent\n(raíz del árbol)"]
     ROOT --> HDR["HeaderComponent\n(navegación)"]
     ROOT --> HERO["HeroComponent\n(sección principal)"]

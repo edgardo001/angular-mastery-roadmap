@@ -1,8 +1,24 @@
 ## 03 — Componentes, Input y Output
 
-### ¿Qué vamos a aprender?
+### Propósito
 
-Cómo funcionan los componentes Angular y cómo se comunican entre sí.
+Aprender cómo los componentes Angular se comunican entre sí: el padre le pasa datos al hijo con input, y el hijo le avisa al padre con output.
+
+### Problema que resuelve
+
+Sin comunicación estructurada, los componentes se acoplany crean código espagueti donde cualquier componente puede modificar cualquier cosa. No hay flujo claro de datos, y los bugs son difíciles de rastrear.
+
+### Cómo lo resuelve
+
+Angular define un contrato explícito:
+- **Input** → el padre le pasa datos al hijo (datos bajan)
+- **Output** → el hijo le avisa al padre cuando pasa algo (eventos suben)
+
+Esto crea un flujo unidireccional de datos, fácil de razonar y depurar.
+
+### Por qué aprenderlo
+
+Es el patrón fundamental de composición en Angular. Sin esto no se pueden construir UI modulares y reutilizables. Cada componente hijo es una caja negra que recibe datos y emite eventos.
 
 ```mermaid
 graph TD
