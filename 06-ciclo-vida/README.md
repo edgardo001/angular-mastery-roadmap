@@ -10,6 +10,14 @@ Hooks de ciclo de vida, `effect()` para reactividad, y `afterNextRender`/`afterR
 >
 > **Por qué aprenderlo:** Esencial para evitar memory leaks y asegurar que los componentes se comporten correctamente durante toda su vida útil.
 
+### Analogía del Mundo Real
+
+- **ngOnInit** = El día de tu nacimiento: te preparan para el mundo (carga datos iniciales)
+- **ngAfterViewInit** = Tu primer paso: ya estás en el mundo y puedes interactuar con el DOM
+- **afterRender** = Cada paso que das después: el DOM ya existe y puedes medirte
+- **effect** = Tus reacciones automáticas: si hace frío, te pones abrigo (si cambia una signal, ejecuta código)
+- **ngOnDestroy** = Tu último día: apaga las luces, cierra las puertas, limpia todo
+- **DestroyRef** = Una nota que dejas: "cuando me vaya, haz esto" (limpieza moderna)
 
 ```mermaid
 flowchart LR
@@ -53,3 +61,34 @@ cd 06-ciclo-vida
 npm install
 ng serve --host 0.0.0.0 --port 8080
 ```
+
+### Archivos del Proyecto
+
+| Archivo | Propósito |
+|---------|-----------|
+| `src/app/app.component.ts` | Cronómetro con demostración de hooks de ciclo de vida y efectos |
+| `src/app/app.config.ts` | Configuración de la aplicación (providers vacíos) |
+| `src/main.ts` | Punto de entrada: bootstrap del componente raíz |
+| `src/index.html` | HTML base donde se monta la app |
+| `src/styles.css` | Estilos globales (reset, body) |
+| `angular.json` | Configuración del build de Angular |
+| `tsconfig.json` | Configuración de TypeScript |
+| `tsconfig.app.json` | Configuración de TypeScript para la app |
+| `package.json` | Dependencias y scripts del proyecto |
+
+### Glosario
+
+| Término | Definición |
+|---------|------------|
+| **Ciclo de vida** | Secuencia de eventos que ocurren desde que un componente se crea hasta que se destruye |
+| **ngOnInit** | Hook que se ejecuta una vez después del primer cambio de detección |
+| **ngAfterViewInit** | Hook que se ejecuta cuando la vista (template) está lista en el DOM |
+| **ngOnDestroy** | Hook que se ejecuta cuando el componente se destruye (limpieza de recursos) |
+| **effect()** | Función que ejecuta código cada vez que una signal que lee cambia su valor |
+| **afterNextRender()** | Función que ejecuta una vez después del primer render (seguro para DOM) |
+| **afterRender()** | Función que ejecuta después de cada ciclo de render |
+| **DestroyRef** | Referencia al punto de destrucción del componente para registrar cleanup |
+| **computed()** | Signal derivada que se recalcula automáticamente cuando sus dependencias cambian |
+| **Memory leak** | Fuga de memoria: recursos que no se liberan y consumen RAM innecesariamente |
+| **Interval** | Temporizador que ejecuta una función cada N milisegundos (debe limpiarse con clearInterval) |
+| **Signal** | Variable reactiva que notifica cuando su valor cambia |
