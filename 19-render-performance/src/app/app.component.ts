@@ -1,14 +1,49 @@
+/**
+ * COMPONENTE PRINCIPAL DE RENDIMIENTO (AppComponent)
+ * ===================================================
+ *
+ * Demuestra las estrategias de optimización de renderizado en Angular:
+ * - OnPush: Solo re-renderiza cuando cambian signals/inputs
+ * - Signals: Variables reactivas que Angular vigila automáticamente
+ * - @defer: Carga diferida de componentes (lazy loading)
+ *
+ * ANÁLOGÍA: Es como un centro de control de tráfico aéreo.
+ * - OnPush: Solo monitorea vuelos que realmente cambiaron
+ * - @defer: Carga aviones solo cuando se necesitan
+ * - Signals: Sensores que detectan cambios en tiempo real
+ *
+ * TIPOS DE @defer:
+ * - on interaction: Carga cuando el usuario hace clic
+ * - on viewport: Carga cuando el elemento entra en pantalla
+ * - on timer: Carga después de un tiempo específico
+ *
+ * BLOQUES AUXILIARES:
+ * - @placeholder: Contenido mientras NO se carga el componente
+ * - @loading: Contenido mientras SE está cargando el componente
+ */
+
+// Component: Decorador del componente
+// ChangeDetectionStrategy.OnPush: Optimización de rendimiento
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+
+// DatePipe: Pipe que formatea fechas para mostrarlas
 import { DatePipe } from '@angular/common';
+
+// Componentes hijos que se cargarán de forma diferida
 import { ExpensiveComponent } from './expensive.component';
 import { StatsComponent } from './stats.component';
+
+// Servicio con datos pesados
 import { HeavyDataService } from './heavy-data.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
+  // Importa componentes e pipes que usa el template
   imports: [DatePipe, ExpensiveComponent, StatsComponent],
+  // OnPush: Solo re-renderiza cuando cambian signals o inputs
   changeDetection: ChangeDetectionStrategy.OnPush,
+
   template: `
     <div class="app">
       <header class="header">
@@ -17,26 +52,35 @@ import { HeavyDataService } from './heavy-data.service';
       </header>
 
       <main class="main">
+        <!-- Sección de controles para generar datos -->
         <section class="card">
           <h2>Controls</h2>
           <div class="controls">
+            <!-- (click): Evento que ejecuta generateItems() al hacer clic -->
+            <!-- service.generateItems(1000): Genera 1000 elementos -->
             <button class="btn btn-primary" (click)="service.generateItems(1000)">Load 1000 Items</button>
             <button class="btn btn-secondary" (click)="service.generateItems(50)">Load 50 Items</button>
             <button class="btn btn-secondary" (click)="service.generateItems(0)">Clear</button>
           </div>
         </section>
 
+        <!-- StatsComponent: Muestra estadísticas de rendimiento -->
         <app-stats />
 
+        <!-- @defer (on interaction): Carga el componente al hacer clic -->
+        <!-- Es como un botón "cargar más" que activa la carga -->
         <section class="card">
           <h2>&#64;defer (on interaction)</h2>
           @defer (on interaction) {
             <app-expensive />
           } @placeholder {
+            <!-- @placeholder: Contenido que se muestra ANTES de cargar -->
             <div class="placeholder">⬇ Click here to load expensive component</div>
           }
         </section>
 
+        <!-- @defer (on viewport): Carga cuando el elemento entra en pantalla -->
+        <!-- Es como un "Intersection Observer" automático -->
         <section class="card">
           <h2>&#64;defer (on viewport)</h2>
           @defer (on viewport) {
@@ -44,10 +88,13 @@ import { HeavyDataService } from './heavy-data.service';
           } @placeholder {
             <div class="placeholder">⬇ Scroll here to load</div>
           } @loading {
+            <!-- @loading: Contenido mientras SE está cargando -->
             <div class="loading">Loading...</div>
           }
         </section>
 
+        <!-- @defer (on timer): Carga después de 3 segundos -->
+        <!-- Útil para contenido que no es urgente -->
         <section class="card">
           <h2>&#64;defer (on timer)</h2>
           @defer (on timer(3000)) {
@@ -59,11 +106,15 @@ import { HeavyDataService } from './heavy-data.service';
           }
         </section>
 
+        <!-- Espaciador para forzar scroll -->
         <div class="spacer"></div>
 
+        <!-- @defer (on viewport): Carga al hacer scroll hasta aquí -->
+        <!-- Demostración de lazy loading por viewport -->
         @defer (on viewport) {
           <section class="card">
             <h2>Bottom Section (lazy-viewport)</h2>
+            <!-- date:'medium': Formato de fecha y hora legible -->
             <p class="timestamp">Loaded at: {{ now | date:'medium' }}</p>
           </section>
         } @placeholder {
@@ -98,6 +149,9 @@ import { HeavyDataService } from './heavy-data.service';
   `],
 })
 export class AppComponent {
+  // Obtiene el servicio con datos pesados
   service = inject(HeavyDataService);
+
+  // Timestamp actual (se usa en el template para mostrar cuándo se cargó)
   now = Date.now();
 }

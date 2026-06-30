@@ -1,12 +1,35 @@
+/**
+ * Componente que demuestra el contraste de color según WCAG 2.1.
+ *
+ * WCAG (Web Content Accessibility Guidelines) es el estándar internacional
+ * de accesibilidad web. Define niveles de contraste mínimo para que el texto
+ * sea legible para personas con discapacidad visual.
+ *
+ * Niveles de contraste:
+ * - AA (mínimo): Ratio de 4.5:1 para texto normal, 3:1 para texto grande
+ * - AAA (mejorado): Ratio de 7:1 para texto normal, 4.5:1 para texto grande
+ *
+ * Analogía: El contraste es como la diferencia entre leer un libro con
+ * letra negra sobre fondo blanco (fácil) vs letra gris claro sobre fondo blanco (difícil).
+ *
+ * Atributos ARIA usados:
+ * - role="region": Marca una sección significativa de la página
+ * - role="table": Indica que el contenido es una tabla
+ * - aria-label: Describe el propósito para lectores de pantalla
+ * - scope="col": Indica que el th es encabezado de columna
+ */
 import { Component } from '@angular/core';
 
+/**
+ * Interfaz que define la estructura de un par de colores para verificar contraste.
+ */
 interface ContrastPair {
-  label: string;
-  foreground: string;
-  background: string;
-  ratio: string;
-  passAA: boolean;
-  passAAA: boolean;
+  label: string;      // Nombre descriptivo de la muestra
+  foreground: string; // Color del texto (hexadecimal)
+  background: string; // Color de fondo (hexadecimal)
+  ratio: string;      // Ratio de contraste calculado
+  passAA: boolean;    // ¿Cumple nivel AA?
+  passAAA: boolean;   // ¿Cumple nivel AAA?
 }
 
 @Component({
@@ -19,6 +42,7 @@ interface ContrastPair {
       <table role="table" aria-label="Relaciones de contraste">
         <thead>
           <tr>
+            <!-- scope="col": Indica que este th es encabezado de columna -->
             <th scope="col">Muestra</th>
             <th scope="col">Ratio</th>
             <th scope="col">AA</th>
@@ -29,6 +53,7 @@ interface ContrastPair {
           @for (pair of pairs; track pair.label) {
             <tr>
               <td>
+                <!-- Estilos en línea para mostrar la combinación de colores real -->
                 <span class="swatch" [style.background]="pair.background" [style.color]="pair.foreground">
                   {{ pair.label }}
                 </span>
@@ -60,6 +85,13 @@ interface ContrastPair {
   `]
 })
 export class ContrastCardComponent {
+  /**
+   * Arreglo de pares de colores para demostrar diferentes niveles de contraste.
+   * Cada par tiene un ratio calculado y si cumple AA/AAA.
+   *
+   * Nota: Estos valores son de ejemplo. En una app real, el ratio se calcula
+   * usando una fórmula matemática basada en luminancia relativa.
+   */
   readonly pairs: ContrastPair[] = [
     { label: 'Texto normal', foreground: '#1a1a2e', background: '#ffffff', ratio: '16.5:1', passAA: true, passAAA: true },
     { label: 'Texto gris', foreground: '#757575', background: '#ffffff', ratio: '4.6:1', passAA: true, passAAA: false },

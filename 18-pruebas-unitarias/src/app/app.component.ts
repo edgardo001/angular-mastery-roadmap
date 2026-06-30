@@ -1,11 +1,56 @@
+/**
+ * COMPONENTE PRINCIPAL DE LA CALCULADORA (AppComponent)
+ * =====================================================
+ *
+ * Este es el COMPONENTE RAÍZ de la aplicación. Un componente en Angular
+ * es como una "pieza de LEGO" que tiene su propio template (HTML),
+ * estilos (CSS) y lógica (TypeScript).
+ *
+ * ANÁLOGÍA: Es como una caja de herramientas. Tiene:
+ * - Un display donde ves el resultado (template)
+ * - Botones para interactuar (eventos)
+ * - Lógica para calcular (métodos)
+ *
+ * PALABRAS CLAVE:
+ * - @Component: Decorador que define un componente Angular
+ * - selector: Nombre del componente para usarlo en HTML (<app-root>)
+ * - standalone: true: El componente NO necesita un módulo NgModule
+ * - imports: Componentes/pipes que este componente usa
+ * - template: El HTML del componente (puede ser inline o archivo externo)
+ * - styles: Los estilos CSS del componente
+ * - inject(): Forma moderna de obtener servicios (reemplaza constructor)
+ * - [(ngModel)]: Two-way binding - sincroniza input con variable
+ * - (click): Evento que se ejecuta al hacer clic en un botón
+ * - @if: Nuevo syntax de control flow de Angular 17+
+ * - {{ }}: Interpolación - muestra valores en el template
+ */
+
+// Component: Decorador que marca esta clase como un componente Angular
+// inject: Permite obtener servicios sin usar constructor
 import { Component, inject } from '@angular/core';
+
+// FormsModule: Necesario para usar [(ngModel)] (two-way data binding)
 import { FormsModule } from '@angular/forms';
+
+// El servicio calculadora que contiene la lógica matemática
 import { CalculatorService } from './calculator.service';
 
+// @Component: Decorador que define las propiedades del componente
 @Component({
+  // selector: Nombre CSS para usar este componente en HTML
+  // Se usa como <app-root></app-root> en el template padre
   selector: 'app-root',
+
+  // standalone: true significa que este componente es autocontenido
+  // No necesita ser declarado en un NgModule (forma moderna de Angular)
   standalone: true,
+
+  // imports: Lista de componentes/pipes que este componente necesita
+  // FormsModule habilita [(ngModel)] para two-way binding
   imports: [FormsModule],
+
+  // template: El HTML que se renderiza en pantalla
+  // Nota: usa template inline (no archivo externo)
   template: `
     <div class="app">
       <header class="header">
@@ -15,39 +60,55 @@ import { CalculatorService } from './calculator.service';
 
       <main class="main">
         <section class="card">
+          <!-- input-row: Fila de entrada de datos -->
           <div class="input-row">
+            <!-- [(ngModel)]: Two-way binding -->
+            <!-- "a" es una propiedad del componente, el input la modifica -->
+            <!-- Cuando "a" cambia, el input se actualiza y viceversa -->
             <input type="number" [(ngModel)]="a" class="input" placeholder="First number" />
+
+            <!-- select con ngModel: Elige la operación matemática -->
             <select [(ngModel)]="operation" class="select">
               <option value="add">+</option>
               <option value="subtract">−</option>
               <option value="multiply">×</option>
               <option value="divide">÷</option>
             </select>
+
             <input type="number" [(ngModel)]="b" class="input" placeholder="Second number" />
           </div>
 
+          <!-- Botones de acción -->
           <div class="actions">
+            <!-- (click): Evento que ejecuta calculate() al hacer clic -->
             <button class="btn btn-primary" (click)="calculate()">Calculate</button>
             <button class="btn btn-secondary" (click)="clear()">Clear</button>
           </div>
 
+          <!-- @if: Nuevo syntax de Angular para mostrar/ocultar elementos -->
+          <!-- Solo se muestra si "error" tiene contenido -->
           @if (error) {
             <div class="error">{{ error }}</div>
           }
 
+          <!-- Mostrar resultado de la operación -->
           <div class="result-row">
             <span class="result-label">Result:</span>
+            <!-- service.result() lee el valor de la signal -->
             <span class="result-value">{{ service.result() }}</span>
           </div>
 
+          <!-- Mostrar última operación realizada -->
           <div class="history-row">
             <span class="result-label">Last op:</span>
+            <!-- Si no hay operación, muestra "—" -->
             <span class="history-value">{{ service.lastOperation() || '—' }}</span>
           </div>
         </section>
       </main>
     </div>
   `,
+  // styles: Estilos CSS del componente (scope limitado a este componente)
   styles: [`
     .app { max-width: 480px; margin: 0 auto; padding: 2rem 1rem; }
     .header { text-align: center; margin-bottom: 2rem; }
@@ -72,16 +133,29 @@ import { CalculatorService } from './calculator.service';
   `],
 })
 export class AppComponent {
+  // inject(): Obtiene el servicio CalculatorService
+  // Es como pedirle a Angular "dame una calculadora"
   service = inject(CalculatorService);
 
+  // Variables para los números de entrada
   a = 0;
   b = 0;
+
+  // Tipo unión: Solo puede tener uno de estos valores
+  // Es como un selector que solo permite ciertas opciones
   operation: 'add' | 'subtract' | 'multiply' | 'divide' = 'add';
+
+  // Variable para almacenar mensajes de error
   error = '';
 
+  // Método que se ejecuta al presionar "Calculate"
   calculate(): void {
+    // Limpia el error anterior
     this.error = '';
+    // try-catch: Maneja errores sin que la app se cierre
+    // Es como un seguro: si algo falla, no pierdes todo
     try {
+      // switch: Selección múltiple (como un menú de opciones)
       switch (this.operation) {
         case 'add':
           this.service.add(this.a, this.b);
@@ -97,10 +171,13 @@ export class AppComponent {
           break;
       }
     } catch (e) {
+      // Si hay error (división por cero), lo captura y lo muestra
+      // as Error: Type assertion - le dice a TypeScript que "e" es un Error
       this.error = (e as Error).message;
     }
   }
 
+  // Método que se ejecuta al presionar "Clear"
   clear(): void {
     this.service.clear();
     this.a = 0;

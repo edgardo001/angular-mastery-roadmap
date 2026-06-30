@@ -1,28 +1,48 @@
+// ============================================================
+// app.ts — Componente raíz de la app de colaboración
+// ============================================================
+// Este componente muestra los controles de conexión (URL del servidor,
+// ID de sala) y el editor colaborativo. Es como la "sala de control"
+// donde los usuarios se conectan antes de empezar a editar juntos.
+
 import { Component, OnInit } from '@angular/core';
+
+// EditorComponent: el editor de texto colaborativo.
 import { EditorComponent } from './editor';
+
+// CollabService: maneja la conexión WebRTC/WebSocket.
 import { CollabService } from './collab.service';
+
+// FormsModule: habilita ngModel para双向数据绑定 de los inputs.
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
+
+  // imports: necesitamos EditorComponent y FormsModule.
   imports: [EditorComponent, FormsModule],
+
   template: `
     <header>
       <h1>Collaborative Editor</h1>
       <div class="controls">
+        <!-- [(ngModel)] — two-way binding: el usuario escribe la URL y Angular la guarda -->
         <input [(ngModel)]="signalUrl" placeholder="Signal Server URL" />
         <input [(ngModel)]="roomId" placeholder="Room ID" />
+        <!-- [disabled]="connected" — deshabilita el botón si ya estamos conectados -->
         <button (click)="connect()" [disabled]="connected">Connect</button>
         <button (click)="disconnect()" [disabled]="!connected" class="danger">Disconnect</button>
       </div>
       @if (connected) {
         <div class="peers">
+          <!-- Muestra la lista de usuarios conectados separados por coma -->
           Peers: {{ collabService.peers().join(', ') || 'none' }}
         </div>
       }
     </header>
     <main>
+      <!-- <app-editor /> — el componente del editor colaborativo -->
       <app-editor />
     </main>
   `,
@@ -40,25 +60,34 @@ import { FormsModule } from '@angular/forms';
   `]
 })
 export class App implements OnInit {
+  // signalUrl: URL del servidor de señalización WebSocket.
   signalUrl = 'wss://signal.example.com/ws';
+
+  // roomId: identificador de la sala donde se reúnen los usuarios.
   roomId = 'room-angular';
+
+  // connected: estado de la conexión (conectado o no).
   connected = false;
 
   constructor(public collabService: CollabService) {}
 
+  // ngOnInit: se ejecuta al iniciar el componente.
   ngOnInit() {
+    // Guarda un ID de usuario en localStorage para persistir entre sesiones.
     const stored = localStorage.getItem('collab-user');
     if (!stored) {
       localStorage.setItem('collab-user', 'user-' + Math.random().toString(36).slice(2, 8));
     }
   }
 
+  // connect: establece la conexión con el servidor de señalización.
   connect() {
     const userId = localStorage.getItem('collab-user') || 'anonymous';
     this.collabService.connect(this.signalUrl, this.roomId, userId);
     this.connected = true;
   }
 
+  // disconnect: cierra la conexión y limpia los recursos.
   disconnect() {
     this.collabService.disconnect();
     this.connected = false;

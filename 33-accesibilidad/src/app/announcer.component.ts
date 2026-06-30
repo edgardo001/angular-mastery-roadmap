@@ -1,3 +1,18 @@
+/**
+ * Componente que demuestra el uso de LiveAnnouncer para accesibilidad.
+ *
+ * LiveAnnouncer es un servicio del CDK de Angular que notifica a lectores
+ * de pantalla sobre cambios dinámicos en la interfaz. Es como un presentador
+ * de noticias que anuncia lo que está pasando en la pantalla.
+ *
+ * WCAG 2.1 — Estándar de accesibilidad web:
+ * - 'polite': Espera a que el lector termine de hablar (no interrumpe)
+ * - 'assertive': Interrumpe al lector para anunciar inmediatamente (emergencias)
+ *
+ * Analogía: LiveAnnouncer es como el altavoz de un aeropuerto.
+ * Los anuncios 'polite' son informativos (vuelo con retraso).
+ * Los anuncios 'assertive' son urgentes (cambio de puerta).
+ */
 import { Component, inject } from '@angular/core';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 
@@ -9,10 +24,12 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
       <h3>LiveAnnouncer</h3>
       <p>Notifica a lectores de pantalla sobre cambios dinámicos sin interrumpir el flujo.</p>
       <div class="actions">
+        <!-- aria-label: Describe el propósito del botón para lectores de pantalla -->
         <button (click)="announceInfo()" aria-label="Anunciar mensaje informativo">Anunciar info</button>
         <button (click)="announceAlert()" class="warn" aria-label="Anunciar alerta">Anunciar alerta</button>
       </div>
       @if (lastAnnouncement) {
+        <!-- role="status" + aria-live="polite": Los lectores de pantalla anuncian este contenido cuando cambia -->
         <div class="log" role="status" aria-live="polite">
           Último anuncio: "{{ lastAnnouncement }}"
         </div>
@@ -34,12 +51,20 @@ export class AnnouncerComponent {
   private announcer = inject(LiveAnnouncer);
   lastAnnouncement = '';
 
+  /**
+   * Anuncia un mensaje informativo con prioridad 'polite'.
+   * El lector de pantalla lo dirá cuando termine de leer lo actual.
+   */
   announceInfo(): void {
     const msg = 'La página ha cargado correctamente.';
     this.lastAnnouncement = msg;
     this.announcer.announce(msg, 'polite');
   }
 
+  /**
+   * Anuncia una alerta con prioridad 'assertive'.
+   * El lector de pantalla interrumpe lo que esté leyendo para decir esto.
+   */
   announceAlert(): void {
     const msg = 'Alerta: Se ha detectado un error simulado en el formulario.';
     this.lastAnnouncement = msg;

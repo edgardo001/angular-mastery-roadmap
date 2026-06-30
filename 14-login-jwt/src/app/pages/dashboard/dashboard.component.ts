@@ -1,5 +1,15 @@
+// ============================================================================
+// COMPONENTE DE DASHBOARD (dashboard.component.ts)
+// ============================================================================
+// Panel principal que muestra información del usuario desde el token JWT
+// y también desde la API (perfil completo).
+
 import { Component, inject, signal } from '@angular/core';
+
+// CommonModule: Habilita directivas comunes
 import { CommonModule } from '@angular/common';
+
+// AuthService y UserService: Para obtener datos del usuario
 import { AuthService, User } from '../../services/auth.service';
 import { UserService, UserProfile } from '../../services/user.service';
 
@@ -67,9 +77,14 @@ export class DashboardComponent {
   private auth = inject(AuthService);
   private userService = inject(UserService);
 
+  // user: Referencia al signal currentUser del AuthService
+  // Muestra datos del usuario extraídos del token JWT
   user = this.auth.currentUser;
+
+  // profile: Datos del usuario obtenidos de la API (no del token)
   profile = signal<UserProfile | undefined>(undefined);
 
+  // Al crear el componente, cargamos el perfil desde la API
   constructor() {
     this.userService.getProfile().subscribe({
       next: (p) => this.profile.set(p),

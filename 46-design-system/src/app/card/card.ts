@@ -1,3 +1,5 @@
+// CardComponent: contenedor visual con sombra, borde y secciones
+// Una card es como una tarjeta: agrupa información relacionada visualmente
 import { Component } from '@angular/core';
 
 @Component({
@@ -5,16 +7,23 @@ import { Component } from '@angular/core';
   standalone: true,
   template: `
     <div class="card">
+      <!-- @if: control flow moderno de Angular (reemplaza *ngIf) -->
+      <!-- Muestra el header solo si la propiedad header es true -->
       @if (header) {
         <div class="card__header">
+          <!-- select="[card-header]": proyecta solo contenido con atributo card-header -->
+          <!-- Ejemplo: <div card-header>Título</div> se muestra aquí -->
           <ng-content select="[card-header]" />
         </div>
       }
+      <!-- card__body: contenido principal de la card (siempre se muestra) -->
       <div class="card__body">
+        <!-- ng-content sin select: proyecta todo el contenido que no tiene selector -->
         <ng-content />
       </div>
       @if (footer) {
         <div class="card__footer">
+          <!-- select="[card-footer]": proyecta contenido con atributo card-footer -->
           <ng-content select="[card-footer]" />
         </div>
       }
@@ -28,6 +37,8 @@ import { Component } from '@angular/core';
   `]
 })
 export class CardComponent {
+  // Propiedades que controlan si se muestran header y footer
+  // El padre puede sobrescribir: <app-card [header]="false">
   header = true;
   footer = true;
 }

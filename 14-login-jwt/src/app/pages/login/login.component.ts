@@ -1,7 +1,20 @@
+// ============================================================================
+// COMPONENTE DE LOGIN (login.component.ts)
+// ============================================================================
+// Formulario de inicio de sesión con JWT. Muestra estado de carga y errores.
+
 import { Component, inject, signal } from '@angular/core';
+
+// CommonModule: Habilita directivas comunes en el template
 import { CommonModule } from '@angular/common';
+
+// FormsModule: Habilita [(ngModel)] para two-way binding
 import { FormsModule } from '@angular/forms';
+
+// Router: Para navegar al dashboard después del login
 import { Router } from '@angular/router';
+
+// AuthService: Para hacer la petición de login
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -120,17 +133,23 @@ export class LoginComponent {
   private auth = inject(AuthService);
   private router = inject(Router);
 
+  // Variables del formulario
   email = '';
   password = '';
-  loading = signal(false);
-  error = signal('');
+  loading = signal(false);  // Signal para mostrar estado de carga
+  error = signal('');       // Signal para mostrar mensajes de error
 
+  // onSubmit(): Se ejecuta al enviar el formulario
   onSubmit() {
     if (!this.email || !this.password) return;
-    this.loading.set(true);
-    this.error.set('');
+    this.loading.set(true);   // Mostrar "Ingresando..."
+    this.error.set('');       // Limpiar error anterior
+
+    // login() retorna un Observable — subscribe para ejecutar la petición
     this.auth.login(this.email, this.password).subscribe({
+      // next: Login exitoso → navegar al dashboard
       next: () => this.router.navigate(['/dashboard']),
+      // error: Login fallido → mostrar mensaje de error
       error: (err) => {
         this.loading.set(false);
         this.error.set(err.status === 401 ? 'Credenciales inválidas' : 'Error del servidor');

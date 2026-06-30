@@ -1,11 +1,30 @@
+// ============================================================================
+// COMPONENTE DE TABLA MAESTRA (app.component.ts)
+// ============================================================================
+// Tabla reactiva con búsqueda, ordenamiento y paginación usando signals.
+// Es como una "hoja de cálculo inteligente" que se actualiza automáticamente.
+
+// Component: Decorador que define un componente Angular
+// computed: Crea valores derivados que se recalculan automáticamente
+// signal: Crea estado reactivo
+// inject: Para obtener servicios
 import { Component, computed, signal, inject } from '@angular/core';
+
+// FormsModule: Habilita [(ngModel)] para two-way binding
 import { FormsModule } from '@angular/forms';
+
+// TitleCasePipe: Pipe que convierte texto a formato título ('admin' → 'Admin')
 import { TitleCasePipe } from '@angular/common';
+
+// UserService: Para obtener los datos de usuarios
 import { UserService } from './services/user.service';
+
+// User: Interfaz que define la forma de un usuario
 import type { User } from './models/user.model';
 
-type SortColumn = keyof User | null;
-type SortDir = 'asc' | 'desc';
+// Tipos para el ordenamiento de columnas
+type SortColumn = keyof User | null;  // 'id' | 'name' | 'email' | 'role' | null
+type SortDir = 'asc' | 'desc';        // Ascendente o descendente
 
 @Component({
   selector: 'app-root',
@@ -98,35 +117,52 @@ type SortDir = 'asc' | 'desc';
 export class AppComponent {
   private userService = inject(UserService);
 
+  // users: Signal con la lista de usuarios del servicio
   users = this.userService.users;
 
+  // columns: Array de nombres de columnas para la tabla
   columns = ['id', 'name', 'email', 'role'] as const;
 
-  searchTerm = signal('');
-  sortColumn = signal<SortColumn>(null);
-  sortDir = signal<SortDir>('asc');
-  currentPage = signal(1);
-  pageSize = signal(10);
+  // ===== SIGNALS PARA ESTADO DE LA TABLA =====
+  searchTerm = signal('');              // Texto de búsqueda
+  sortColumn = signal<SortColumn>(null); // Columna actual de ordenamiento
+  sortDir = signal<SortDir>('asc');     // Dirección: ascendente o descendente
+  currentPage = signal(1);              // Página actual
+  pageSize = signal(10);                // Elementos por página
 
+  // Timer para el debounce de búsqueda (evita buscar en cada tecla)
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
+  // onSearch(): Búsqueda con debounce de 300ms
+  // ANÁLOGÍA: Como cuando escribes en Google y esperas a que dejes de escribir
+  // antes de mostrar resultados
   onSearch(value: string) {
     if (this.debounceTimer) clearTimeout(this.debounceTimer);
     this.debounceTimer = setTimeout(() => {
       this.searchTerm.set(value);
-      this.currentPage.set(1);
+      this.currentPage.set(1);  // Volver a la primera página al buscar
     }, 300);
   }
 
+  // toggleSort(): Cambia la columna de ordenamiento
+  // Si ya estaba ordenando por esa columna, cambia la dirección (asc/desc)
+  // Si era otra columna, ordena ascendente por la nueva columna
   toggleSort(col: (typeof AppComponent.prototype.columns)[number]) {
     if (this.sortColumn() === col) {
+      // Misma columna: invertir dirección
       this.sortDir() === 'asc' ? this.sortDir.set('desc') : this.sortDir.set('asc');
     } else {
+      // Nueva columna: ordenar ascendente
       this.sortColumn.set(col);
       this.sortDir.set('asc');
     }
   }
 
+  // ===== COMPUTED: VALORES DERIVADOS =====
+  // Estos valores se recalculan automáticamente cuando cambian sus dependencias
+
+  // filteredUsers: Filtra usuarios según el término de búsqueda
+  // Si no hay término, retorna todos los usuarios
   filteredUsers = computed(() => {
     const term = this.searchTerm().toLowerCase();
     if (!term) return this.users();
@@ -137,6 +173,7 @@ export class AppComponent {
     );
   });
 
+  // sortedUsers: Ordena los usuarios filtrados según la columna y dirección
   sortedUsers = computed(() => {
     const col = this.sortColumn();
     const dir = this.sortDir();
@@ -149,8 +186,11 @@ export class AppComponent {
     });
   });
 
+  // totalPages: Calcula el número total de páginas
   totalPages = computed(() => Math.max(1, Math.ceil(this.sortedUsers().length / this.pageSize())));
 
+  // pagedUsers: Obtiene solo los usuarios de la página actual
+  // slice(start, end): Extrae un segmento del array
   pagedUsers = computed(() => {
     const size = this.pageSize();
     const page = this.currentPage();
@@ -158,10 +198,14 @@ export class AppComponent {
     return this.sortedUsers().slice(start, start + size);
   });
 
+  // ===== MÉTODOS DE NAVEGACIÓN =====
+
+  // prevPage(): Retrocede una página (mínimo 1)
   prevPage() {
     if (this.currentPage() > 1) this.currentPage.update(p => p - 1);
   }
 
+  // nextPage(): Avanza una página (máximo totalPages)
   nextPage() {
     if (this.currentPage() < this.totalPages()) this.currentPage.update(p => p + 1);
   }

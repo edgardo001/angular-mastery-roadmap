@@ -1,15 +1,41 @@
+// ============================================================================
+// COMPONENTE PRINCIPAL (app.component.ts)
+// ============================================================================
+// Este componente muestra la interfaz para gestionar productos con HttpClient.
+// Demuestra cómo hacer peticiones HTTP, manejar errores y usar interceptores.
+
+// Component: Decorador que define un componente Angular
+// DestroyRef: Referencia para limpiar suscripciones cuando el componente se destruye
+// inject: Función moderna para obtener servicios sin constructor
+// signal: Para crear estado reactivo
 import { Component, DestroyRef, inject, signal } from '@angular/core';
+
+// CommonModule: Habilita directivas comunes como @if, @for, [ngClass], etc.
 import { CommonModule } from '@angular/common';
+
+// FormsModule: Habilita [(ngModel)] para two-way binding en formularios
 import { FormsModule } from '@angular/forms';
+
+// takeUntilDestroyed: Operador que cancela la suscripción cuando el componente se destruye
+// ANÁLOGÍA: Es como cancelar una suscripción a un periódico cuando te mudas de casa
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+// finalize: Operador que ejecuta código cuando el Observable se completa o falla
 import { finalize } from 'rxjs/operators';
+
+// Importamos el servicio de productos y la interfaz Product
 import { ProductService, Product } from './services/product.service';
+
+// authToken: Signal global que contiene el token de autenticación
 import { authToken } from './interceptors/auth.interceptor';
+
+// SKIP_AUTH: Token de contexto para omitir autenticación en peticiones específicas
 import { SKIP_AUTH } from './interceptors/skip-auth.context';
 
 @Component({
   selector: 'app-root',
   standalone: true,
+  // imports: Módulos que este componente necesita para funcionar
   imports: [CommonModule, FormsModule],
   template: `
     <div class="container">
@@ -226,41 +252,56 @@ import { SKIP_AUTH } from './interceptors/skip-auth.context';
   `],
 })
 export class AppComponent {
+  // inject(): Obtiene el servicio de productos (el "cajero" que hace las peticiones)
   private productService = inject(ProductService);
+
+  // DestroyRef: Referencia para saber cuándo el componente se destruye
+  // Se usa para cancelar suscripciones y evitar "memory leaks" (fugas de memoria)
   private destroyRef = inject(DestroyRef);
 
-  products = signal<Product[]>([]);
-  loading = signal(false);
-  error = signal<string | null>(null);
-  authTokenValue = signal('');
+  // Signals para manejar el estado de la UI
+  products = signal<Product[]>([]);  // Lista de productos
+  loading = signal(false);            // ¿Está cargando?
+  error = signal<string | null>(null); // Mensaje de error (null si no hay)
+  authTokenValue = signal('');         // Token actual
 
+  // Actualiza el token en el signal global y en el componente
   setToken(token: string): void {
     this.authTokenValue.set(token);
-    authToken.set(token);
+    authToken.set(token);  // Actualiza el signal global que usan los interceptores
   }
 
+  // Carga los productos desde la API
   loadProducts(): void {
-    this.loading.set(true);
-    this.error.set(null);
+    this.loading.set(true);   // Mostrar "Cargando..."
+    this.error.set(null);     // Limpiar errores anteriores
 
     this.productService
       .getProducts()
       .pipe(
+        // finalize: Se ejecuta cuando la petición termina (éxito o error)
+        // Siempre pon loading en false al finalizar
         finalize(() => this.loading.set(false)),
+        // takeUntilDestroyed: Cancela la suscripción si el componente se destruye
+        // Evita que se ejecute código en un componente que ya no existe
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
+        // next: La petición fue exitosa, guardamos los productos
         next: (products) => this.products.set(products),
+        // error: Algo falló, mostramos el error al usuario
         error: (err) => this.error.set(`Error al cargar productos: ${err.status ?? err.message}`),
       });
   }
 
+  // Elimina un producto por ID
   deleteProduct(id: number): void {
     this.productService
       .deleteProduct(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
+          // Actualizamos el array de productos eliminando el producto
           this.products.update((items) => items.filter((p) => p.id !== id));
           console.log(`[🗑️] Producto ${id} eliminado (simulado)`);
         },

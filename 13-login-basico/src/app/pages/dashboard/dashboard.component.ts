@@ -1,11 +1,21 @@
+// ============================================================================
+// COMPONENTE DE DASHBOARD (dashboard.component.ts)
+// ============================================================================
+// Panel protegido que solo se muestra a usuarios autenticados.
+// Es como la "sala principal" de una应用 que solo puedes entrar con credencial.
+
 import { Component, inject } from '@angular/core';
+
+// Router: Para navegar al cerrar sesión
 import { Router } from '@angular/router';
+
+// AuthService: Para obtener los datos del usuario y cerrar sesión
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [],  // No necesita imports porque solo usa lógica
   template: `
     <div class="page">
       <h1>Dashboard</h1>
@@ -41,11 +51,13 @@ import { AuthService } from '../../services/auth.service';
   `],
 })
 export class DashboardComponent {
+  // Obtenemos el servicio de autenticación para mostrar datos del usuario
   authService = inject(AuthService);
   private router = inject(Router);
 
+  // logout(): Cierra la sesión y redirige al inicio
   logout() {
     this.authService.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(['/']);  // Volver a la página principal
   }
 }

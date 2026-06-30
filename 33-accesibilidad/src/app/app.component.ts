@@ -1,3 +1,16 @@
+/**
+ * Componente raíz de la aplicación de Accesibilidad Angular.
+ *
+ * Este componente demuestra varias técnicas de accesibilidad (a11y):
+ * - Skip links: Enlaces para saltar al contenido principal (usuarios de teclado)
+ * - ARIA roles y labels: Roles semánticos para lectores de pantalla
+ * - Navegación por teclado: Uso de Tab, Shift+Tab, Enter, Escape
+ * - viewChild.required(): Obtiene referencia obligatoria a un componente hijo
+ *
+ * Imports:
+ * - inject: Para obtener dependencias de forma moderna
+ * - viewChild: Para obtener referencia a componentes hijos en el template
+ */
 import { Component, inject, viewChild } from '@angular/core';
 import { ModalComponent } from './modal.component';
 import { AnnouncerComponent } from './announcer.component';
@@ -8,21 +21,35 @@ import { ContrastCardComponent } from './contrast-card.component';
   standalone: true,
   imports: [ModalComponent, AnnouncerComponent, ContrastCardComponent],
   template: `
+    <!--
+      Skip link: Enlace oculto que aparece solo cuando recibe foco (con Tab).
+      Permite a usuarios de teclado saltar la navegación y ir directo al contenido.
+      Es como un atajo de teclado para personas que no usan mouse.
+    -->
     <a class="skip-link" (click)="skipToMain($event)" href="#main-content">
       Saltar al contenido principal
     </a>
 
+    <!-- role="banner": Indica que este es el encabezado principal de la página -->
     <header role="banner">
       <h1>Accesibilidad en Angular</h1>
       <p class="subtitle">CDK A11y — LiveAnnouncer, Focus Trap, ARIA, contraste y navegación por teclado</p>
+      <!-- aria-label: Describe el propósito de la navegación para lectores de pantalla -->
       <nav aria-label="Navegación principal">
+        <!-- (click) con href: Permite navegación tanto por click como por teclado -->
         <a (click)="scrollTo('announcer')" href="#announcer">LiveAnnouncer</a>
         <a (click)="scrollTo('modal')" href="#modal">Focus Trap</a>
         <a (click)="scrollTo('contrast')" href="#contrast">Contraste</a>
       </nav>
     </header>
 
+    <!--
+      tabindex="-1": Permite que el elemento reciba foco programático (con .focus())
+      pero no es navegable con Tab. Útil para "skip links".
+      role="main": Indica que este es el contenido principal de la página.
+    -->
     <main id="main-content" #main tabindex="-1" role="main">
+      <!-- aria-labelledby: Asocia la sección con su título para lectores de pantalla -->
       <section id="announcer" aria-labelledby="s1-title">
         <h2 id="s1-title">LiveAnnouncer</h2>
         <app-announcer />
@@ -31,6 +58,7 @@ import { ContrastCardComponent } from './contrast-card.component';
       <section id="modal" aria-labelledby="s2-title">
         <h2 id="s2-title">Focus Trap con cdkTrapFocus</h2>
         <p>El modal atrapa el foco dentro de sí mismo mientras está abierto. Pulsa <kbd>Tab</kbd> para navegar solo dentro del modal.</p>
+        <!-- aria-haspopup="dialog": Indica que este botón abre un diálogo -->
         <button (click)="modal.open('Modal de ejemplo')" class="btn-primary" aria-haspopup="dialog">
           Abrir modal
         </button>
@@ -56,6 +84,10 @@ import { ContrastCardComponent } from './contrast-card.component';
       <p>Demostración de accesibilidad con Angular CDK &mdash; WCAG 2.1 AA</p>
     </footer>
 
+    <!--
+      #modal: Template reference variable. Permite acceder al componente ModalComponent.
+      (closed): Escucha el evento 'closed' que emite el modal.
+    -->
     <app-modal #modal (closed)="onModalClosed()" />
   `,
   styles: [`
@@ -84,20 +116,37 @@ import { ContrastCardComponent } from './contrast-card.component';
   `]
 })
 export class AppComponent {
+  /**
+   * viewChild.required() — Obtiene una referencia obligatoria a un componente hijo.
+   * A diferencia de viewChild() regular, lanza error si el componente no existe.
+   * Es como pedir una caja y exigir que no esté vacía.
+   */
   readonly modal = viewChild.required(ModalComponent);
 
+  /**
+   * Implementa el "skip link": mueve el foco al contenido principal.
+   * event.preventDefault() evita que el enlace recargue la página.
+   */
   skipToMain(event: Event): void {
     event.preventDefault();
     const el = document.getElementById('main-content');
-    el?.focus();
+    el?.focus(); // Mueve el foco al elemento principal
   }
 
+  /**
+   * Hace scroll suave hacia una sección y le da foco.
+   * Útil para navegación por teclado y lectores de pantalla.
+   */
   scrollTo(id: string): void {
     const el = document.getElementById(id);
     el?.focus();
-    el?.scrollIntoView({ behavior: 'smooth' });
+    el?.scrollIntoView({ behavior: 'smooth' }); // Scroll animado
   }
 
+  /**
+   * Se ejecuta cuando el modal se cierra.
+   * LiveAnnouncer ya maneja la notificación al cerrar.
+   */
   onModalClosed(): void {
     // LiveAnnouncer already handles the announcement
   }

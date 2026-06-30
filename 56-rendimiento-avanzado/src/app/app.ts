@@ -1,4 +1,13 @@
+// ============================================================
+// app.ts — Componente raíz de la app de rendimiento
+// ============================================================
+// Este componente es el "contenedor principal" que muestra todos los
+// ejemplos de optimización de rendimiento: imágenes, carga diferida,
+// scroll virtual y métricas Web Vitals.
+
 import { Component } from '@angular/core';
+
+// Importamos los componentes de cada técnica de optimización.
 import { OptimizedImageComponent } from './optimized-image';
 import { LazySectionComponent } from './lazy-section';
 import { VirtualScrollComponent } from './virtual-scroll';
@@ -7,12 +16,15 @@ import { PerformanceMetricsComponent } from './performance-metrics';
 @Component({
   selector: 'app-root',
   standalone: true,
+
+  // imports: todos los componentes que usamos en el template.
   imports: [
     OptimizedImageComponent,
     LazySectionComponent,
     VirtualScrollComponent,
     PerformanceMetricsComponent
   ],
+
   template: `
     <header>
       <h1>Angular Performance Optimization</h1>
@@ -20,6 +32,7 @@ import { PerformanceMetricsComponent } from './performance-metrics';
     </header>
 
     <main>
+      <!-- Cada componente muestra una técnica diferente de optimización -->
       <app-optimized-image />
       <app-lazy-section />
       <app-virtual-scroll />

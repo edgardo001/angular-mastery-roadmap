@@ -1,5 +1,14 @@
+// ============================================================================
+// COMPONENTE DE LOGIN (login.component.ts)
+// ============================================================================
+// Formulario de login que usa cookies HttpOnly para autenticación.
+
 import { Component, inject, signal } from '@angular/core';
+
+// FormsModule: Habilita [(ngModel)] para two-way binding
 import { FormsModule } from '@angular/forms';
+
+// AuthService: Servicio que maneja login/logout con cookies
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -43,11 +52,14 @@ import { AuthService } from '../services/auth.service';
 export class LoginComponent {
   private auth = inject(AuthService);
 
+  // Variables del formulario
   email = '';
   password = '';
-  loading = signal(false);
-  error = signal('');
+  loading = signal(false);  // Estado de carga
+  error = signal('');       // Mensaje de error
 
+  // onSubmit(): Envía las credenciales al servidor
+  // Si son válidas, el servidor guarda una cookie HttpOnly con el token
   onSubmit() {
     this.loading.set(true);
     this.error.set('');

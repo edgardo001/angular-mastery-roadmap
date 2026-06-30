@@ -1,8 +1,21 @@
+// ============================================================================
+// COMPONENTE RAÍZ (app.component.ts)
+// ============================================================================
+// Componente simple que muestra información sobre cómo Express sirve Angular.
+// Es como un "panel informativo" que explica cómo funciona el servidor.
+
+// Component: Decorador que define un componente Angular
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
+
+  // standalone: true significa que este componente NO necesita NgModule
   standalone: true,
+
+  // template: El HTML que se muestra en pantalla
+  // Aquí hay un ejemplo de cómo usar la interpolación de Angular {{ }}
+  // y la directiva de enlace [value] para dinamismo
   template: `
     <div class="container">
       <h1>Módulo 17: Servir Angular con Express</h1>
@@ -20,6 +33,9 @@ import { Component } from '@angular/core';
       </div>
     </div>
   `,
+  // styles: Estilos CSS que aplican solo a este componente
+  // ANÁLOGÍA: Express es como un "mesero" que trae los platos (archivos Angular)
+  // desde la cocina (carpeta dist) a las mesas (navegadores de los usuarios)
   styles: [`
     .container { max-width: 640px; margin: 40px auto; font-family: system-ui, sans-serif; padding: 0 16px; }
     h1 { font-size: 1.5rem; margin-bottom: 8px; }
@@ -32,4 +48,6 @@ import { Component } from '@angular/core';
     .note { margin-top: 16px; font-size: 0.9rem; color: #666; }
   `]
 })
+// La clase del componente está vacía porque solo necesita mostrar información estática
+// No hay lógica ni signals, solo template y estilos
 export class AppComponent {}

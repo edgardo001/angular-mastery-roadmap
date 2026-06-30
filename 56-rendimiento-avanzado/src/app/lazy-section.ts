@@ -1,5 +1,18 @@
+// ============================================================
+// lazy-section.ts — Carga diferida con @defer
+// ============================================================
+// @defer es una directiva de Angular 22+ que carga componentes de forma
+// lazy (diferida). En lugar de cargar todo el JavaScript al inicio,
+// solo carga lo que el usuario necesita ver. Es como un restaurante
+// que prepara los platos solo cuando el cliente los pide, no todos de antemano.
+
 import { Component } from '@angular/core';
 
+// ============================================================
+// HeavySectionComponent — Contenido pesado que se carga bajo demanda
+// ============================================================
+// Este componente representa contenido que es "pesado" (muchos datos,
+// gráficos, etc.) y que solo queremos cargar cuando el usuario lo necesite.
 @Component({
   selector: 'app-heavy-section',
   standalone: true,
@@ -8,6 +21,7 @@ import { Component } from '@angular/core';
       <h3>Heavy Deferred Section</h3>
       <p>This content was loaded lazily using &#64;defer with a placeholder and loading state.</p>
       <div class="stats">
+        <!-- @for itera sobre los items y muestra cada estadística -->
         @for (item of items; track item) {
           <div class="stat-card">
             <span class="number">{{ item.value }}</span>
@@ -28,6 +42,7 @@ import { Component } from '@angular/core';
   `]
 })
 export class HeavySectionComponent {
+  // Datos de ejemplo: estadísticas que se muestran en la sección.
   items = [
     { value: '12K', label: 'Users' },
     { value: '3.4K', label: 'Posts' },
@@ -36,30 +51,44 @@ export class HeavySectionComponent {
   ];
 }
 
+// ============================================================
+// LazySectionComponent — Demostración de @defer
+// ============================================================
+// Este componente usa @defer para cargar HeavySectionComponent
+// solo cuando el usuario hace scroll hasta ella.
 @Component({
   selector: 'app-lazy-section',
   standalone: true,
+
+  // imports: necesitamos HeavySectionComponent para poder mostrarlo.
   imports: [HeavySectionComponent],
+
   template: `
     <section class="demo-section">
       <h2>&#64;defer (Deferred Loading)</h2>
       <p class="note">Scroll or interact to trigger lazy loading of content below.</p>
 
+      <!-- #trigger — referencia local: el elemento que activa la carga -->
       <div class="placeholder" #trigger>
         <p>Scroll here to load deferred content...</p>
       </div>
 
+      <!-- @defer: carga el contenido cuando #trigger es visible en el viewport -->
+      <!-- (on viewport(trigger)) — se activa cuando el elemento trigger aparece en pantalla -->
       @defer (on viewport(trigger)) {
         <app-heavy-section />
       } @placeholder {
+        <!-- @placeholder: lo que se muestra ANTES de que se cargue el contenido -->
         <div class="ph-box">
           <p>Placeholder — content will appear when visible</p>
         </div>
       } @loading {
+        <!-- @loading: lo que se muestra MIENTRAS se carga el contenido -->
         <div class="loading-box">
           <p>Loading deferred content...</p>
         </div>
       } @error {
+        <!-- @error: lo que se muestra si falla la carga -->
         <div class="error-box">
           <p>Failed to load content</p>
         </div>

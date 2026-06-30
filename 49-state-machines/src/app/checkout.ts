@@ -1,3 +1,5 @@
+// Componente de checkout que usa una máquina de estados
+// Modela el flujo de compra en línea con pasos definidos
 import { Component, OnDestroy, inject, signal } from '@angular/core';
 import { MachineService } from '../services/machine.service';
 import { checkoutMachine } from '../machines/checkout.machine';
@@ -8,12 +10,16 @@ import { checkoutMachine } from '../machines/checkout.machine';
   template: `
     <div class="checkout">
       <h2>Checkout Flow</h2>
+      <!-- Indicador de pasos del checkout -->
       <div class="steps">
+        <!-- [class.active]: resalta el paso actual -->
         <div class="step" [class.active]="currentState() === 'selecting'">1. Select</div>
         <div class="step" [class.active]="currentState() === 'payment'">2. Payment</div>
         <div class="step" [class.active]="currentState() === 'confirming'">3. Confirm</div>
       </div>
       <div class="content">
+        <!-- @switch: control flow moderno de Angular (reemplaza *ngSwitch) -->
+        <!-- Muestra contenido diferente según el estado actual de la máquina -->
         @switch (currentState()) {
           @case ('idle') {
             <p>Ready to start shopping!</p>
@@ -33,6 +39,7 @@ import { checkoutMachine } from '../machines/checkout.machine';
         }
       </div>
       <div class="actions">
+        <!-- Botones que envían eventos según el estado actual -->
         @if (currentState() === 'idle') {
           <button (click)="send('START')">Start Checkout</button>
         }
@@ -67,21 +74,26 @@ import { checkoutMachine } from '../machines/checkout.machine';
 })
 export class CheckoutComponent implements OnDestroy {
   private readonly machineService = inject(MachineService);
-  private actor: any = null;
-  readonly currentState = signal('idle');
+  private actor: any = null; // Actor de XState
+  readonly currentState = signal('idle'); // Estado actual del checkout
 
   constructor() {
+    // Creamos un actor desde la máquina de checkout
     this.actor = this.machineService.createActorFrom(checkoutMachine);
+    // Obtenemos el estado inicial
     this.currentState.set(this.actor.getSnapshot().value);
+    // Escuchamos cambios de estado
     this.actor.subscribe((snapshot: any) => {
       this.currentState.set(snapshot.value);
     });
   }
 
+  // Envía un evento a la máquina de estados
   send(event: string) {
     this.actor?.send({ type: event });
   }
 
+  // Limpiamos el actor al destruir el componente
   ngOnDestroy() {
     this.actor?.stop();
   }

@@ -1,3 +1,6 @@
+// Componente principal que demuestra el patrón BFF (Backend For Frontend)
+// Un BFF es un servidor intermedio que adapta APIs para el frontend
+// Reduce llamadas HTTP, filtra datos sensibles, y transforma respuestas
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BffService } from './bff.service';
@@ -6,14 +9,17 @@ import { BffDashboardData, RawUser, Order, Product, TransformedProduct } from '.
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule], // CommonModule da acceso a directivas comunes como ngClass, ngStyle, etc.
   template: `
+    <!-- Header con estado de conexión -->
     <header class="topbar">
       <h1>🔐 BFF <span class="dim">(Backend For Frontend)</span></h1>
+      <!-- [class.on]: clase CSS condicional basada en el valor del signal -->
       <span class="badge" [class.on]="loggedIn()">● {{ loggedIn() ? 'Conectado' : 'Desconectado' }}</span>
     </header>
 
     <div class="layout">
+      <!-- @if/@else: control flow moderno de Angular para condicionales -->
       @if (loading()) {
         <section class="card loading-card">
           <div class="spinner"></div>
@@ -24,11 +30,13 @@ import { BffDashboardData, RawUser, Order, Product, TransformedProduct } from '.
           <p>❌ {{ error() }}</p>
         </section>
       } @else {
+        <!-- Sidebar con arquitectura BFF -->
         <aside class="sidebar">
           <div class="card">
             <h3>🧭 Arquitectura BFF</h3>
             <div class="arch">
               <div class="arch-flows">
+                <!-- Flujo SIN BFF: múltiples llamadas directas al backend -->
                 <div class="flow bad">
                   <div class="flow-header">❌ Sin BFF</div>
                   <div class="flow-calls">
@@ -39,6 +47,7 @@ import { BffDashboardData, RawUser, Order, Product, TransformedProduct } from '.
                   <div class="flow-total">🔴 3 llamadas · <strong>{{ totalRawBytes() }}B</strong> transferidos</div>
                 </div>
                 <div class="flow-vs">VS</div>
+                <!-- Flujo CON BFF: una sola llamada que agrega todo -->
                 <div class="flow good">
                   <div class="flow-header">✅ Con BFF</div>
                   <div class="flow-calls">
@@ -47,6 +56,7 @@ import { BffDashboardData, RawUser, Order, Product, TransformedProduct } from '.
                   <div class="flow-total">🟢 1 llamada · <strong>{{ bffBytes() }}B</strong> transferidos</div>
                 </div>
               </div>
+              <!-- Barra de progreso mostrando el ahorro de datos -->
               <div class="savings">
                 🚀 Ahorro: <strong>{{ savingsPercent() }}%</strong> menos datos transferidos
                 <div class="bar-track">
@@ -68,12 +78,15 @@ import { BffDashboardData, RawUser, Order, Product, TransformedProduct } from '.
           </div>
         </aside>
 
+        <!-- Contenido principal con datos del dashboard -->
         <main class="content">
           <section class="card">
             <h2>📊 Dashboard Agregado</h2>
             <p class="desc">Datos de 3 backends distintos, combinados en <strong>1 sola respuesta</strong></p>
 
             <div class="summary-cards">
+              <!-- ?. es optional chaining: si dashboard() es null, devuelve undefined -->
+              <!-- ?? es nullish coalescing: si el valor es null/undefined, usa 0 -->
               <div class="stat">
                 <span class="stat-num">{{ dashboard()?.summary?.totalOrders ?? 0 }}</span>
                 <span class="stat-label">Órdenes</span>
@@ -93,9 +106,11 @@ import { BffDashboardData, RawUser, Order, Product, TransformedProduct } from '.
             </div>
           </section>
 
+          <!-- Comparación entre datos crudos y transformados -->
           <section class="card full-compare">
             <h2>⚖️ Lo que el navegador recibe</h2>
 
+            <!-- Tabs para alternar entre vista sin BFF y con BFF -->
             <div class="tabs">
               <button class="tab" [class.active]="tab() === 'direct'" (click)="tab.set('direct')">❌ Sin BFF (directo)</button>
               <button class="tab" [class.active]="tab() === 'bff'" (click)="tab.set('bff')">✅ Con BFF</button>
@@ -259,29 +274,37 @@ import { BffDashboardData, RawUser, Order, Product, TransformedProduct } from '.
   `]
 })
 export class AppComponent implements OnInit {
+  // inject(): obtiene el servicio BffService de Angular
   private readonly bff = inject(BffService);
 
-  readonly tab = signal<'direct' | 'bff'>('bff');
-  readonly loggedIn = signal(false);
-  readonly loading = signal(true);
-  readonly error = signal('');
+  // signals(): variables reactivas que Angular observa para actualizar el template
+  readonly tab = signal<'direct' | 'bff'>('bff'); // Pestaña activa
+  readonly loggedIn = signal(false); // Estado de login
+  readonly loading = signal(true); // Estado de carga
+  readonly error = signal(''); // Mensaje de error
 
+  // Datos del backend (sin transformar)
   readonly dashboard = signal<BffDashboardData | null>(null);
   readonly transformedProducts = signal<TransformedProduct[]>([]);
   readonly rawUsers = signal<RawUser[]>([]);
   readonly rawOrders = signal<Order[]>([]);
   readonly rawProducts = signal<Product[]>([]);
 
+  // computed(): valores derivados que se recalculan automáticamente cuando cambian los signals
+  // Convierten los datos a JSON formateado para mostrar en la interfaz
   readonly rawUsersJson = computed(() => JSON.stringify(this.rawUsers(), null, 2));
   readonly rawOrdersJson = computed(() => JSON.stringify(this.rawOrders(), null, 2));
   readonly rawProductsJson = computed(() => JSON.stringify(this.rawProducts(), null, 2));
   readonly bffJson = computed(() => JSON.stringify(this.dashboard(), null, 2));
 
+  // Calculamos el tamaño en bytes de cada respuesta (para comparar transferencia de datos)
   readonly rawUsersBytes = computed(() => new Blob([this.rawUsersJson()]).size);
   readonly rawOrdersBytes = computed(() => new Blob([this.rawOrdersJson()]).size);
   readonly rawProductsBytes = computed(() => new Blob([this.rawProductsJson()]).size);
   readonly totalRawBytes = computed(() => this.rawUsersBytes() + this.rawOrdersBytes() + this.rawProductsBytes());
   readonly bffBytes = computed(() => new Blob([this.bffJson()]).size);
+  
+  // Porcentaje de ahorro al usar BFF vs llamadas directas
   readonly savingsPercent = computed(() => {
     const raw = this.totalRawBytes();
     const bff = this.bffBytes();
@@ -294,11 +317,13 @@ export class AppComponent implements OnInit {
     return Math.round((this.bffBytes() / raw) * 100);
   });
 
+  // ngOnInit(): hook del ciclo de vida que se ejecuta al iniciar el componente
+  // Aquí hacemos el login y cargamos los datos
   ngOnInit() {
     this.bff.login().subscribe({
       next: () => {
         this.loggedIn.set(true);
-        this.loadAll();
+        this.loadAll(); // Una vez logueado, cargamos todos los datos
       },
       error: (e) => {
         this.error.set('Error de login: ' + e.message);
@@ -307,6 +332,7 @@ export class AppComponent implements OnInit {
     });
   }
 
+  // Carga todos los datos en paralelo (llamadas HTTP simultáneas)
   private loadAll() {
     this.bff.getDashboardData().subscribe({
       next: (d) => this.dashboard.set(d),

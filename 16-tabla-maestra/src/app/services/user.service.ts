@@ -1,8 +1,18 @@
+// ============================================================================
+// SERVICIO DE USUARIOS (user.service.ts)
+// ============================================================================
+// Servicio que contiene los datos mock de usuarios para la tabla.
+// En una app real, estos datos vendrían de una API REST.
+
 import { Injectable, signal } from '@angular/core';
 import type { User } from '../models/user.model';
 
+// @Injectable({ providedIn: 'root' }): Servicio singleton global
+// Angular crea UNA instancia y la comparte con todos los componentes
 @Injectable({ providedIn: 'root' })
 export class UserService {
+  // Datos mock: Lista de usuarios de prueba
+  // En una app real, esto sería una petición HTTP al servidor
   private mockUsers: User[] = [
     { id: 1, name: 'María García', email: 'maria@example.com', role: 'Admin' },
     { id: 2, name: 'Carlos López', email: 'carlos@example.com', role: 'Editor' },
@@ -30,5 +40,8 @@ export class UserService {
     { id: 24, name: 'Sebastián Paredes', email: 'sebastian@example.com', role: 'Usuario' },
   ];
 
+  // signal<User[]>: Signal que contiene la lista de usuarios
+  // [...this.mockUsers]: Copia el array para evitar mutaciones directas
+  // Es como dar una "fotocopia" de la lista, no el original
   readonly users = signal<User[]>([...this.mockUsers]);
 }

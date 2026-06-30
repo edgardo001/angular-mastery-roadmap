@@ -1,16 +1,26 @@
+// ButtonComponent: botón reutilizable con variantes de estilo y tamaño
+// Un botón es como un interruptor: el usuario hace clic para ejecutar una acción
 import { Component, input, output } from '@angular/core';
 
+// Tipos para las variantes visuales del botón
+// primary: botón principal (llamativo), secondary: secundario, outline: borde, ghost: transparente
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost';
+// Tamaños del botón
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'app-button',
   standalone: true,
   template: `
+    <!-- button: elemento HTML estándar -->
+    <!-- [class]: clases CSS dinámicas basadas en variant y size -->
+    <!-- [disabled]: deshabilita el botón cuando es true -->
+    <!-- (click): evento que se dispara al hacer clic -->
     <button
       [class]="'btn btn--' + variant() + ' btn--' + size()"
       [disabled]="disabled()"
       (click)="onClick.emit()">
+      <!-- ng-content: proyecta el texto o contenido del botón -->
       <ng-content />
     </button>
   `,
@@ -35,8 +45,12 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
   `]
 })
 export class ButtonComponent {
+  // input(): propiedades que el padre puede pasar al componente
   readonly variant = input<ButtonVariant>('primary');
   readonly size = input<ButtonSize>('md');
   readonly disabled = input(false);
+  
+  // output(): evento que el componente emite al padre
+  // El padre escucha con (onClick)="miMetodo()" en el template
   readonly onClick = output<void>();
 }

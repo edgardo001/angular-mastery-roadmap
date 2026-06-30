@@ -1,11 +1,36 @@
+// ============================================================================
+// COMPONENTE RAÍZ DE LA APLICACIÓN (app.component.ts)
+// ============================================================================
+// Este es el componente principal que se muestra al abrir la aplicación.
+// Es como la "pantalla principal" de una app de gestión de tareas.
+
+// Component: Decorador que define un componente Angular.
+// Un componente es una pieza de UI con su propio template HTML, estilos y lógica.
 import { Component, inject } from '@angular/core';
+
+// FormsModule: Habilita el two-way binding con [(ngModel)].
+// Permite que los inputs del formulario se sincronicen con variables del componente.
 import { FormsModule } from '@angular/forms';
+
+// TitleCasePipe: Pipe que convierte texto a formato título (primera letra mayúscula).
+// Ejemplo: 'work' → 'Work'. Se usa en el template con {{ value | titlecase }}
 import { TitleCasePipe } from '@angular/common';
+
+// Importamos nuestro servicio de estado (el "almacén central de tareas")
 import { TaskStoreService } from './services/task-store.service';
 
+// @Component: Decorador que convierte una clase TypeScript en un componente Angular
 @Component({
+  // selector: Nombre HTML que Angular reemplaza por este componente.
+  // Ejemplo: <app-root></app-root> se reemplaza por el template de este componente
   selector: 'app-root',
+
+  // standalone: true significa que este componente NO necesita un NgModule padre.
+  // Es como una "pieza de LEGO" autosuficiente que no necesita un tablero especial.
   standalone: true,
+
+  // imports: Lista de módulos/componentes que este componente necesita para funcionar.
+  // Es como la "lista de herramientas" que el componente necesita.
   imports: [FormsModule, TitleCasePipe],
   template: `
     <div class="app">
@@ -167,23 +192,33 @@ import { TaskStoreService } from './services/task-store.service';
     .log-card .log-entry { font-size: 0.85rem; color: #666; font-style: italic; }
   `],
 })
+// Clase del componente — aquí va la lógica (el "cerebro" del componente)
 export class AppComponent {
+  // inject(): Función moderna de Angular para obtener servicios.
+  // Es como decir "necesito acceso al almacén de tareas" sin usar constructor.
+  // Equivale a: constructor(private store: TaskStoreService) {}
   store = inject(TaskStoreService);
 
+  // Variables simples para el formulario de nueva tarea
   newTitle = '';
   newCategory = 'Work';
 
+  // readonly + as const: Crea tuplas inmutables de valores
+  // 'all' | 'active' | 'completed' — solo esos tres valores son válidos
   readonly filters = ['all', 'active', 'completed'] as const;
   readonly categories = ['Work', 'Personal', 'Other'];
 
+  // Getter: Propiedad calculada que se recalcula cada vez que se accede
+  // Calcula cuántas tareas están pendientes (no completadas)
   get pending() {
     return this.store.filteredTasks().filter(t => !t.completed).length;
   }
 
+  // Método que se ejecuta al enviar el formulario de nueva tarea
   addTask(): void {
     const title = this.newTitle.trim();
-    if (!title) return;
+    if (!title) return;  // No agregar tareas vacías
     this.store.addTask(title, this.newCategory);
-    this.newTitle = '';
+    this.newTitle = '';  // Limpiar el input después de agregar
   }
 }

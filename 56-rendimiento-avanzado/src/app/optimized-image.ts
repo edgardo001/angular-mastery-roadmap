@@ -1,16 +1,32 @@
+// ============================================================
+// optimized-image.ts — Imágenes optimizadas con ngOptimizedImage
+// ============================================================
+// ngOptimizedImage es una directiva de Angular que optimiza automáticamente
+// las imágenes: las carga de forma lazy (solo cuando son visibles),
+// agrega width/height para evitar layout shift, y usa formatos modernos.
+// Es como tener un fotógrafo profesional que optimiza cada imagen por ti.
+
 import { Component } from '@angular/core';
+
+// NgOptimizedImage: la directiva que optimiza las imágenes.
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-optimized-image',
   standalone: true,
+
+  // imports: necesitamos NgOptimizedImage para usar [ngSrc].
   imports: [NgOptimizedImage],
+
   template: `
     <section class="demo-section">
       <h2>Optimized Images (ngOptimizedImage)</h2>
       <div class="image-grid">
         <div class="image-card">
           <h3>Lazy Loaded</h3>
+          <!-- [ngSrc] — reemplaza src y agrega optimizaciones automáticas. -->
+          <!-- width/height — obligatorios: previenen layout shift (movimiento del layout). -->
+          <!-- priority — indica que esta imagen es crítica (se carga primero). -->
           <img
             [ngSrc]="'https://picsum.photos/seed/a/400/300'"
             width="400"
@@ -21,6 +37,7 @@ import { NgOptimizedImage } from '@angular/common';
         </div>
         <div class="image-card">
           <h3>Priority</h3>
+          <!-- loading="lazy" — carga la imagen solo cuando está cerca del viewport. -->
           <img
             [ngSrc]="'https://picsum.photos/seed/b/400/300'"
             width="400"

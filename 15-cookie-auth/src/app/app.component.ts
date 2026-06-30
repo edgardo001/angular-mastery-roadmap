@@ -1,11 +1,24 @@
+// ============================================================================
+// COMPONENTE RAÍZ (app.component.ts)
+// ============================================================================
+// Componente principal que muestra login o dashboard según el estado de sesión.
+
+// Component: Decorador que define un componente Angular
+// inject: Para obtener servicios
+// OnInit: Interfaz para ejecutar código al iniciar el componente
 import { Component, inject, OnInit } from '@angular/core';
+
+// AuthService: Para verificar si hay sesión activa
 import { AuthService } from './services/auth.service';
+
+// Componentes de login y dashboard
 import { LoginComponent } from './pages/login.component';
 import { DashboardComponent } from './pages/dashboard.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
+  // imports: Componentes que este componente usa en su template
   imports: [LoginComponent, DashboardComponent],
   template: `
     <main>
@@ -37,6 +50,8 @@ export class AppComponent implements OnInit {
   protected xsrfCookie = 'XSRF-TOKEN';
   protected xsrfHeader = 'X-XSRF-TOKEN';
 
+  // ngOnInit(): Se ejecuta cuando el componente se inicializa.
+  // Verifica si hay una sesión activa (cookie válida del servidor).
   ngOnInit() {
     this.auth.checkSession().subscribe({
       error: () => { /* No session — stays logged out */ },

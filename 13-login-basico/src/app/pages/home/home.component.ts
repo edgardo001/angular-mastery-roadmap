@@ -1,4 +1,14 @@
+// ============================================================================
+// COMPONENTE DE INICIO (home.component.ts)
+// ============================================================================
+// Página principal que muestra información sobre el ejemplo de login básico.
+// Es como la "sala de bienvenida" de una应用.
+
 import { Component } from '@angular/core';
+
+// RouterLink: Directiva para crear enlaces de navegación
+// Se usa como <a routerLink="/login"> en lugar de <a href="/login">
+// La diferencia es que routerLink mantiene la app Angular activa
 import { RouterLink } from '@angular/router';
 
 @Component({

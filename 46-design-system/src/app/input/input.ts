@@ -1,13 +1,22 @@
+// Componente de input reutilizable para un design system
+// Permite crear campos de formulario con label, placeholder, errores y ayuda
 import { Component, input, model } from '@angular/core';
+// FormsModule habilita formularios reactivos y directivas ngModel
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-input',
-  standalone: true,
-  imports: [FormsModule],
+  selector: 'app-input', // Se usa como <app-input> en templates
+  standalone: true, // Componente standalone (no necesita NgModule)
+  imports: [FormsModule], // Importamos FormsModule para formularios
   template: `
+    <!-- input-group: contenedor del campo con su label y mensajes -->
+    <!-- [class.input-group--error]: agrega clase CSS condicionalmente si hay error -->
     <div class="input-group" [class.input-group--error]="error()">
+      <!-- label: etiqueta del campo, [for] vincula con el input por id -->
       <label class="input-group__label" [for]="id()">{{ label() }}</label>
+      <!-- input: campo de entrada con propiedades reactivas -->
+      <!-- [id], [type], [placeholder], [value]: bindings que leen valores de signals -->
+      <!-- (input): evento que se dispara cuando el usuario escribe -->
       <input
         [id]="id()"
         class="input-group__field"
@@ -16,6 +25,7 @@ import { FormsModule } from '@angular/forms';
         [value]="value()"
         (input)="onInput($event)"
       />
+      <!-- @if: nueva sintaxis de control flow (Angular 17+) para condicionales -->
       @if (error()) {
         <span class="input-group__error">{{ error() }}</span>
       }
@@ -39,10 +49,21 @@ import { FormsModule } from '@angular/forms';
   `]
 })
 export class InputComponent {
-  readonly id = input(''); readonly label = input('');
-  readonly placeholder = input(''); readonly type = input('text');
-  readonly error = input(''); readonly helperText = input('');
+  // input(): define una propiedad de entrada reactiva (similar a @Input pero con signals)
+  // Cada input tiene un valor por defecto entre paréntesis
+  readonly id = input('');
+  readonly label = input('');
+  readonly placeholder = input('');
+  readonly type = input('text');
+  readonly error = input('');
+  readonly helperText = input('');
+  
+  // model(): crea una propiedad de dos vías (lectura y escritura)
+  // El componente padre puede leer y escribir este valor
   readonly value = model('');
+  
+  // Maneja el evento input del campo HTML
+  // Actualiza el signal value con lo que el usuario escribió
   onInput(event: Event) {
     this.value.set((event.target as HTMLInputElement).value);
   }

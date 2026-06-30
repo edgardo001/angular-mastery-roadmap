@@ -1,3 +1,5 @@
+// Componente de semáforo que usa una máquina de estados
+// Demuestra cómo XState maneja flujos de UI complejos
 import { Component, OnDestroy, inject, signal } from '@angular/core';
 import { MachineService } from '../services/machine.service';
 import { trafficLightMachine } from '../machines/traffic-light.machine';
@@ -8,13 +10,17 @@ import { trafficLightMachine } from '../machines/traffic-light.machine';
   template: `
     <div class="traffic-light">
       <h2>Traffic Light</h2>
+      <!-- Visualización del semáforo con 3 bombillas -->
       <div class="light">
+        <!-- [class.active]: clase condicional que ilumina la bombilla actual -->
         <div class="bulb red" [class.active]="currentState() === 'red' || currentState() === 'flashingRed'"></div>
         <div class="bulb yellow" [class.active]="currentState() === 'yellow'"></div>
         <div class="bulb green" [class.active]="currentState() === 'green'"></div>
       </div>
+      <!-- Mostramos el estado actual de la máquina -->
       <p>State: <strong>{{ currentState() }}</strong></p>
       <div class="actions">
+        <!-- Botones que envían eventos a la máquina de estados -->
         @if (currentState() !== 'flashingRed') {
           <button (click)="send('TIMER')">Next</button>
         }
@@ -40,23 +46,32 @@ import { trafficLightMachine } from '../machines/traffic-light.machine';
   `]
 })
 export class TrafficLightComponent implements OnDestroy {
+  // inject(): obtiene el servicio que crea actores de XState
   private readonly machineService = inject(MachineService);
-  private actor: any = null;
-  readonly currentState = signal('green');
+  private actor: any = null; // Actor de XState (instancia de la máquina)
+  readonly currentState = signal('green'); // Signal con el estado actual
 
   constructor() {
+    // Creamos un actor desde la máquina de semáforo
     this.actor = this.machineService.createActorFrom(trafficLightMachine);
+    // Obtenemos el estado inicial de la máquina
     this.currentState.set(this.actor.getSnapshot().value);
+    // subscribe(): escucha cambios de estado en la máquina
+    // Cada vez que la máquina cambia de estado, actualizamos el signal
     this.actor.subscribe((snapshot: any) => {
       this.currentState.set(snapshot.value);
     });
   }
 
+  // Envía un evento a la máquina de estados
+  // La máquina decide a qué estado transicionar según el evento y el estado actual
   send(event: string) {
     this.actor?.send({ type: event });
   }
 
+  // ngOnDestroy(): hook del ciclo de vida que se ejecuta al destruir el componente
+  // IMPORTANTE: debemos detener el actor para evitar memory leaks
   ngOnDestroy() {
-    this.actor?.stop();
+    this.actor?.stop(); // Detenemos el actor y limpiamos suscripciones
   }
 }

@@ -1,5 +1,8 @@
+// Componente principal de la PWA (Progressive Web App)
+// Una PWA puede funcionar offline, instalarse en el dispositivo, y enviar notificaciones
 import { Component, HostListener, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+// Servicio que detecta actualizaciones del Service Worker
 import { CheckForUpdateService } from './check-for-update.service';
 
 @Component({
@@ -8,6 +11,7 @@ import { CheckForUpdateService } from './check-for-update.service';
   imports: [CommonModule],
   template: `
     <div class="app">
+      <!-- Banner de actualización: se muestra cuando hay nueva versión -->
       @if (updateService.updateAvailable()) {
         <div class="banner">
           New version available!
@@ -16,14 +20,18 @@ import { CheckForUpdateService } from './check-for-update.service';
       }
       <header>
         <h1>PWA Notes</h1>
+        <!-- Indicador de estado online/offline -->
+        <!-- [class.online] y [class.offline]: clases CSS condicionales -->
         <span class="status" [class.online]="online()" [class.offline]="!online()">
           {{ online() ? 'Online' : 'Offline' }}
         </span>
       </header>
       <main>
+        <!-- Aviso cuando no hay conexión a internet -->
         @if (!online()) {
           <div class="offline-notice">You are offline. Changes will sync when connected.</div>
         }
+        <!-- Banner de instalación: se muestra cuando el navegador permite instalar la PWA -->
         @if (showInstallPrompt()) {
           <div class="install-banner">
             Install this app for offline access!
@@ -50,31 +58,47 @@ import { CheckForUpdateService } from './check-for-update.service';
   `]
 })
 export class AppComponent implements OnInit {
+  // inject(): obtiene el servicio de actualización
   readonly updateService = inject(CheckForUpdateService);
+  
+  // signal(): estado reactivo de la conexión
+  // navigator.onLine: propiedad nativa del navegador que indica si hay conexión
   readonly online = signal(navigator.onLine);
+  
+  // signal que controla si se muestra el banner de instalación
   readonly showInstallPrompt = signal(false);
+  
+  // Variable para almacenar el evento de instalación diferida
   private deferredPrompt: any;
 
+  // @HostListener: escucha eventos del navegador (window, document, etc.)
+  // 'window:online': se dispara cuando el navegador recuper conexión
   @HostListener('window:online')
   onOnline() { this.online.set(true); }
 
+  // 'window:offline': se dispara cuando el navegador pierde conexión
   @HostListener('window:offline')
   onOffline() { this.online.set(false); }
 
   ngOnInit() {
+    // beforeinstallprompt: evento del navegador que indica que se puede instalar la PWA
+    // Solo se dispara en navegadores compatibles (Chrome, Edge, etc.)
     window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      this.deferredPrompt = e;
-      this.showInstallPrompt.set(true);
+      e.preventDefault(); // Prevenimos el comportamiento por defecto
+      this.deferredPrompt = e; // Guardamos el evento para usarlo después
+      this.showInstallPrompt.set(true); // Mostramos el banner de instalación
     });
   }
 
+  // Muestra el diálogo de instalación del navegador
   installApp() {
     if (this.deferredPrompt) {
+      // prompt(): muestra el diálogo nativo del navegador "¿Instalar esta app?"
       this.deferredPrompt.prompt();
+      // userChoice: Promise que se resuelve con la decisión del usuario
       this.deferredPrompt.userChoice.then(() => {
-        this.deferredPrompt = null;
-        this.showInstallPrompt.set(false);
+        this.deferredPrompt = null; // Limpiamos la referencia
+        this.showInstallPrompt.set(false); // Ocultamos el banner
       });
     }
   }

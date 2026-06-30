@@ -1,3 +1,18 @@
+/**
+ * Componente raíz de la aplicación de WebSockets.
+ *
+ * Este componente actúa como el contenedor principal, similar a la
+ * carcasa de un televisor que muestra el contenido.
+ *
+ * @Component — Decorador que define un componente Angular.
+ *   - selector: 'app-root' — Etiqueta HTML para usar este componente (<app-root>).
+ *   - standalone: true — No necesita módulos NgModule. Trae todo lo que necesita.
+ *   - imports: [ChatComponent] — Importa el componente hijo que contiene el chat.
+ *     En standalone, los componentes hijos se importan directamente aquí.
+ *
+ * Analogía: Este componente es como la pantalla principal de una app de celular
+ * que solo muestra el título y carga el componente de chat.
+ */
 import { Component } from '@angular/core';
 import { ChatComponent } from './chat.component';
 

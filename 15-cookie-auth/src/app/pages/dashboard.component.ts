@@ -1,5 +1,15 @@
+// ============================================================================
+// COMPONENTE DE DASHBOARD (dashboard.component.ts)
+// ============================================================================
+// Panel principal que muestra datos del usuario autenticado con cookies.
+// Demuestra cómo hacer peticiones a APIs protegidas con cookies.
+
 import { Component, inject } from '@angular/core';
+
+// AuthService: Para obtener datos del usuario y cerrar sesión
 import { AuthService } from '../services/auth.service';
+
+// ApiService y Todo: Para obtener datos protegidos de la API
 import { ApiService, Todo } from '../services/api.service';
 
 @Component({
@@ -56,6 +66,8 @@ export class DashboardComponent {
   private api = inject(ApiService);
   protected todos: Todo[] = [];
 
+  // loadTodos(): Obtiene las tareas de la API protegida
+  // La cookie HttpOnly se envía automáticamente con la petición
   loadTodos() {
     this.api.getTodos().subscribe({
       next: (todos) => this.todos = todos,

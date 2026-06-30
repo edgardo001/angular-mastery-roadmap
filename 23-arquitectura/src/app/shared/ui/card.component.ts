@@ -1,10 +1,33 @@
+/**
+ * COMPONENTE CARD COMPARTIDO (CardComponent)
+ * ===========================================
+ *
+ * Componente reutilizable que muestra contenido dentro de una tarjeta.
+ * Es como un "contenedor decorativo" que puede envolver cualquier contenido.
+ *
+ * ANÁLOGÍA: Es como un marco de foto. Puedes poner cualquier foto dentro,
+ * y el marco siempre se verá igual de bueno.
+ *
+ * PALABRAS CLAVE:
+ * - <ng-content />: Proyección de contenido - inserta el contenido del padre
+ * - standalone: true: El componente es autocontenido (no necesita NgModule)
+ *
+ * ¿CÓMO FUNCIONA?
+ * Cuando usas <app-card><p>Hola</p></app-card>, el contenido <p>Hola</p>
+ * se inserta donde está <ng-content />. Es como un "espacio reservado".
+ */
+
+// Component: Decorador del componente
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-card',
   standalone: true,
+  // Template que envuelve el contenido en una tarjeta estilizada
   template: `
     <div class="card">
+      <!-- ng-content: Inserta el contenido del componente padre -->
+      <!-- Es como un "espacio reservado" que se llena con contenido externo -->
       <ng-content />
     </div>
   `,
@@ -18,4 +41,5 @@ import { Component } from '@angular/core';
     }
   `]
 })
+// CardComponent: Componente vacío que solo muestra contenido
 export class CardComponent {}

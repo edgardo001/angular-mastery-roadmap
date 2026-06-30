@@ -1,5 +1,15 @@
+// ============================================================================
+// COMPONENTE DE ADMINISTRACIÓN (admin.component.ts)
+// ============================================================================
+// Panel solo accesible para usuarios con rol de administrador.
+// Muestra estadísticas y lista de todos los usuarios.
+
 import { Component, inject, signal } from '@angular/core';
+
+// CommonModule: Habilita directivas comunes
 import { CommonModule } from '@angular/common';
+
+// UserService y AdminData: Para obtener datos de administración
 import { UserService, AdminData } from '../../services/user.service';
 
 @Component({
@@ -79,6 +89,7 @@ export class AdminComponent {
   private userService = inject(UserService);
   data = signal<AdminData | undefined>(undefined);
 
+  // Al crear el componente, cargamos los datos de administración
   constructor() {
     this.userService.getAdminData().subscribe({
       next: (d) => this.data.set(d),

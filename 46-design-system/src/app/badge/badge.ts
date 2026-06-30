@@ -1,12 +1,20 @@
+// BadgeComponent: componente para mostrar etiquetas de estado o categoría
+// Un badge es como una etiqueta pegada: muestra información concisa (éxito, error, etc.)
 import { Component, input } from '@angular/core';
 
+// Tipo TypeScript que define los colores permitidos para el badge
+// 'primary' | 'secondary' | ... significa que solo puede ser uno de esos valores
 export type BadgeColor = 'primary' | 'secondary' | 'success' | 'warning' | 'error';
 
 @Component({
-  selector: 'app-badge',
+  selector: 'app-badge', // Se usa como <app-badge> en templates
   standalone: true,
   template: `
+    <!-- [class]: binding de clase CSS dinámico -->
+    <!-- 'badge badge--' + color() construye clases como "badge badge--primary" -->
     <span [class]="'badge badge--' + color()">
+      <!-- ng-content: proyecta el contenido hijo dentro de este componente -->
+      <!-- Ejemplo: <app-badge>Texto aquí</app-badge> muestra "Texto aquí" -->
       <ng-content />
     </span>
   `,
@@ -23,5 +31,7 @@ export type BadgeColor = 'primary' | 'secondary' | 'success' | 'warning' | 'erro
   `]
 })
 export class BadgeComponent {
+  // input<BadgeColor>('primary'): define una entrada con tipo y valor por defecto
+  // El padre puede pasar: <app-badge color="success">
   readonly color = input<BadgeColor>('primary');
 }

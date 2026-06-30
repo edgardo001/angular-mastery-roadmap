@@ -1,3 +1,5 @@
+// Componente raíz de la aplicación de visualización de datos
+// Muestra un dashboard con gráficos interactivos usando ng2-charts y Chart.js
 import { Component } from '@angular/core';
 import { DashboardComponent } from './dashboard';
 
@@ -8,6 +10,7 @@ import { DashboardComponent } from './dashboard';
   template: `
     <div class="container">
       <h1>Data Visualization</h1>
+      <!-- DashboardComponent: contiene todos los gráficos y KPIs -->
       <app-dashboard />
     </div>
   `,
@@ -16,4 +19,4 @@ import { DashboardComponent } from './dashboard';
     h1 { margin-bottom: 2rem; }
   `]
 })
-export class AppComponent {}
+export class AppComponent {} // Componente raíz sin lógica

@@ -1,27 +1,47 @@
+// ============================================================
+// performance-metrics.ts — Métricas Core Web Vitals
+// ============================================================
+// Core Web Vitals son métricas que Google usa para medir la calidad
+// de la experiencia de usuario en tu sitio web:
+// - FCP (First Contentful Paint): cuándo aparece el primer contenido
+// - LCP (Largest Contentful Paint): cuándo carga el contenido principal
+// - CLS (Cumulative Layout Shift): cuánto se mueve el layout inesperadamente
+// - TTFB (Time to First Byte): cuánto tarda el servidor en responder
+
 import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+
+// TitleCasePipe: un "pipe" de Angular que convierte texto a Title Case.
+// Es como un filtro: transforma "hello world" en "Hello World".
 import { TitleCasePipe } from '@angular/common';
 
+// WebVital: define la forma de una métrica de rendimiento.
 interface WebVital {
-  name: string;
-  value: string;
-  rating: 'good' | 'needs-improvement' | 'poor';
-  description: string;
+  name: string;    // Nombre de la métrica (FCP, LCP, etc.)
+  value: string;   // Valor formateado (ej: "1200ms")
+  rating: 'good' | 'needs-improvement' | 'poor';  // Calificación según Google
+  description: string;  // Descripción de qué mide
 }
 
 @Component({
   selector: 'app-performance-metrics',
   standalone: true,
+
+  // imports: necesitamos TitleCasePipe para usar | titlecase en el template.
   imports: [TitleCasePipe],
+
   template: `
     <section class="demo-section">
       <h2>Core Web Vitals</h2>
       <p class="note">Real-time performance metrics from the browser.</p>
 
       <div class="metrics-grid">
+        <!-- @for itera sobre las métricas y muestra cada una en una tarjeta -->
         @for (vital of vitals(); track vital.name) {
+          <!-- [class]="vital.rating" — agrega una clase CSS según la calificación -->
           <div class="metric-card" [class]="vital.rating">
             <div class="metric-header">
               <h3>{{ vital.name }}</h3>
+              <!-- | titlecase — pipe que convierte "needs-improvement" a "Needs Improvement" -->
               <span class="badge">{{ vital.rating | titlecase }}</span>
             </div>
             <div class="metric-value">{{ vital.value }}</div>
@@ -79,32 +99,43 @@ interface WebVital {
   `]
 })
 export class PerformanceMetricsComponent implements OnInit {
+  // vitals: array de métricas Web Vitals que se muestran en pantalla.
   vitals: WritableSignal<WebVital[]> = signal([]);
+
+  // Métricas adicionales del navegador.
   jsHeap: WritableSignal<string> = signal('N/A');
   domNodes: WritableSignal<string> = signal('0');
   resourceSize: WritableSignal<string> = signal('0 KB');
   navigationType: WritableSignal<string> = signal('navigate');
+
+  // observer: PerformanceObserver para monitorear cambios en métricas.
   private observer: PerformanceObserver | null = null;
 
+  // ngOnInit: se ejecuta cuando el componente está listo.
   ngOnInit() {
     this.collectMetrics();
     this.observePerformance();
   }
 
+  // collectMetrics: recopila todas las métricas de rendimiento del navegador.
   private collectMetrics() {
     const vitals: WebVital[] = [];
 
+    // performance.getEntriesByType('paint'): obtiene eventos de pintura del navegador.
     const paint = performance.getEntriesByType('paint');
+    // FCP: cuándo se pintó el primer contenido visible.
     const fcp = paint.find(e => e.name === 'first-contentful-paint');
     if (fcp) {
       vitals.push(this.makeVital('FCP', fcp.startTime, 1800, 3000, 'First Contentful Paint'));
     }
 
+    // LCP: cuándo cargó el elemento más grande visible.
     const lcpEntry = performance.getEntriesByType('largest-contentful-paint');
     if (lcpEntry.length) {
       vitals.push(this.makeVital('LCP', lcpEntry[lcpEntry.length - 1].startTime, 2500, 4000, 'Largest Contentful Paint'));
     }
 
+    // CLS: cuánto se movió el layout de forma inesperada.
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
         if (entry.entryType === 'layout-shift') {
@@ -116,19 +147,23 @@ export class PerformanceMetricsComponent implements OnInit {
     observer.observe({ type: 'layout-shift', buffered: true });
     this.observer = observer;
 
+    // TTFB: cuánto tardó el servidor en enviar la primera respuesta.
     const ttfb = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
     if (ttfb) {
       vitals.push(this.makeVital('TTFB', ttfb.responseStart - ttfb.requestStart, 800, 1800, 'Time to First Byte'));
     }
 
+    // memory: API no estándar que muestra uso de memoria (solo Chrome).
     if ((performance as any).memory) {
       const mem = (performance as any).memory;
       this.jsHeap.set(`${Math.round(mem.usedJSHeapSize / 1024 / 1024)} MB`);
     }
 
+    // Cuenta todos los nodos DOM de la página.
     this.domNodes.set(document.querySelectorAll('*').length.toString());
     this.navigationType.set(ttfb?.type || 'navigate');
 
+    // Calcula el tamaño total de recursos descargados.
     const resources = performance.getEntriesByType('resource');
     const totalSize = resources.reduce((sum, r) => sum + ((r as any).transferSize || 0), 0);
     this.resourceSize.set(`${Math.round(totalSize / 1024)} KB`);
@@ -136,6 +171,7 @@ export class PerformanceMetricsComponent implements OnInit {
     this.vitals.set(vitals);
   }
 
+  // observePerformance: configura observers para métricas futuras.
   private observePerformance() {
     try {
       const lcpObserver = new PerformanceObserver(() => {});
@@ -143,7 +179,9 @@ export class PerformanceMetricsComponent implements OnInit {
     } catch {}
   }
 
+  // makeVital: crea un objeto WebVital con la calificación correcta.
   private makeVital(name: string, value: number, good: number, poor: number, description: string): WebVital {
+    // Clasifica el valor como good, needs-improvement o poor según los umbrales de Google.
     const rating = value <= good ? 'good' : value <= poor ? 'needs-improvement' : 'poor';
     const formatted = name === 'CLS' ? (value / 100).toFixed(2) : `${Math.round(value)}ms`;
     return { name, value: formatted, rating, description };

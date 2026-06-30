@@ -1,3 +1,5 @@
+// DashboardComponent: panel de visualización de datos con KPIs y gráficos
+// Un dashboard es como un tablero de control: muestra métricas importantes de un vistazo
 import { Component } from '@angular/core';
 import { BarChartComponent } from './bar-chart';
 import { LineChartComponent } from './line-chart';
@@ -9,6 +11,8 @@ import { PieChartComponent } from './pie-chart';
   imports: [BarChartComponent, LineChartComponent, PieChartComponent],
   template: `
     <div class="dashboard">
+      <!-- KPIs: Key Performance Indicators (Indicadores Clave de Rendimiento) -->
+      <!-- Son métricas resumidas que muestran el estado del negocio -->
       <div class="kpi-row">
         <div class="kpi-card">
           <span class="kpi-label">Total Revenue</span>
@@ -27,10 +31,12 @@ import { PieChartComponent } from './pie-chart';
           <span class="kpi-value">+12.5%</span>
         </div>
       </div>
+      <!-- Fila de gráficos: bar chart y line chart -->
       <div class="charts">
         <app-bar-chart />
         <app-line-chart />
       </div>
+      <!-- Fila de gráfico de pie chart -->
       <div class="charts">
         <app-pie-chart />
       </div>
@@ -46,4 +52,4 @@ import { PieChartComponent } from './pie-chart';
     @media (max-width: 600px) { .kpi-row, .charts { grid-template-columns: 1fr; } }
   `]
 })
-export class DashboardComponent {}
+export class DashboardComponent {} // Componente sin lógica, solo muestra KPIs y gráficos

@@ -1,5 +1,15 @@
+// ============================================================================
+// COMPONENTE DE PERFIL (profile.component.ts)
+// ============================================================================
+// Muestra el contenido decodificado del token JWT y el estado de sesión.
+// Es como "abrir" el token y ver qué datos contiene.
+
 import { Component, inject, computed } from '@angular/core';
+
+// CommonModule: Habilita directivas comunes (@if, @for, keyvalue pipe)
 import { CommonModule } from '@angular/common';
+
+// AuthService: Para obtener el token y sus datos
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -60,6 +70,8 @@ import { AuthService } from '../../services/auth.service';
 export class ProfileComponent {
   auth = inject(AuthService);
 
+  // computed: Decodifica el token JWT y retorna su payload
+  // Se recalcula automáticamente si cambia el token
   tokenPayload = computed(() => {
     const token = this.auth.getAccessToken();
     if (!token) return null;

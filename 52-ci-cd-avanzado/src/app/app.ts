@@ -1,8 +1,26 @@
+// ============================================================
+// app.ts — Componente raíz de la aplicación
+// ============================================================
+// Un Componente es como una "pieza de LEGO": tiene su propio
+// HTML (template), CSS (styles) y lógica TypeScript.
+// En Angular 22+, los componentes son "standalone" (independientes),
+// lo que significa que no necesitan un módulo NgModule para funcionar.
+
+// @Component es un DECORADOR — una forma de decirle a Angular:
+// "Esta clase es un componente, y estos son sus datos."
 import { Component } from '@angular/core';
 
 @Component({
+  // selector: el nombre del tag HTML que usamos para este componente.
+  // Es como un nombre personalizado: <app-root></app-root>
   selector: 'app-root',
+
+  // standalone: true significa que este componente es independiente.
+  // No necesita ser declarado en ningún módulo. Es como un mini-app autónoma.
   standalone: true,
+
+  // template: el HTML del componente. Aquí definimos qué ve el usuario.
+  // Este es un dashboard que muestra el estado de un pipeline CI/CD.
   template: `
     <main>
       <h1>CI/CD Pipeline Dashboard</h1>
@@ -27,6 +45,9 @@ import { Component } from '@angular/core';
       </section>
     </main>
   `,
+
+  // styles: CSS que solo aplica a este componente (encapsulado).
+  // No "escapa" a otros componentes, evitando conflictos de estilos.
   styles: [`
     main { max-width: 800px; margin: 2rem auto; padding: 1rem; }
     h1 { color: #1e40af; margin-bottom: 1.5rem; }
@@ -42,4 +63,6 @@ import { Component } from '@angular/core';
     .card h3 { color: #1e40af; margin-bottom: 0.25rem; }
   `]
 })
+// export class App {} — La clase del componente. Aquí iría la lógica.
+// En este caso es un componente "tonto" (solo muestra HTML/CSS, sin lógica).
 export class App {}

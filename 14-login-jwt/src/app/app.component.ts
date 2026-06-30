@@ -1,6 +1,17 @@
+// ============================================================================
+// COMPONENTE RAÍZ (app.component.ts)
+// ============================================================================
+// Componente principal con barra de navegación que cambia según el estado de autenticación.
+
 import { Component, inject } from '@angular/core';
+
+// CommonModule: Habilita directivas comunes (@if, @for, [ngClass], etc.)
 import { CommonModule } from '@angular/common';
+
+// RouterModule: Habilita directivas de navegación (routerLink, routerLinkActive)
 import { RouterModule } from '@angular/router';
+
+// AuthService: Para verificar si el usuario está logueado
 import { AuthService } from './services/auth.service';
 
 @Component({
@@ -94,5 +105,6 @@ import { AuthService } from './services/auth.service';
   `],
 })
 export class AppComponent {
+  // inject(): Obtiene el servicio de autenticación
   auth = inject(AuthService);
 }

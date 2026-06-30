@@ -1,6 +1,18 @@
+// ============================================================================
+// COMPONENTE DE LOGIN (login.component.ts)
+// ============================================================================
+// Este componente muestra el formulario de inicio de sesión.
+// Es como la "puerta de entrada" donde el usuario ingresa sus credenciales.
+
 import { Component, inject } from '@angular/core';
+
+// Router: Para navegar al dashboard después del login exitoso
 import { Router, RouterLink } from '@angular/router';
+
+// FormsModule: Habilita [(ngModel)] para two-way binding en formularios
 import { FormsModule } from '@angular/forms';
+
+// AuthService: Servicio que maneja la autenticación
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -72,23 +84,34 @@ import { AuthService } from '../../services/auth.service';
   `],
 })
 export class LoginComponent {
+  // inject(): Obtenemos el servicio de autenticación y el router
   private auth = inject(AuthService);
   private router = inject(Router);
 
+  // Variables para el formulario (two-way binding con [(ngModel)])
   email = '';
   password = '';
-  error = '';
+  error = '';  // Mensaje de error que se muestra al usuario
 
+  // onLogin(): Se ejecuta al enviar el formulario
   onLogin() {
-    this.error = '';
+    this.error = '';  // Limpiar error anterior
+
+    // Validación: que ambos campos tengan valor
     if (!this.email || !this.password) {
       this.error = 'Por favor ingresa email y contraseña';
       return;
     }
+
+    // Intentar login con el servicio de autenticación
     const success = this.auth.login(this.email, this.password);
+
     if (success) {
+      // Login exitoso: navegar al dashboard
+      // navigate(): Cambia la URL y muestra el componente correspondiente
       this.router.navigate(['/dashboard']);
     } else {
+      // Login fallido: mostrar error al usuario
       this.error = 'Credenciales inválidas';
     }
   }
