@@ -1,0 +1,38 @@
+{
+  "name": "ui-kit",
+  "projectType": "library",
+  "root": "libs/ui-kit",
+  "sourceRoot": "libs/ui-kit/src",
+  "prefix": "ui",
+  "architect": {
+    "build": {
+      "builder": "@angular/build:package",
+      "options": {
+        "outputPath": "dist/libs/ui-kit",
+        "tsConfig": "libs/ui-kit/tsconfig.lib.json",
+        "project": "libs/ui-kit/package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/ui-kit/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "test": {
+      "builder": "@angular/build:karma",
+      "options": {
+        "tsConfig": "libs/ui-kit/tsconfig.spec.json",
+        "assets": [],
+        "styles": [],
+        "scripts": []
+      }
+    },
+    "lint": {
+      "builder": "@angular/build:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/ui-kit/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:ui-kit"]
+}

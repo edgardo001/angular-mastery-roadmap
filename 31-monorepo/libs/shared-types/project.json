@@ -1,0 +1,38 @@
+{
+  "name": "shared-types",
+  "projectType": "library",
+  "root": "libs/shared-types",
+  "sourceRoot": "libs/shared-types/src",
+  "prefix": "types",
+  "architect": {
+    "build": {
+      "builder": "@angular/build:package",
+      "options": {
+        "outputPath": "dist/libs/shared-types",
+        "tsConfig": "libs/shared-types/tsconfig.lib.json",
+        "project": "libs/shared-types/package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/shared-types/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "test": {
+      "builder": "@angular/build:karma",
+      "options": {
+        "tsConfig": "libs/shared-types/tsconfig.spec.json",
+        "assets": [],
+        "styles": [],
+        "scripts": []
+      }
+    },
+    "lint": {
+      "builder": "@angular/build:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/shared-types/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:types"]
+}

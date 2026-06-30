@@ -1,0 +1,38 @@
+{
+  "name": "utils",
+  "projectType": "library",
+  "root": "libs/utils",
+  "sourceRoot": "libs/utils/src",
+  "prefix": "util",
+  "architect": {
+    "build": {
+      "builder": "@angular/build:package",
+      "options": {
+        "outputPath": "dist/libs/utils",
+        "tsConfig": "libs/utils/tsconfig.lib.json",
+        "project": "libs/utils/package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/utils/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "test": {
+      "builder": "@angular/build:karma",
+      "options": {
+        "tsConfig": "libs/utils/tsconfig.spec.json",
+        "assets": [],
+        "styles": [],
+        "scripts": []
+      }
+    },
+    "lint": {
+      "builder": "@angular/build:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/utils/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:utils"]
+}

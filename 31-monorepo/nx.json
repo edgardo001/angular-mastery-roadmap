@@ -1,23 +1,41 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "name": "31-monorepo",
-  "plugins": [
-    { "plugin": "@nx/angular", "options": { "buildTargetName": "build", "serveTargetName": "serve", "testTargetName": "test" } }
-  ],
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)",
+      "!{projectRoot}/tsconfig.spec.json"
+    ]
+  },
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
-      "cache": true,
-      "inputs": ["{projectRoot}/**/*", "sharedGlobals"]
+      "inputs": ["production", "^production"],
+      "cache": true
     },
     "test": {
-      "cache": true,
-      "inputs": ["{projectRoot}/**/*", "sharedGlobals"]
+      "inputs": ["default", "^production"],
+      "cache": true
+    },
+    "lint": {
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
+      "cache": true
     }
   },
-  "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
-    "sharedGlobals": ["{workspaceRoot}/nx.json", "{workspaceRoot}/angular.json"]
-  },
-  "defaultBase": "main"
+  "defaultBase": "main",
+  "plugins": [
+    {
+      "plugin": "@nx/angular/plugin",
+      "options": {
+        "applicationTarget": "build",
+        "serveTarget": "serve",
+        "testTarget": "test",
+        "buildTarget": "build",
+        "lintTarget": "lint",
+        "e2eTarget": "e2e"
+      }
+    }
+  ]
 }

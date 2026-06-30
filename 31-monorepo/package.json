@@ -3,8 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --port 8080",
-    "build": "ng build"
+    "nx": "nx",
+    "start": "nx serve client",
+    "start:admin": "ng serve admin",
+    "start:client": "ng serve client",
+    "build": "nx run-many -t build",
+    "test": "nx run-many -t test",
+    "lint": "nx run-many -t lint",
+    "graph": "nx graph"
   },
   "private": true,
   "dependencies": {
@@ -14,6 +20,7 @@
     "@angular/forms": "^22.0.0",
     "@angular/platform-browser": "^22.0.0",
     "@angular/platform-browser-dynamic": "^22.0.0",
+    "@angular/router": "^22.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.6.0",
     "zone.js": "~0.16.0"
@@ -22,6 +29,9 @@
     "@angular-devkit/build-angular": "^22.0.0",
     "@angular/cli": "^22.0.0",
     "@angular/compiler-cli": "^22.0.0",
+    "@nx/angular": "^21.0.0",
+    "@nx/workspace": "^21.0.0",
+    "nx": "^21.0.0",
     "typescript": "~6.0.0"
   }
 }

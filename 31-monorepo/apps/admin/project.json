@@ -1,0 +1,61 @@
+{
+  "name": "admin",
+  "projectType": "application",
+  "root": "apps/admin",
+  "sourceRoot": "apps/admin/src",
+  "prefix": "admin",
+  "architect": {
+    "build": {
+      "builder": "@angular/build:application",
+      "options": {
+        "outputPath": "dist/apps/admin",
+        "index": "apps/admin/src/index.html",
+        "browser": "apps/admin/src/main.ts",
+        "tsConfig": "apps/admin/tsconfig.app.json",
+        "assets": [
+          { "glob": "**/*", "input": "apps/admin/public" }
+        ],
+        "styles": [],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            { "type": "initial", "maximumWarning": "500kB", "maximumError": "1MB" }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "builder": "@angular/build:dev-server",
+      "configurations": {
+        "production": { "buildTarget": "admin:build:production" },
+        "development": { "buildTarget": "admin:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "test": {
+      "builder": "@angular/build:karma",
+      "options": {
+        "tsConfig": "apps/admin/tsconfig.spec.json",
+        "assets": [],
+        "styles": [],
+        "scripts": []
+      }
+    },
+    "lint": {
+      "builder": "@angular/build:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/admin/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["scope:admin", "type:app"]
+}
