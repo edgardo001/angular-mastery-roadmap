@@ -1,17 +1,20 @@
 /**
  * Punto de entrada del Shell App (aplicación contenedor).
  *
- * En arquitectura de microfrontends, el Shell es la aplicación principal
- * que carga y coordina las microaplicaciones (remotes).
+ * bootstrapApplication — Función de Angular Platform Browser que inicializa
+ *   una aplicación standalone. Recibe el componente raíz (AppComponent)
+ *   y la configuración de providers (appConfig).
  *
- * Analogía: El Shell es como el marco de una ventana.
- * Las microaplicaciones son los vidrios individuales que se insertan en el marco.
- * Cada vidrio (microfrontend) puede tener un diseño diferente,
- * pero todos encajan en el mismo marco (shell).
+ * En Module Federation, el Shell es el host: la app que carga remotos.
+ * Su main.ts es igual al de cualquier app Angular standalone.
+ *
+ * Analogía: Es como encender el motor de un auto. La configuración (appConfig)
+ *   es el panel de instrumentos, y el componente raíz (AppComponent) es
+ *   el volante que controla todo.
  */
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
-import { App } from './app/app';
+import { AppComponent } from './app/app';
 
-bootstrapApplication(App, appConfig)
+bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));

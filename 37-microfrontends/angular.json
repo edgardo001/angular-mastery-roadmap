@@ -11,12 +11,14 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-architects/module-federation:browser",
           "options": {
-            "browser": "projects/shell-app/src/main.ts",
+            "main": "projects/shell-app/src/main.ts",
             "tsConfig": "projects/shell-app/tsconfig.app.json",
             "assets": [{ "glob": "**/*", "input": "projects/shell-app/public" }],
-            "styles": ["projects/shell-app/src/styles.css"]
+            "styles": ["projects/shell-app/src/styles.css"],
+            "extraWebpackConfig": "projects/shell-app/webpack.mf.config.js",
+            "publicPath": "auto"
           },
           "configurations": {
             "production": {
@@ -35,7 +37,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@angular-architects/module-federation:dev-server",
           "configurations": {
             "production": { "buildTarget": "shell-app:build:production" },
             "development": { "buildTarget": "shell-app:build:development" }
@@ -51,12 +53,14 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-architects/module-federation:browser",
           "options": {
-            "browser": "projects/remote-app/src/main.ts",
+            "main": "projects/remote-app/src/main.ts",
             "tsConfig": "projects/remote-app/tsconfig.app.json",
             "assets": [{ "glob": "**/*", "input": "projects/remote-app/public" }],
-            "styles": ["projects/remote-app/src/styles.css"]
+            "styles": ["projects/remote-app/src/styles.css"],
+            "extraWebpackConfig": "projects/remote-app/webpack.mf.config.js",
+            "publicPath": "auto"
           },
           "configurations": {
             "production": {
@@ -75,7 +79,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@angular-architects/module-federation:dev-server",
           "configurations": {
             "production": { "buildTarget": "remote-app:build:production" },
             "development": { "buildTarget": "remote-app:build:development" }

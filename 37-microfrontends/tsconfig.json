@@ -10,7 +10,8 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "preserve",
+    "rootDir": "./src"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -23,4 +24,3 @@
     { "path": "./projects/remote-app/tsconfig.app.json" }
   ]
 }
-

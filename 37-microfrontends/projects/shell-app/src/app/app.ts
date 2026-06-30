@@ -1,45 +1,37 @@
 /**
- * Componente raíz del Shell App (microfrontend contenedor).
+ * Componente raíz del Shell App (aplicación contenedor/host).
  *
- * El Shell es la aplicación principal que coordina las microaplicaciones.
- * Escucha todos los eventos del bus y muestra un log de las comunicaciones.
+ * El Shell es la aplicación principal que orquesta los microfrontends.
+ * Contiene la navegación principal y el <router-outlet> donde se renderizan
+ * tanto componentes locales como remotos cargados via Module Federation.
  *
- * signal() — Contenedor reactivo para el log de mensajes.
- * AppEventBus.all() — Se suscribe a TODOS los eventos del bus.
- * .subscribe() — Activa la suscripción y procesa cada evento recibido.
+ * RouterOutlet — Directive de Angular Router que renderiza el componente
+ *   correspondiente a la ruta actual. Cuando navegas a /remote, el Router
+ *   carga el RemoteFeatureComponent desde el remote y lo renderiza aquí.
  *
- * Analogía: El Shell es como el director de una orquesta.
- * No toca ningún instrumento, pero coordina a todos los músicos (microfrontends).
+ * RouterLink — Directive que convierte un <a> en un enquete del Router,
+ *   evitando recargas completas de la página.
+ *
+ * Analogía: El Shell es como el marco de una ventana modular.
+ *   Los módulos (componentes locales y remotes) se insertan en el marco
+ *   según lo que el usuario pida (la ruta).
  */
-import { Component, signal } from '@angular/core';
-import { AppEventBus } from './event-bus';
+import { Component } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [],
-  templateUrl: './app.html',
-  styleUrl: './app.css',
+  standalone: true,
+  imports: [RouterOutlet, RouterLink],
+  template: `
+    <nav style="display: flex; gap: 10px; padding: 10px; background: #1a1a2e; color: white;">
+      <a routerLink="/" style="color: white; text-decoration: none;">🏠 Home</a>
+      <a routerLink="/remote" style="color: white; text-decoration: none;">🚀 Remote</a>
+      <span style="margin-left: auto; opacity: 0.7;">Shell App (Host) — Module Federation</span>
+    </nav>
+    <router-outlet />
+  `,
 })
-export class App {
-  /** Signal que almacena el log de todos los eventos recibidos */
-  readonly messages = signal<string[]>([]);
-
-  constructor() {
-    /**
-     * Se suscribe a TODOS los eventos del bus.
-     * Cada evento se agrega al log con su tipo y payload formateado como JSON.
-     * JSON.stringify() convierte un objeto a string legible.
-     */
-    AppEventBus.all().subscribe(event => {
-      this.messages.update(msgs => [...msgs, `[${event.type}] ${JSON.stringify(event.payload)}`]);
-    });
-  }
-
-  /**
-   * Envía un evento desde el Shell hacia las microaplicaciones remotas.
-   * El tipo 'shell:notification' identifica que es una notificación del Shell.
-   */
-  sendToRemote(): void {
-    AppEventBus.publish('shell:notification', { text: 'Hello from Shell!' });
-  }
+export class AppComponent {
+  title = 'shell-app';
 }

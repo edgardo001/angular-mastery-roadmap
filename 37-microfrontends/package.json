@@ -3,12 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --port 8080",
+    "start": "npm run start:mfe",
     "build": "ng build",
     "build:shell": "ng build shell-app",
     "build:remote": "ng build remote-app",
-    "serve:shell": "ng serve --host 0.0.0.0 --port 8080 shell-app",
-    "serve:remote": "ng serve --host 0.0.0.0 --port 8080 remote-app"
+    "start:shell": "ng serve shell-app --port 4200",
+    "start:remote": "ng serve remote-app --port 4201",
+    "start:mfe": "concurrently \"npm run start:shell\" \"npm run start:remote\""
   },
   "private": true,
   "dependencies": {
@@ -22,9 +23,14 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@angular-architects/module-federation": "^19.0.0",
     "@angular/build": "^22.0.1",
     "@angular/cli": "^22.0.1",
     "@angular/compiler-cli": "^22.0.0",
-    "typescript": "~6.0.2"
+    "concurrently": "^9.0.0",
+    "typescript": "~6.0.2",
+    "webpack": "^5.90.0",
+    "webpack-cli": "^5.1.0",
+    "webpack-dev-server": "^5.0.0"
   }
 }

@@ -1,19 +1,10 @@
-const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
-const { dependencies } = require('../../package.json');
+const { shareAll, withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack');
 
-module.exports = {
-  plugins: [
-    new ModuleFederationPlugin({
-      name: 'shell',
-      remotes: {
-        remoteApp: 'remoteApp@http://localhost:4201/remoteEntry.js',
-      },
-      shared: {
-        '@angular/core': { singleton: true, strictVersion: true, requiredVersion: dependencies['@angular/core'] },
-        '@angular/common': { singleton: true, strictVersion: true, requiredVersion: dependencies['@angular/common'] },
-        '@angular/router': { singleton: true, strictVersion: true, requiredVersion: dependencies['@angular/router'] },
-        rxjs: { singleton: true, strictVersion: true, requiredVersion: dependencies.rxjs },
-      },
-    }),
-  ],
-};
+module.exports = withModuleFederationPlugin({
+  remotes: {
+    remoteApp: 'http://localhost:4201/remoteEntry.js',
+  },
+  shared: {
+    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
+  },
+});

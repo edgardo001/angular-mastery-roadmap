@@ -1,43 +1,39 @@
 /**
- * Componente raíz de la Microaplicación Remota.
+ * Componente raíz de la Remote App (microaplicación remota).
  *
- * Esta microaplicación escucha eventos del Shell y puede enviar eventos de vuelta.
- * Muestra un log de las comunicaciones recibidas y permite enviar eventos.
+ * Esta app se ejecuta independientemente en el puerto 4201.
+ * Expone componentes via Module Federation para que el Shell los consuma.
+ * Cuando corre dentro del Shell, este componente no se ve — solo se ven
+ * los componentes que expone (RemoteFeatureComponent).
  *
- * signal() — Contenedor reactivo para el log de mensajes.
- * AppEventBus.all() — Se suscribe a todos los eventos del bus.
+ * standalone: true — No necesita NgModule, se configura a sí mismo.
  *
- * Analogía: Es como una aplicación móvil que se conecta a un servidor (Shell).
- * Puede recibir notificaciones del servidor y enviar datos de vuelta.
+ * Analogía: La Remote App es como una tienda en línea independiente.
+ *   Tiene su propio catálogo (componentes expuestos), su propio servidor
+ *   (puerto 4201), y el Shell es como un agregador que muestra productos
+ *   de múltiples tiendas en un solo lugar.
  */
-import { Component, signal } from '@angular/core';
-import { AppEventBus } from './event-bus';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  imports: [],
-  templateUrl: './app.html',
-  styleUrl: './app.css',
+  standalone: true,
+  template: `
+    <div style="padding: 20px; background: #16213e; color: white; min-height: 100vh;">
+      <h2>Remote Application</h2>
+      <p>Esta es la aplicación remota. Puerto: 4201</p>
+      <p>Expone componentes via Module Federation para que el Shell los consuma.</p>
+      <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+        <h4>Lo que expone este remote:</h4>
+        <ul>
+          <li><code>./RemoteFeature</code> → <code>RemoteFeatureComponent</code></li>
+          <li>El Shell lo carga dinámicamente al navegar a <code>/remote</code></li>
+          <li>No necesita copiar código — se descarga del remote en runtime</li>
+        </ul>
+      </div>
+    </div>
+  `,
 })
-export class App {
-  /** Signal con el log de eventos recibidos */
-  readonly messages = signal<string[]>([]);
-
-  constructor() {
-    /**
-     * Escucha todos los eventos del bus.
-     * Cuando el Shell envía una notificación, la Remote App la recibe aquí.
-     */
-    AppEventBus.all().subscribe(event => {
-      this.messages.update(msgs => [...msgs, `[${event.type}] ${JSON.stringify(event.payload)}`]);
-    });
-  }
-
-  /**
-   * Envía un evento desde la Remote App hacia el Shell.
-   * El tipo 'remote:user-action' identifica que es una acción del usuario remoto.
-   */
-  sendEvent(): void {
-    AppEventBus.publish('remote:user-action', { message: 'Hello from Remote!' });
-  }
+export class AppComponent {
+  title = 'remote-app';
 }
