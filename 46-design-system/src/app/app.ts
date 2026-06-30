@@ -1,40 +1,50 @@
 // Componente raíz que muestra todos los componentes del Design System
 // Un Design System es una colección de componentes reutilizables con estilos consistentes
-// Ejemplo: botones, cards, inputs, badges que se usan en toda la aplicación
-import { Component } from '@angular/core';
-// Importamos todos los componentes del design system
+import { Component, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ButtonComponent } from './button/button';
 import { CardComponent } from './card/card';
 import { InputComponent } from './input/input';
 import { BadgeComponent } from './badge/badge';
+import { ThemeComponent } from './theme/theme.component';
+import { ModalComponent } from './modal/modal.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   // imports: lista de componentes que este componente puede usar en su template
-  imports: [ButtonComponent, CardComponent, InputComponent, BadgeComponent],
+  imports: [
+    CommonModule,
+    ButtonComponent,
+    CardComponent,
+    InputComponent,
+    BadgeComponent,
+    ThemeComponent,
+    ModalComponent,
+  ],
   template: `
-    <div class="container">
-      <h1>Design System</h1>
+    <div class="design-system">
+      <header>
+        <h1>Design System</h1>
+        <p>Componentes reutilizables con Angular CDK/Material</p>
+      </header>
+
+      <!-- Theme Switcher: permite cambiar entre temas claro/oscuro/azul -->
+      <app-theme />
 
       <!-- Sección de Botones: demuestra variantes y tamaños -->
       <section>
         <h2>Buttons</h2>
-        <!-- variant: tipo visual del botón (primary, secondary, outline, ghost) -->
-        <div class="row">
-          <app-button variant="primary">Primary</app-button>
+        <div class="component-grid">
+          <!-- variant: tipo visual del botón (primary, secondary, outline, ghost) -->
+          <!-- size: tamaño del botón (sm, md, lg) -->
+          <app-button variant="primary" size="sm">Small</app-button>
+          <app-button variant="primary" size="md">Medium</app-button>
+          <app-button variant="primary" size="lg">Large</app-button>
           <app-button variant="secondary">Secondary</app-button>
           <app-button variant="outline">Outline</app-button>
           <app-button variant="ghost">Ghost</app-button>
-        </div>
-        <!-- size: tamaño del botón (sm, md, lg) -->
-        <div class="row">
-          <app-button size="sm">Small</app-button>
-          <app-button size="md">Medium</app-button>
-          <app-button size="lg">Large</app-button>
-        </div>
-        <!-- [disabled]: binding que deshabilita el botón cuando es true -->
-        <div class="row">
+          <!-- [disabled]: binding que deshabilita el botón cuando es true -->
           <app-button [disabled]="true">Disabled</app-button>
         </div>
       </section>
@@ -42,29 +52,36 @@ import { BadgeComponent } from './badge/badge';
       <!-- Sección de Cards: contenedores con sombra y bordes redondeados -->
       <section>
         <h2>Cards</h2>
-        <app-card>
-          <!-- card-header: directiva de proyección de contenido para el header -->
-          <div card-header>Card Title</div>
-          <!-- Contenido principal de la card -->
-          <p>This is the card body content. It can contain any content.</p>
-          <!-- card-footer: directiva de proyección de contenido para el footer -->
-          <div card-footer>Card Footer</div>
-        </app-card>
+        <div class="component-grid">
+          <app-card>
+            <!-- card-header: directiva de proyección de contenido para el header -->
+            <div card-header>Título</div>
+            <p>Contenido de la tarjeta con header y footer.</p>
+            <div card-footer>
+              <app-button variant="primary" size="sm">Acción</app-button>
+            </div>
+          </app-card>
+
+          <app-card>
+            <p>Tarjeta simple sin header ni footer.</p>
+          </app-card>
+        </div>
       </section>
 
       <!-- Sección de Inputs: campos de formulario con validación -->
       <section>
         <h2>Inputs</h2>
-        <!-- helperText: texto de ayuda que se muestra debajo del campo -->
-        <app-input id="name" label="Name" placeholder="Enter your name" helperText="Your full name" />
-        <!-- error: mensaje de error que se muestra en rojo -->
-        <app-input id="email" label="Email" placeholder="Enter email" error="Invalid email address" />
+        <div class="component-grid">
+          <app-input label="Nombre" placeholder="Tu nombre" />
+          <app-input label="Email" placeholder="correo@ejemplo.com" error="Email inválido" />
+          <app-input label="Password" placeholder="••••••" helperText="Mínimo 8 caracteres" />
+        </div>
       </section>
 
       <!-- Sección de Badges: etiquetas de estado o categoría -->
       <section>
         <h2>Badges</h2>
-        <div class="row">
+        <div class="component-grid">
           <app-badge color="primary">Primary</app-badge>
           <app-badge color="secondary">Secondary</app-badge>
           <app-badge color="success">Success</app-badge>
@@ -72,14 +89,34 @@ import { BadgeComponent } from './badge/badge';
           <app-badge color="error">Error</app-badge>
         </div>
       </section>
+
+      <!-- Sección de Modal: ventana superpuesta -->
+      <section>
+        <h2>Modal</h2>
+        <app-button (onClick)="showModal.set(true)">Abrir Modal</app-button>
+        <!-- isOpen: controla visibilidad, close/confirm: eventos de cierre -->
+        <app-modal
+          [isOpen]="showModal()"
+          title="Ejemplo de Modal"
+          (close)="showModal.set(false)"
+          (confirm)="showModal.set(false)">
+          <p>Este es un modal usando Angular CDK.</p>
+          <p>Haz clic fuera o en Cancelar para cerrar.</p>
+        </app-modal>
+      </section>
     </div>
   `,
   styles: [`
-    .container { max-width: 800px; margin: 0 auto; padding: var(--spacing-xl); }
-    h1 { font-size: var(--font-size-xl); margin-bottom: var(--spacing-lg); }
-    h2 { font-size: var(--font-size-lg); margin: var(--spacing-lg) 0 var(--spacing-md); color: var(--color-text-secondary); }
-    .row { display: flex; gap: var(--spacing-sm); flex-wrap: wrap; margin-bottom: var(--spacing-md); }
-    section { margin-bottom: var(--spacing-xl); }
-  `]
+    .design-system { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    header { text-align: center; margin-bottom: 40px; }
+    header h1 { font-size: 32px; color: #1a1a2e; }
+    section { margin-bottom: 40px; }
+    section h2 { color: #1a1a2e; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; }
+    .component-grid { display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-start; margin-top: 15px; }
+  `],
 })
-export class AppComponent {} // Componente sin lógica, solo muestra los componentes del design system
+export class AppComponent {
+  // signal: valor reactivo que controla la visibilidad del modal
+  // showModal() lee el valor, showModal.set(true/false) lo cambia
+  showModal = signal(false);
+}
