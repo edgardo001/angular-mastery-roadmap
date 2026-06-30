@@ -1,17 +1,15 @@
-// ApplicationConfig: configuración de la aplicación Angular
-import { ApplicationConfig, isDevMode } from '@angular/core';
-// provideServiceWorker: habilita el Service Worker para PWA
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
+import { isDevMode } from '@angular/core';
+import { routes } from './app.routes';
 
-// Configuración de la aplicación con Service Worker para PWA
 export const appConfig: ApplicationConfig = {
   providers: [
-    // provideServiceWorker: registra el Service Worker que maneja caché y actualizaciones
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
     provideServiceWorker('ngsw-worker.js', {
-      // enabled: solo en producción (no en desarrollo para evitar problemas de caché)
       enabled: !isDevMode(),
-      // registrationStrategy: cuándo registrar el Service Worker
-      // 'registerWhenStable:3000': espera 3 segundos o hasta que la app esté estable
       registrationStrategy: 'registerWhenStable:3000',
     }),
   ],
