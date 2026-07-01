@@ -2,8 +2,11 @@
 // chat.service.ts — Servicio de chat con IA (streaming)
 // ============================================================
 // Un Servicio en Angular es como un "asistente personal": se encarga
-// de una tarea específica (aquí, comunicarse con la API de IA) y puede
-// ser usado por múltiples componentes. Es reutilizable y está desacoplado.
+// de una tarea específica (aquí, comunicarse con nuestro proxy de IA)
+// y puede ser usado por múltiples componentes.
+//
+// SEGURIDAD: Este servicio se comunica con localhost:3000 (nuestro proxy),
+// NO directamente con OpenAI. La API key nunca sale del servidor.
 
 // Injectable: decorador que le dice a Angular "puedes crear instancias de esta clase".
 // providedIn: 'root' significa que hay UNA SOLA instancia global (singleton).
@@ -29,9 +32,10 @@ export class ChatService {
   // Es como colgar el teléfono mientras alguien habla.
   private abortController: AbortController | null = null;
 
-  // sendMessage: envía un mensaje a la API de OpenAI con streaming.
-  // Streaming significa que la respuesta llega poco a poco, no toda de golpe.
-  async sendMessage(content: string, apiKey: string, endpoint: string) {
+  // sendMessage: envía un mensaje a NUESTRO PROXY con streaming.
+  // NOTA: Ya NO recibe apiKey como parámetro.
+  // La API key vive en el servidor (process.env.OPENAI_API_KEY).
+  async sendMessage(content: string, endpoint = 'http://localhost:3000/api/chat') {
     // Agrega el mensaje del usuario al historial.
     this.messages.update(m => [...m, { role: 'user', content }]);
 
@@ -47,14 +51,15 @@ export class ChatService {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
+          'Content-Type': 'application/json'
+          // NO enviamos Authorization header aquí.
+          // El proxy lo agrega automáticamente con la API key del .env.
         },
-        // body: el mensaje que enviamos a la IA. Incluye todo el historial de聊天.
+        // body: el mensaje que enviamos al proxy.
         body: JSON.stringify({
           model: 'gpt-4o',
           messages: [...this.messages().map(m => ({ role: m.role, content: m.content }))],
-          stream: true // stream: true le dice a OpenAI que envíe la respuesta poco a poco.
+          stream: true // Le dice al proxy que envíe streaming desde OpenAI.
         }),
         signal: this.abortController.signal
       });

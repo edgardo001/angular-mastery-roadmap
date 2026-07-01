@@ -1,58 +1,85 @@
-## 54 ÔÇö Integraci├│n con IA / LLMs
+## 54 — Integración con IA / LLMs
 
-Integraci├│n de modelos de lenguaje (LLMs) en Angular: OpenAI, Claude, Gemini, streaming SSE, RAG, y prompt engineering.
+Integración de modelos de lenguaje (LLMs) en Angular: backend proxy seguro, streaming SSE, manejo de tokens, y componentes de chat interactivos.
 
-> **Prop├│sito:** Integrar APIs de IA generativa con Angular: streaming de respuestas (Server-Sent Events), manejo de tokens, carga de documentos, y componentes de chat interactivos.
+> **Propósito:** Integrar APIs de IA generativa con Angular usando un backend proxy seguro: streaming de respuestas (Server-Sent Events), manejo de tokens, historial conversacional con signals, y componentes de chat.
 >
-> **Problema que resuelve:** Las APIs de IA (OpenAI, Anthropic) son as├¡ncronas, requieren manejo de streaming, tokens limitados y estado conversacional; integrarlas mal da UX pobre.
+> **Problema que resuelve:** Enviar la API key de OpenAI desde el navegador es inseguro: cualquiera que inspeccione la red puede verla, robarla y usarla a tu costa. Las APIs de IA son asíncronas, requieren streaming y manejo de tokens.
 >
-> **C├│mo lo resuelve:** SSE para streaming de respuestas con fetch + ReadableStream, manejo de tokens con contador, historial conversacional con signals, y componentes de chat tipados.
+> **Cómo lo resuelve:** Un backend proxy Express.js se queda entre Angular y OpenAI. La API key vive exclusivamente en el servidor (archivo .env). El navegador solo se comunica con localhost:3000, nunca con OpenAI directamente. Streaming con SSE a través del proxy.
 >
-> **Por qu├® aprenderlo:** La IA generativa es la tecnolog├¡a m├ís transformadora del momento; integrarla en Angular abre posibilidades de productos inteligentes con chat, an├ílisis y automatizaci├│n.
+> **Por qué aprenderlo:** La IA generativa es la tecnología más transformadora del momento. Un proxy seguro es un patrón empresarial estándar para proteger credenciales y controlar el acceso a APIs de terceros.
 
+### Seguridad: Por qué un Backend Proxy
 
-```mermaid
-flowchart LR
-    USER["Usuario"] --> CMP["Angular Component"]
-    CMP --> SVC["AI Service"]
-    SVC --> STREAM["API Call (streaming)"]
-    STREAM --> AI["OpenAI / Gemini / Claude"]
-    AI --> RESP["Chunks"]
-    RESP --> SIG["Signal update"]
-    SIG --> UI["UI con streaming"]
+```
+ANTES (INSEGURO):
+┌──────────┐     Authorization: Bearer sk-...     ┌──────────┐
+│ Browser  │ ─────────────────────────────────────► │ OpenAI   │
+│ Angular  │   ▲ ¡API key visible en la red!       │   API    │
+└──────────┘                                          └──────────┘
+
+AHORA (SEGURO):
+┌──────────┐  POST /api/chat  ┌──────────────┐  Authorization  ┌──────────┐
+│ Browser  │ ────────────────► │ Proxy Server │ ──────────────► │ OpenAI   │
+│ Angular  │  (sin API key)   │  Express.js  │  Bearer sk-...  │   API    │
+└──────────┘                  └──────────────┘                  └──────────┘
+                              ▲ La API key NUNCA                  ▲
+                                sale del servidor                    La API key
+                                                                     es segura
 ```
 
 ### Conceptos Clave
 
-- **LLM APIs**: OpenAI (`gpt-4o`), Claude (`claude-sonnet`), Gemini
-- **Streaming SSE**: `EventSource`, fetch con `ReadableStream`, se├▒ales para chunks
-- **RAG (Retrieval-Augmented Generation)**: b├║squeda sem├íntica + contexto
-- **Embeddings**: `text-embedding-3-small`, vector search
+- **Backend Proxy**: servidor intermedio que protege credenciales de APIs
+- **Variables de entorno (.env)**: almacenan secretos fuera del código fuente
+- **Server-Sent Events (SSE)**: streaming de servidor a cliente vía HTTP
+- **CORS**: control de acceso cross-origin entre Angular y el proxy
+- **API Key Management**: gestión segura de credenciales en el servidor
+- **Streaming**: respuesta de IA que llega poco a poco, no toda de golpe
 - **Prompt Engineering**: system prompts, few-shot, templates
-- **Backend proxy**: Express/FastAPI como proxy para LLM (protege API keys)
-- **WebSocket streaming**: streaming via WebSocket para respuesta continua
-- **Rate limiting**: control de tokens, l├¡mites por usuario
-- **BFF para IA**: backend que orquesta RAG + LLM + contexto
+- **Rate Limiting**: control de uso por usuario
+- **RAG (Retrieval-Augmented Generation)**: búsqueda semántica + contexto
+- **BFF (Backend for Frontend)**: backend que orquesta RAG + LLM + contexto
 
 ### Proyecto
 
-Chatbot IA con streaming, RAG sobre documentaci├│n, y selecci├│n de modelo. Backend proxy Express/FastAPI.
+Chatbot IA con streaming seguro a través de backend proxy Express. La API key nunca llega al navegador.
 
 ### Ejercicios
 
-1. Crea chat con streaming SSE y se├▒ales
-2. Implementa backend proxy Express para OpenAI
-3. A├▒ade RAG: embeddings + b├║squeda sem├íntica
-4. Implementa selector de modelo (GPT-4o, Claude)
-5. Agrega rate limiting por usuario
+1. Ejecuta el proxy y verifica `/api/health` con curl
+2. Implementa rate limiting en el proxy (máximo 10 requests/min)
+3. Agrega autenticación de usuario al proxy (JWT tokens)
+4. Implementa caché de respuestas frecuentes en el servidor
+5. Agrega logging de requests en el proxy para auditoría
 
-### C├│mo ejecutar
+### Cómo ejecutar
 
 ```bash
 cd 54-ai-integration
+
+# 1. Configurar la API key en el servidor
+cd server
+cp .env.example .env
+# Editar .env y agregar tu API key de OpenAI
+cd ..
+
+# 2. Instalar dependencias e iniciar todo
 npm install
-npm run dev:all
+npm start
+# Esto inicia tanto el proxy (puerto 3000) como Angular (puerto 8080)
 ```
+
+### Conceptos de Seguridad
+
+| Concepto | Qué es | Analogía |
+|----------|--------|----------|
+| **Backend Proxy** | Servidor intermediario que protege credenciales | Un traductor que nunca revela los secretos de un lado al otro |
+| **Variables de entorno** | Archivo `.env` que almacena secretos fuera del código | Una caja fuerte: el contenido es visible solo para el servidor |
+| **Nunca exponer API keys** | La clave nunca sale del servidor | Tu PIN del cajero automático: nadie lo ve mientras lo escribes |
+| **CORS** | Control de acceso entre dominios | Un portero que decide quién puede entrar al edificio |
+| **Server-Sent Events** | Streaming unidireccional del servidor al cliente | Como una llamada telefónica donde solo uno habla y el otro escucha |
 
 ### Archivos del Proyecto
 
@@ -61,6 +88,7 @@ npm run dev:all
 | `README.md` | Raíz | Documentación del proyecto |
 | `angular.json` | Raíz | Configuración del workspace Angular |
 | `package.json` | Raíz | Dependencias y scripts del proyecto |
+| `proxy.conf.json` | Raíz | Configuración de proxy de Angular → Express |
 | `tsconfig.json` | Raíz | Configuración base de TypeScript |
 | `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
 | `tsconfig.spec.json` | Raíz | Configuración de TypeScript para tests |
@@ -71,6 +99,10 @@ npm run dev:all
 | `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
 | `src/app/app.ts` | `src/app/` | Componente raíz de la aplicación |
 | `src/app/app.routes.ts` | `src/app/` | Configuración de rutas |
-| `src/app/ai.service.ts` | `src/app/` | Servicio de integración con API de IA |
+| `src/app/ai.service.ts` | `src/app/` | Servicio de integración con proxy de IA |
 | `src/app/chat.service.ts` | `src/app/` | Servicio de chat con streaming SSE |
 | `src/app/chat.ts` | `src/app/` | Componente de chat interactivo con IA |
+| `server/package.json` | `server/` | Dependencias del servidor proxy |
+| `server/server.js` | `server/` | Servidor proxy Express con streaming |
+| `server/.env.example` | `server/` | Plantilla de variables de entorno |
+| `server/.env` | `server/` | Variables de entorno (NO subir a Git) |

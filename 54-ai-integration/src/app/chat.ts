@@ -2,17 +2,20 @@
 // chat.ts — Componente de chat con IA (OpenAI)
 // ============================================================
 // Este componente muestra una interfaz de chat tipo ChatGPT.
-// El usuario escribe un mensaje, se envía a la API de OpenAI,
+// El usuario escribe un mensaje, se envía a NUESTRO PROXY SERVER,
 // y la respuesta aparece en tiempo real (streaming).
-// Es como tener una conversación con una IA dentro de Angular.
+//
+// SEGURIDAD: El usuario NUNCA ingresa la API key. Ella vive
+// exclusivamente en el servidor backend (en el archivo .env).
+// Esto evita que la clave quede expuesta en el navegador.
 
-import { Component, OnInit, effect } from '@angular/core';
+import { Component, effect } from '@angular/core';
 
-// FormsModule: habilita [(ngModel)] para双向数据绑定 (two-way data binding).
+// FormsModule: habilita [(ngModel)] para two-way data binding.
 // Es como un espejo: el usuario escribe en el input y Angular captura el valor.
 import { FormsModule } from '@angular/forms';
 
-// ChatService: el servicio que maneja la comunicación con la API de IA.
+// ChatService: el servicio que maneja la comunicación con el proxy de IA.
 import { ChatService } from './chat.service';
 
 @Component({
@@ -86,18 +89,12 @@ import { ChatService } from './chat.service';
     .footer { margin-top: 0.5rem; text-align: right; color: #6b7280; font-size: 0.875rem; }
   `]
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent {
   // input: el texto que el usuario escribe en el campo de entrada.
   input = '';
 
   // isLoading: indica si se está esperando respuesta de la IA.
   isLoading = false;
-
-  // apiKey: clave de API de OpenAI que el usuario debe ingresar.
-  apiKey = '';
-
-  // endpoint: URL de la API de OpenAI para completar texto.
-  endpoint = 'https://api.openai.com/v1/chat/completions';
 
   // constructor: se ejecuta al crear el componente.
   // effect() — watcher de Angular signals: se ejecuta cuando cambia streamingContent().
@@ -109,17 +106,13 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  // ngOnInit: se ejecuta una vez que el componente está listo en pantalla.
-  // Pide la API key al usuario (en producción, esto se haría de forma más segura).
-  ngOnInit() {
-    this.apiKey = prompt('Enter your OpenAI API key:') || '';
-  }
-
-  // send: envía el mensaje del usuario a la IA.
+  // send: envía el mensaje del usuario a la IA a través del proxy.
+  // NOTA: Ya NO hay prompt() para la API key ni parámetro apiKey.
+  // El proxy se encarga de autenticarse con OpenAI.
   async send() {
     if (!this.input.trim()) return;
-    // Llama al servicio con el mensaje, la API key y el endpoint.
-    await this.chatService.sendMessage(this.input.trim(), this.apiKey, this.endpoint);
+    // Llama al servicio con solo el mensaje. El proxy agrega la API key.
+    await this.chatService.sendMessage(this.input.trim());
     this.input = '';
   }
 

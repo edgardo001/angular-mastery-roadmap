@@ -41,6 +41,9 @@
         },
         "serve": {
           "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "54-ai-integration:build:production"

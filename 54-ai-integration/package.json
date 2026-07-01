@@ -24,7 +24,9 @@
   "scripts": {
     "ng": "ng",
     "build": "ng build",
-    "start": "ng serve --host 0.0.0.0 --port 8080",
+    "start": "concurrently \"npm run server\" \"ng serve --host 0.0.0.0 --port 8080 --proxy-config proxy.conf.json\"",
+    "start:proxy": "ng serve --host 0.0.0.0 --port 8080 --proxy-config proxy.conf.json",
+    "server": "cd server && npm install && node server.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
