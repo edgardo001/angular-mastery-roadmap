@@ -10,8 +10,17 @@
 
 import { Injectable, signal, WritableSignal } from '@angular/core';
 
-// THREE: la librería Three.js para gráficos 3D.
-import * as THREE from 'three';
+// Named imports de Three.js: solo importamos lo que necesitamos.
+// Esto reduce el bundle ~600kB vs el barrel import "import * as THREE".
+// El bundle loader solo incluye estos módulos específicos, no toda la librería.
+import {
+  Scene,            // Contenedor de todos los objetos 3D
+  PerspectiveCamera, // Cámara que simula perspectiva humana
+  Color,            // Representación de color RGB
+  AmbientLight,     // Iluminación general suave
+  DirectionalLight, // Luz direccional tipo sol
+  HemisphereLight   // Luz del cielo (arriba azul, abajo marrón)
+} from 'three';
 
 // OrbitControls: controles que permiten rotar, hacer zoom y pan
 // con el ratón. Es como mover una cámara alrededor de un objeto.
@@ -20,19 +29,19 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 @Injectable({ providedIn: 'root' })
 export class SceneService {
   // Signals que almacenan los objetos 3D para que otros servicios puedan acceder.
-  scene: WritableSignal<THREE.Scene | null> = signal(null);
-  camera: WritableSignal<THREE.PerspectiveCamera | null> = signal(null);
+  scene: WritableSignal<Scene | null> = signal(null);
+  camera: WritableSignal<PerspectiveCamera | null> = signal(null);
   controls: WritableSignal<OrbitControls | null> = signal(null);
 
   // createScene: configura la escena completa con cámara, controles y luces.
-  createScene(canvas: HTMLCanvasElement): { scene: THREE.Scene; camera: THREE.PerspectiveCamera; controls: OrbitControls } {
+  createScene(canvas: HTMLCanvasElement): { scene: Scene; camera: PerspectiveCamera; controls: OrbitControls } {
     // Scene: el contenedor de todos los objetos 3D.
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0f172a);  // Color de fondo oscuro
+    const scene = new Scene();
+    scene.background = new Color(0x0f172a);  // Color de fondo oscuro
 
     // PerspectiveCamera: simula la perspectiva humana (los objetos lejanos parecen más pequeños).
     // Parámetros: ángulo de visión, relación de aspecto, plano cercano, plano lejano.
-    const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+    const camera = new PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
     camera.position.set(5, 5, 10);  // Posición de la cámara en el espacio 3D
     camera.lookAt(0, 0, 0);         // Mira hacia el centro de la escena
 
@@ -56,13 +65,13 @@ export class SceneService {
 
   // setupLights: configura diferentes tipos de luces para iluminar la escena.
   // Las luces son como las luces de un set de filmación: cada una tiene un propósito.
-  private setupLights(scene: THREE.Scene) {
+  private setupLights(scene: Scene) {
     // AmbientLight: iluminación general suave. Como la luz de un día nublado.
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const ambientLight = new AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
     // DirectionalLight: luz direccional (como el sol). Cre sombras.
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    const directionalLight = new DirectionalLight(0xffffff, 1);
     directionalLight.position.set(10, 20, 10);  // Posición de la "fuente de luz"
     directionalLight.castShadow = true;          // Activa sombras
     directionalLight.shadow.mapSize.width = 2048;  // Resolución de las sombras
@@ -70,17 +79,17 @@ export class SceneService {
     scene.add(directionalLight);
 
     // FillLight: luz de relleno que suaviza las sombras duras.
-    const fillLight = new THREE.DirectionalLight(0x8888ff, 0.3);
+    const fillLight = new DirectionalLight(0x8888ff, 0.3);
     fillLight.position.set(-5, 0, 5);
     scene.add(fillLight);
 
     // HemisphereLight: simula la luz del cielo (azul arriba, marrón abajo).
-    const hemiLight = new THREE.HemisphereLight(0x87ceeb, 0x362d59, 0.4);
+    const hemiLight = new HemisphereLight(0x87ceeb, 0x362d59, 0.4);
     scene.add(hemiLight);
   }
 
   // resizeAspect: ajusta la cámara cuando la ventana cambia de tamaño.
-  resizeAspect(camera: THREE.PerspectiveCamera, width: number, height: number) {
+  resizeAspect(camera: PerspectiveCamera, width: number, height: number) {
     camera.aspect = width / height;
     camera.updateProjectionMatrix();  // Recalcula la matriz de proyección
   }

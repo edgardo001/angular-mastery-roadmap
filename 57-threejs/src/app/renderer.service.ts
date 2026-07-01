@@ -7,19 +7,28 @@
 
 import { Injectable, ElementRef, signal, WritableSignal } from '@angular/core';
 
-// THREE: la librería Three.js.
-import * as THREE from 'three';
+// Named imports de Three.js: solo lo que este servicio necesita.
+// WebGLRenderer: motor de dibujo WebGL para gráficos 3D.
+// PCFSoftShadowMap: tipo de sombra suave (Percentage Closer Filtering).
+// ACESFilmicToneMapping: estándar cinematográfico para colores naturales.
+import {
+  WebGLRenderer,
+  PCFSoftShadowMap,
+  ACESFilmicToneMapping,
+  Scene,
+  Camera
+} from 'three';
 
 @Injectable({ providedIn: 'root' })
 export class RendererService {
   // renderer: almacena la instancia del motor de renderizado.
-  renderer: WritableSignal<THREE.WebGLRenderer | null> = signal(null);
+  renderer: WritableSignal<WebGLRenderer | null> = signal(null);
 
   // createRenderer: crea y configura el motor de renderizado.
-  createRenderer(canvas: HTMLCanvasElement): THREE.WebGLRenderer {
+  createRenderer(canvas: HTMLCanvasElement): WebGLRenderer {
     // WebGLRenderer: el motor de dibujo de Three.js usando WebGL.
     // WebGL es la tecnología del navegador para gráficos 3D acelerados por GPU.
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new WebGLRenderer({
       canvas,          // El elemento canvas donde dibujará
       antialias: true, // Suaviza los bordes de los objetos (menos "pixelado")
       alpha: false     // No transparencia de fondo
@@ -31,11 +40,11 @@ export class RendererService {
 
     // shadowMap: habilita las sombras en la escena.
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;  // Sombras suaves
+    renderer.shadowMap.type = PCFSoftShadowMap;  // Sombras suaves
 
     // toneMapping: ajusta los colores para que se vean más naturales.
     // ACESFilmicToneMapping es un estándar de la industria cinematográfica.
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMapping = ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1;  // Exposición de la luz
 
     this.renderer.set(renderer);
@@ -43,14 +52,14 @@ export class RendererService {
   }
 
   // resize: ajusta el tamaño del canvas cuando la ventana cambia.
-  resize(renderer: THREE.WebGLRenderer, width: number, height: number) {
+  resize(renderer: WebGLRenderer, width: number, height: number) {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   }
 
   // render: dibuja la escena desde la perspectiva de la cámara.
   // Este método se llama ~60 veces por segundo en el bucle de animación.
-  render(renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera) {
+  render(renderer: WebGLRenderer, scene: Scene, camera: Camera) {
     renderer.render(scene, camera);
   }
 }

@@ -8,12 +8,29 @@
 
 import { Injectable, signal, WritableSignal } from '@angular/core';
 
-// THREE: la librería Three.js.
-import * as THREE from 'three';
+// Named imports de Three.js: solo lo que este servicio necesita.
+// GridHelper: cuadrícula de referencia en el suelo.
+// BoxGeometry: forma de cubo tridimensional.
+// MeshStandardMaterial: material que reacciona a luces (PBR).
+// Mesh: objeto 3D que combina geometría + material.
+// EdgesGeometry / LineBasicMaterial / LineSegments: dibujan aristas.
+// PlaneGeometry: plano rectangular para el suelo.
+// Scene: contenedor de objetos 3D.
+import {
+  GridHelper,
+  BoxGeometry,
+  MeshStandardMaterial,
+  Mesh,
+  EdgesGeometry,
+  LineBasicMaterial,
+  LineSegments,
+  PlaneGeometry,
+  Scene
+} from 'three';
 
 // AnimatedObject: define un objeto que se mueve (rota) en la escena.
 export interface AnimatedObject {
-  mesh: THREE.Mesh;        // El objeto 3D (geometría + material)
+  mesh: Mesh;             // El objeto 3D (geometría + material)
   speed: number;           // Qué tan rápido rota
   axis: 'x' | 'y' | 'z'; // Eje de rotación
 }
@@ -24,10 +41,10 @@ export class ObjectsService {
   animatedObjects: WritableSignal<AnimatedObject[]> = signal([]);
 
   // createDemoScene: crea la escena de demostración con cubos, suelo y cuadrícula.
-  createDemoScene(scene: THREE.Scene) {
+  createDemoScene(scene: Scene) {
     // GridHelper: una cuadrícula en el suelo que ayuda a orientarse.
     // Parámetros: tamaño, divisiones, color de las líneas, color del centro.
-    const gridHelper = new THREE.GridHelper(20, 20, 0x3b82f6, 0x1e293b);
+    const gridHelper = new GridHelper(20, 20, 0x3b82f6, 0x1e293b);
     scene.add(gridHelper);
 
     const objects: AnimatedObject[] = [];
@@ -43,12 +60,12 @@ export class ObjectsService {
 
     for (const shape of shapes) {
       // BoxGeometry: define la forma del cubo (1x1x1 unidad).
-      const geometry = new THREE.BoxGeometry(1, 1, 1);
+      const geometry = new BoxGeometry(1, 1, 1);
 
       // MeshStandardMaterial: material que reacciona a las luces.
       // roughness: qué tan "rugoso" es (0 = espejo, 1 = mate).
       // metalness: qué tan metálico es (0 = plástico, 1 = metal).
-      const material = new THREE.MeshStandardMaterial({
+      const material = new MeshStandardMaterial({
         color: shape.color,
         roughness: 0.3,
         metalness: 0.7,
@@ -56,7 +73,7 @@ export class ObjectsService {
       });
 
       // Mesh: combina geometría + material = un objeto 3D visible.
-      const mesh = new THREE.Mesh(geometry, material);
+      const mesh = new Mesh(geometry, material);
       mesh.position.set(shape.pos[0], shape.pos[1], shape.pos[2]);
       mesh.castShadow = true;  // Este objeto proyecta sombras
       scene.add(mesh);
@@ -65,9 +82,9 @@ export class ObjectsService {
 
       // EdgesGeometry + LineBasicMaterial: dibuja las aristas del cubo
       // como líneas blancas semi-transparentes (efecto estético).
-      const edges = new THREE.EdgesGeometry(geometry);
-      const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.3 });
-      const wireframe = new THREE.LineSegments(edges, lineMat);
+      const edges = new EdgesGeometry(geometry);
+      const lineMat = new LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.3 });
+      const wireframe = new LineSegments(edges, lineMat);
       mesh.add(wireframe);  // wireframe es "hijo" del mesh (se mueve con él)
     }
 
@@ -79,17 +96,17 @@ export class ObjectsService {
   }
 
   // createFloor: crea un suelo plano que recibe sombras.
-  private createFloor(scene: THREE.Scene) {
+  private createFloor(scene: Scene) {
     // PlaneGeometry: un plano rectangular de 20x20 unidades.
-    const floorGeom = new THREE.PlaneGeometry(20, 20);
-    const floorMat = new THREE.MeshStandardMaterial({
+    const floorGeom = new PlaneGeometry(20, 20);
+    const floorMat = new MeshStandardMaterial({
       color: 0x1e293b,
       roughness: 0.8,
       metalness: 0.1,
       transparent: true,
       opacity: 0.8
     });
-    const floor = new THREE.Mesh(floorGeom, floorMat);
+    const floor = new Mesh(floorGeom, floorMat);
     floor.rotation.x = -Math.PI / 2;  // Rota 90° para que sea horizontal
     floor.position.y = -0.5;           // Lo pone debajo de los cubos
     floor.receiveShadow = true;        // Este suelo recibe sombras
