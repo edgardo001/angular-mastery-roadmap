@@ -4,7 +4,7 @@ Arquitectura de monolito modular en Angular: módulos independientes con sus pro
 
 > **Propósito:** Organizar aplicaciones monolíticas en módulos independientes (Orders, Inventory, Billing) con boundaries claros, shared kernel y API pública explícita.
 >
-> **Problema que resuelve:** Los monolitos sin modularidad crecen caóticamente con dependencias cruzadas entre features, making the codebase impossible to maintain and scale.
+> **Problema que resuelve:** Los monolitos sin modularidad crecen caóticamente con dependencias cruzadas entre features, haciendo que el código sea imposible de mantener y escalar.
 >
 > **Cómo lo resuelve:** Feature modules aislados con sus propias rutas/servicios/componentes, shared kernel con contratos compartidos, barrel exports que definen API pública explícita de cada módulo.
 >
