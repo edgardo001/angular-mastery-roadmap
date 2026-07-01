@@ -1,167 +1,124 @@
 // ============================================================
-// collab.service.ts — Servicio de colaboración WebRTC + WebSocket
+// collab.service.ts — Servicio de colaboración con Y.js
 // ============================================================
-// Este servicio maneja la comunicación en tiempo real entre usuarios.
-// Usa dos tecnologías:
-// 1. WebSocket: para "señalización" (encontrar a otros usuarios)
-// 2. WebRTC: para comunicación directa peer-to-peer (sin servidor intermediario)
+// Este servicio reemplaza la implementación manual de WebRTC/WebSocket
+// con el provider de Y.js.
 //
-// Es como organizar una fierta:
-// - WebSocket es el "recepcionista" que te dice quién llegó.
-// - WebRTC es la "conversación directa" entre invitados.
+// ANLOGÍA: Antes teníamos que construir nuestro propio "sistema de
+// mensajería" desde cero (WebSocket + WebRTC + señalización).
+// Ahora usamos el provider de Y.js, que ya es un sistema probado
+// por miles de aplicaciones.
+//
+// Ventajas de usar Y.js provider:
+// 1. No necesitamos manejar WebRTC manualmente
+// 2. No necesitamos un servidor de señalización separado
+// 3. La sincronización es automática y confiable
+// 4. Ya maneja la reconexión automática
+// 5. Ya tiene persistencia (IndexedDB) integrada
 
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { Injectable, signal, WritableSignal, OnDestroy } from '@angular/core';
 
-// SignalingMessage: los mensajes que se envían por WebSocket para coordinar.
-export interface SignalingMessage {
-  type: 'offer' | 'answer' | 'ice-candidate' | 'join' | 'leave' | 'peer-joined' | 'peer-left';
-  from: string;     // Quién envía el mensaje
-  to?: string;      // A quién va dirigido (en mensajes punto a punto)
-  data?: any;       // Datos adicionales (ofertas SDP, candidatos ICE, etc.)
-}
+// YjsService: el servicio central de Y.js
+import { YjsService } from './yjs.service';
 
 @Injectable({ providedIn: 'root' })
-export class CollabService {
+export class CollabService implements OnDestroy {
+  // ============================================================
+  // Propiedades
+  // ============================================================
+
   // peers: lista de IDs de usuarios conectados a la misma sala.
+  // Se actualiza automáticamente cuando alguien se une o sale.
   peers: WritableSignal<string[]> = signal([]);
 
-  // ws: la conexión WebSocket al servidor de señalización.
-  private ws: WebSocket | null = null;
+  // connected: estado de la conexión.
+  connected: WritableSignal<boolean> = signal(false);
 
-  // peerConnections: mapa de conexiones WebRTC con cada par.
-  private peerConnections = new Map<string, RTCPeerConnection>();
+  // roomId: ID de la sala actual.
+  private roomId: string = '';
 
-  // localStream: el stream de audio/video local (para videollamadas).
-  private localStream: MediaStream | null = null;
-
-  // config: configuración de WebRTC. Los servidores STUN ayudan a
-  // descubrir la dirección IP real del usuario detrás de un NAT.
-  private config: RTCConfiguration = {
-    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
-  };
-
-  // connect: establece la conexión WebSocket y se une a una sala.
-  connect(signalUrl: string, roomId: string, userId: string) {
-    // Abre una conexión WebSocket al servidor de señalización.
-    this.ws = new WebSocket(signalUrl);
-
-    // onopen: se ejecuta cuando la conexión se establece.
-    this.ws.onopen = () => {
-      // Envía un mensaje "join" para indicar que entramos a la sala.
-      this.ws!.send(JSON.stringify({ type: 'join', from: userId, data: { room: roomId } }));
-    };
-
-    // onmessage: se ejecuta cuando llega un mensaje de otro usuario o del servidor.
-    this.ws.onmessage = async (event) => {
-      const msg: SignalingMessage = JSON.parse(event.data);
-      await this.handleSignaling(msg, userId);
-    };
-
-    this.ws.onclose = () => {
-      console.log('Signaling connection closed');
-    };
+  constructor(private yjsService: YjsService) {
+    // Suscribirse a los cambios de conexión de Y.js.
+    this.setupConnectionSync();
   }
 
-  // handleSignaling: procesa los mensajes de señalización según su tipo.
-  private async handleSignaling(msg: SignalingMessage, userId: string) {
-    switch (msg.type) {
-      case 'peer-joined':
-        // Un nuevo usuario se unió a la sala.
-        this.peers.update(p => [...p, msg.from]);
-        // Le enviamos una oferta para establecer conexión directa.
-        await this.createOffer(msg.from, userId);
-        break;
-      case 'peer-left':
-        // Un usuario se desconectó.
-        this.peers.update(p => p.filter(id => id !== msg.from));
-        // Cerramos su conexión WebRTC y la eliminamos del mapa.
-        this.peerConnections.get(msg.from)?.close();
-        this.peerConnections.delete(msg.from);
-        break;
-      case 'offer':
-        // Recibimos una oferta de conexión de otro usuario.
-        await this.handleOffer(msg, userId);
-        break;
-      case 'answer':
-        // Recibimos una respuesta a nuestra oferta.
-        await this.handleAnswer(msg);
-        break;
-      case 'ice-candidate':
-        // Recibimos un candidato ICE (una forma de conectarnos directamente).
-        await this.handleIceCandidate(msg);
-        break;
-    }
+  // ============================================================
+  // Métodos de conexión
+  // ============================================================
+
+  // setupConnectionSync: Configura la sincronización de conexión.
+  // Cuando Y.js se conecta o desconecta, actualiza los signals.
+  private setupConnectionSync() {
+    // Observar el estado de conexión del servicio Y.js.
+    // Y.js emite eventos de estado que podemos usar para
+    // actualizar la UI.
+    this.yjsService.isConnected$.subscribe(isConnected => {
+      this.connected.set(isConnected);
+    });
+
+    // Observar la lista de usuarios conectados.
+    // Y.js Awareness mantiene esta lista automáticamente.
+    this.yjsService.connectedUsers$.subscribe(users => {
+      this.peers.set(users.map(u => u.id));
+    });
   }
 
-  // createOffer: crea una oferta WebRTC para conectarnos con otro usuario.
-  private async createOffer(peerId: string, userId: string) {
-    const pc = this.createPeerConnection(peerId, userId);
-    // createOffer: genera los datos SDP (Session Description Protocol)
-    // que describen cómo queremos conectarnos.
-    const offer = await pc.createOffer();
-    await pc.setLocalDescription(offer);
-    this.send({ type: 'offer', from: userId, to: peerId, data: offer });
+  // connect: establece la conexión con el servidor Y.js.
+  // Esta función reemplaza toda la lógica manual de WebRTC/WebSocket.
+  //
+  // Parámetros:
+  // - serverUrl: URL del servidor WebSocket (ej: 'wss://yjs-server.com')
+  // - roomId: ID de la sala (ej: 'mi-sala')
+  // - userId: ID del usuario (para referencia, Y.js ya tiene su propio ID)
+  //
+  // Ejemplo de uso:
+  //   collabService.connect('wss://yjs-server.com', 'room-123', 'user-abc')
+  connect(serverUrl: string, roomId: string, userId: string) {
+    console.log(`[Collab] Connecting to ${serverUrl}, room: ${roomId}`);
+
+    // Guardar el roomId para referencia.
+    this.roomId = roomId;
+
+    // Conectar usando el servicio Y.js.
+    // Esto crea el provider WebSocket y configura Awareness.
+    this.yjsService.connect(serverUrl, roomId);
+
+    console.log('[Collab] Connection initiated');
   }
 
-  // handleOffer: procesa una oferta recibida y responde con una answer.
-  private async handleOffer(msg: SignalingMessage, userId: string) {
-    const pc = this.createPeerConnection(msg.from, userId);
-    // setRemoteDescription: le dice a WebRTC los datos del otro usuario.
-    await pc.setRemoteDescription(new RTCSessionDescription(msg.data));
-    // createAnswer: genera la respuesta a la oferta.
-    const answer = await pc.createAnswer();
-    await pc.setLocalDescription(answer);
-    this.send({ type: 'answer', from: userId, to: msg.from, data: answer });
-  }
-
-  // handleAnswer: procesa la respuesta a nuestra oferta.
-  private async handleAnswer(msg: SignalingMessage) {
-    const pc = this.peerConnections.get(msg.from);
-    if (pc) {
-      await pc.setRemoteDescription(new RTCSessionDescription(msg.data));
-    }
-  }
-
-  // handleIceCandidate: agrega un candidato ICE para mejorar la conexión.
-  private async handleIceCandidate(msg: SignalingMessage) {
-    const pc = this.peerConnections.get(msg.from);
-    if (pc && msg.data) {
-      await pc.addIceCandidate(new RTCIceCandidate(msg.data));
-    }
-  }
-
-  // createPeerConnection: crea una conexión WebRTC con un par específico.
-  private createPeerConnection(peerId: string, userId: string): RTCPeerConnection {
-    const pc = new RTCPeerConnection(this.config);
-
-    // onicecandidate: se ejecuta cuando WebRTC descubre una nueva forma de conectarse.
-    pc.onicecandidate = (event) => {
-      if (event.candidate) {
-        this.send({ type: 'ice-candidate', from: userId, to: peerId, data: event.candidate });
-      }
-    };
-
-    // ontrack: se ejecuta cuando recibimos audio/video del otro usuario.
-    pc.ontrack = (event) => {
-      const el = document.createElement('audio');
-      el.srcObject = event.streams[0];
-      el.autoplay = true;
-    };
-
-    this.peerConnections.set(peerId, pc);
-    return pc;
-  }
-
-  // send: envía un mensaje por WebSocket.
-  private send(msg: SignalingMessage) {
-    this.ws?.send(JSON.stringify(msg));
-  }
-
-  // disconnect: cierra todas las conexiones y limpia los recursos.
+  // disconnect: cierra la conexión y limpia los recursos.
+  // Esta función reemplaza toda la lógica manual de limpieza.
   disconnect() {
-    this.peerConnections.forEach(pc => pc.close());
-    this.peerConnections.clear();
-    this.ws?.close();
+    console.log('[Collab] Disconnecting');
+
+    // Desconectar usando el servicio Y.js.
+    this.yjsService.destroy();
+
+    // Limpiar los signals.
     this.peers.set([]);
+    this.connected.set(false);
+  }
+
+  // ============================================================
+  // Métodos de utilidad
+  // ============================================================
+
+  // getRoomId: retorna el ID de la sala actual.
+  getRoomId(): string {
+    return this.roomId;
+  }
+
+  // isConnectedToRoom: verifica si estamos conectados a una sala.
+  isConnectedToRoom(): boolean {
+    return this.connected() && this.roomId !== '';
+  }
+
+  // ============================================================
+  // Limpieza
+  // ============================================================
+
+  ngOnDestroy() {
+    this.disconnect();
+    console.log('[Collab] Destroyed');
   }
 }

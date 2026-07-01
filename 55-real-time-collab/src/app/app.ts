@@ -1,16 +1,19 @@
 // ============================================================
-// app.ts — Componente raíz de la app de colaboración
+// app.ts — Componente raíz de la app de colaboración con Y.js
 // ============================================================
 // Este componente muestra los controles de conexión (URL del servidor,
-// ID de sala) y el editor colaborativo. Es como la "sala de control"
-// donde los usuarios se conectan antes de empezar a editar juntos.
+// ID de sala) y el editor colaborativo. Usa Y.js para sincronizar
+// los cambios entre múltiples usuarios.
+//
+// ANLOGÍA: Es como la "sala de control" donde los usuarios se conectan
+// antes de empezar a editar juntos en el "pizarrón mágico" de Y.js.
 
 import { Component, OnInit } from '@angular/core';
 
 // EditorComponent: el editor de texto colaborativo.
 import { EditorComponent } from './editor';
 
-// CollabService: maneja la conexión WebRTC/WebSocket.
+// CollabService: maneja la conexión con el servidor Y.js.
 import { CollabService } from './collab.service';
 
 // FormsModule: habilita ngModel para双向数据绑定 de los inputs.
@@ -25,16 +28,16 @@ import { FormsModule } from '@angular/forms';
 
   template: `
     <header>
-      <h1>Collaborative Editor</h1>
+      <h1>Collaborative Editor (Y.js)</h1>
       <div class="controls">
         <!-- [(ngModel)] — two-way binding: el usuario escribe la URL y Angular la guarda -->
-        <input [(ngModel)]="signalUrl" placeholder="Signal Server URL" />
+        <input [(ngModel)]="serverUrl" placeholder="Y.js WebSocket Server URL" />
         <input [(ngModel)]="roomId" placeholder="Room ID" />
         <!-- [disabled]="connected" — deshabilita el botón si ya estamos conectados -->
-        <button (click)="connect()" [disabled]="connected">Connect</button>
-        <button (click)="disconnect()" [disabled]="!connected" class="danger">Disconnect</button>
+        <button (click)="connect()" [disabled]="collabService.connected()">Connect</button>
+        <button (click)="disconnect()" [disabled]="!collabService.connected()" class="danger">Disconnect</button>
       </div>
-      @if (connected) {
+      @if (collabService.connected()) {
         <div class="peers">
           <!-- Muestra la lista de usuarios conectados separados por coma -->
           Peers: {{ collabService.peers().join(', ') || 'none' }}
@@ -60,14 +63,13 @@ import { FormsModule } from '@angular/forms';
   `]
 })
 export class App implements OnInit {
-  // signalUrl: URL del servidor de señalización WebSocket.
-  signalUrl = 'wss://signal.example.com/ws';
+  // serverUrl: URL del servidor WebSocket de Y.js.
+  // Por defecto, usamos un servidor público de demostración.
+  // Para producción, deberías usar tu propio servidor.
+  serverUrl = 'wss://demos.yjs.dev';
 
   // roomId: identificador de la sala donde se reúnen los usuarios.
   roomId = 'room-angular';
-
-  // connected: estado de la conexión (conectado o no).
-  connected = false;
 
   constructor(public collabService: CollabService) {}
 
@@ -80,16 +82,14 @@ export class App implements OnInit {
     }
   }
 
-  // connect: establece la conexión con el servidor de señalización.
+  // connect: establece la conexión con el servidor Y.js.
   connect() {
     const userId = localStorage.getItem('collab-user') || 'anonymous';
-    this.collabService.connect(this.signalUrl, this.roomId, userId);
-    this.connected = true;
+    this.collabService.connect(this.serverUrl, this.roomId, userId);
   }
 
   // disconnect: cierra la conexión y limpia los recursos.
   disconnect() {
     this.collabService.disconnect();
-    this.connected = false;
   }
 }

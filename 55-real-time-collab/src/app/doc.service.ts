@@ -1,100 +1,156 @@
 // ============================================================
-// doc.service.ts — Servicio de documento con CRDT
+// doc.service.ts — Servicio de documento con Y.js (CRDT)
 // ============================================================
-// CRDT (Conflict-free Replicated Data Type) es una técnica que permite
-// que múltiples usuarios editen el mismo dato sin conflictos.
-// Es como si todos pudieran escribir en la misma pizarra al mismo tiempo,
-// y la pizarra se arreglara sola para que todos vean lo mismo.
+// Este servicio reemplaza el CRDT hand-rolled con Y.js.
+// Y.js maneja automáticamente los conflictos cuando múltiples
+// usuarios editan al mismo tiempo.
 //
-// Este servicio implementa un CRDT simple de texto:
-// cada operación (insert/delete) tiene un ID único y timestamp,
-// y se aplica en el orden correcto sin perder cambios.
+// ANLOGÍA: Antes teníamos que construir nuestro propio "pizarrón mágico"
+// desde cero. Ahora usamos Y.js, que ya es un pizarrón mágico probado
+// por miles de aplicaciones (Google Docs, Notion, Figma, etc.).
+//
+// Y.js resuelve los problemas del CRDT manual:
+// 1. No necesitamos generar IDs únicos para cada operación
+// 2. No necesitamos resolver conflictos manualmente
+// 3. Ya tiene persistencia (IndexedDB) y sincronización (WebSocket)
+// 4. Ya maneja Awareness (cursores, presencia)
 
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { Injectable, signal, WritableSignal, OnDestroy } from '@angular/core';
 
-// Interface CRDTOperation: define qué forma tiene una operación de edición.
-// Es como un "ticket de cambio": dice quién hizo qué, dónde y cuándo.
-interface CRDTOperation {
-  id: string;         // ID único de la operación (para detectar duplicados)
-  userId: string;     // Quién hizo el cambio
-  type: 'insert' | 'delete';  // Tipo de operación
-  position: number;   // Dónde se hizo el cambio (índice en el texto)
-  text?: string;      // Texto insertado (solo para 'insert')
-  length?: number;    // Cuántos caracteres se eliminaron (solo para 'delete')
-  timestamp: number;  // Cuándo se hizo (para ordenar si hay empate)
-}
+// Y: la librería Y.js para crear documentos CRDT
+import * as Y from 'yjs';
+
+// YjsService: el servicio central de Y.js que maneja el documento
+import { YjsService } from './yjs.service';
 
 @Injectable({ providedIn: 'root' })
-export class DocService {
+export class DocService implements OnDestroy {
+  // ============================================================
+  // Propiedades
+  // ============================================================
+
   // content: el contenido actual del documento como signal.
+  // Se actualiza automáticamente cuando Y.js detecta cambios.
   content: WritableSignal<string> = signal('');
 
-  // operations: historial de todas las operaciones aplicadas.
-  private operations: CRDTOperation[] = [];
+  // Y.js types (acceso directo al CRDT)
+  // Estos son útiles si necesitas crear bindings con editores
+  // como Quill, ProseMirror, o CodeMirror.
+  private yText: Y.Text | null = null;
 
-  // siteId: identificador único de esta instancia del documento.
-  // Es como un "nombre de usuario" para esta copia del documento.
-  private readonly siteId: string;
-
-  constructor() {
-    // Genera un ID aleatorio corto (8 caracteres).
-    this.siteId = Math.random().toString(36).slice(2, 10);
+  constructor(private yjsService: YjsService) {
+    // Suscribirse a los cambios del documento Y.js.
+    // Cuando el contenido cambia, el signal se actualiza.
+    this.setupDocumentSync();
   }
 
+  // ============================================================
+  // Inicialización
+  // ============================================================
+
+  // setupDocumentSync: Configura la sincronización entre Y.js y Angular.
+  // Es como conectar el "pizarrón mágico" al "tablero de Angular".
+  private setupDocumentSync() {
+    // Obtener el tipo Y.Text del servicio Y.js.
+    this.yText = this.yjsService.getText();
+
+    // Observar cambios en el texto de Y.js.
+    // Cada vez que alguien escribe (local o remotamente),
+    // se ejecuta este callback.
+    this.yText.observe(event => {
+      // Actualizar el signal con el texto completo.
+      // Y.js ya resolvió los conflictos, así que solo
+      // necesitamos mostrar el resultado.
+      this.content.set(this.yText!.toString());
+
+      // Log para depuración.
+      console.log('[DocService] Text changed:', event.delta);
+    });
+
+    // Sincronizar el contenido inicial.
+    this.content.set(this.yText.toString());
+  }
+
+  // ============================================================
+  // Métodos de edición (compatibles con la API anterior)
+  // ============================================================
+
   // localInsert: inserta texto en una posición específica.
+  // Esta función reemplaza la versión manual del CRDT.
+  // Y.js se encarga de:
+  // - Generar un ID único para la operación
+  // - Resolver conflictos con otras operaciones simultáneas
+  // - Notificar a otros usuarios del cambio
+  //
+  // Parámetros:
+  // - position: Dónde insertar (índice en el texto)
+  // - text: Qué insertar
+  //
+  // Ejemplo de uso:
+  //   docService.localInsert(5, 'Hello')
   localInsert(position: number, text: string) {
-    const op: CRDTOperation = {
-      id: crypto.randomUUID(),  // Genera un ID único usando la API del navegador
-      userId: this.siteId,
-      type: 'insert',
-      position,
-      text,
-      timestamp: Date.now()
-    };
-    this.applyOperation(op);
-    this.operations.push(op);
-    return op;
+    // Y.js transact: garantiza que la operación sea atómica.
+    // Es como una "caja fuerte" que contiene todos los cambios.
+    this.yjsService.insertText(position, text);
+
+    // Log para depuración.
+    console.log(`[DocService] Insert at ${position}: "${text}"`);
   }
 
   // localDelete: elimina texto de una posición específica.
+  // Esta función reemplaza la versión manual del CRDT.
+  //
+  // Parámetros:
+  // - position: Dónde empezar a borrar
+  // - length: Cuántos caracteres borrar
+  //
+  // Ejemplo de uso:
+  //   docService.localDelete(5, 3) // Borra 3 caracteres desde la posición 5
   localDelete(position: number, length: number) {
-    const op: CRDTOperation = {
-      id: crypto.randomUUID(),
-      userId: this.siteId,
-      type: 'delete',
-      position,
-      length,
-      timestamp: Date.now()
-    };
-    this.applyOperation(op);
-    this.operations.push(op);
-    return op;
+    // Y.js transact: garantiza que la operación sea atómica.
+    this.yjsService.deleteText(position, length);
+
+    // Log para depuración.
+    console.log(`[DocService] Delete at ${position}, length: ${length}`);
   }
 
-  // applyRemote: aplica una operación que viene de otro usuario.
-  applyRemote(op: CRDTOperation) {
-    // Si ya tenemos esta operación (la hicimos nosotros), la ignoramos.
-    const conflict = this.operations.find(o => o.id === op.id);
-    if (conflict) return;
-    this.applyOperation(op);
-    this.operations.push(op);
+  // ============================================================
+  // Métodos de acceso al CRDT
+  // ============================================================
+
+  // getYText: Retorna el tipo Y.Text del documento.
+  // Útil para crear bindings con editores de texto.
+  //
+  // Ejemplo de uso con Quill:
+  //   const ytext = docService.getYText()
+  //   const binding = new QuillBinding(ytext, quillEditor)
+  getYText(): Y.Text | null {
+    return this.yText;
   }
 
-  // applyOperation: modifica el contenido del documento según la operación.
-  private applyOperation(op: CRDTOperation) {
-    this.content.update(current => {
-      if (op.type === 'insert') {
-        // Inserta el texto: toma lo que hay antes + el texto nuevo + lo que hay después.
-        return current.slice(0, op.position) + op.text + current.slice(op.position);
-      } else {
-        // Elimina texto: toma lo que hay antes + lo que hay después del borrado.
-        return current.slice(0, op.position) + current.slice(op.position + (op.length || 0));
-      }
-    });
+  // getDoc: Retorna el documento Y.js.
+  // Útil si necesitas acceder a otros tipos del documento.
+  //
+  // Ejemplo de uso:
+  //   const doc = docService.getDoc()
+  //   const ymap = doc.getMap('metadata')
+  getDoc(): Y.Doc {
+    return this.yjsService.getDoc();
   }
 
-  // getSiteId: devuelve el ID único de esta instancia.
+  // getSiteId: devuelve el ID único de este usuario.
+  // Mantiene compatibilidad con la API anterior.
   getSiteId(): string {
-    return this.siteId;
+    return this.yjsService.getUserId();
+  }
+
+  // ============================================================
+  // Limpieza
+  // ============================================================
+
+  ngOnDestroy() {
+    // El YjsService se encarga de la limpieza principal.
+    // Este servicio solo necesita limpiar sus propias suscripciones.
+    console.log('[DocService] Destroyed');
   }
 }

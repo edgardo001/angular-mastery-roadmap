@@ -1,79 +1,89 @@
-## 55 ÔÇö Edici├│n Colaborativa en Tiempo Real
+## 55 — Edición Colaborativa en Tiempo Real con Y.js
 
-Colaboraci├│n en tiempo real con Y.js, CRDTs, WebSocket y Angular. Edici├│n multi-usuario con awareness y cursores.
-
-> **Prop├│sito:** Implementar colaboraci├│n en tiempo real con WebRTC y CRDT/Causal Trees: multiplayer cursors, edici├│n concurrente, conflict resolution y Operational Transform.
+> **Propósito:** Implementar colaboración en tiempo real usando Y.js, un framework CRDT probado en producción (Google Docs, Figma, Notion). Aprenderás conceptos distribuidos avanzados como CRDT, Awareness, y persistencia offline.
 >
-> **Problema que resuelve:** La edici├│n concurrente sin un sistema de resoluci├│n de conflictos resulta en datos corruptos; WebRTC es complejo de configurar (STUN/TURN, signaling, SDP exchange).
+> **Problema que resuelve:** La edición concurrente sin un sistema de resolución de conflictos resulta en datos corruptos. Implementar un CRDT desde cero es complejo y propenso a errores.
 >
-> **C├│mo lo resuelve:** CRDT para resoluci├│n autom├ítica de conflictos sin servidor central, WebRTC con peer-to-peer via signaling serve --host 0.0.0.0 --port 8080r, Operational Transform para edici├│n de texto colaborativa.
+> **Cómo lo resuelve:** Y.js resuelve automáticamente los conflictos usando CRDTs optimizados. No necesitas manejar WebSocket/WebRTC manualmente, ni resolver conflictos, ni sincronizar cursores.
 >
-> **Por qu├® aprenderlo:** La colaboraci├│n en tiempo real es el nuevo est├índar (Google Docs, Figma, Notion); implementarla requiere conceptos distribuidos avanzados que pocos desarrolladores dominan.
-
+> **Por qué aprenderlo:** La colaboración en tiempo real es el nuevo estándar (Google Docs, Figma, Notion). Y.js es la librería CRDT más popular del ecosistema JavaScript, y entenderla te diferenciará como desarrollador.
 
 ```mermaid
 flowchart LR
     U1["Usuario A"] --> YDOC["Y.Doc (CRDT)"]
     U2["Usuario B"] --> YDOC
-    YDOC --> PROV["Provider (WebSocket)"]
-    PROV --> SYNC["Auto-sync"]
-    YDOC --> AW["Awareness (cursores)"]
+    YDOC --> PROV["WebSocket Provider"]
+    PROV --> SERVER["Servidor Y.js"]
+    SERVER --> PROV2["WebSocket Provider"]
+    PROV2 --> YDOC2["Y.Doc (CRDT)"]
+    YDOC2 --> U2
+    YDOC --> AW["Awareness"]
     AW --> U1
     AW --> U2
-    YDOC --> SIG["Angular Signals"]
-    SIG --> UI["UI reactiva"]
+    YDOC --> DB["IndexedDB"]
+    DB --> OFFLINE["Persistencia Offline"]
 ```
 
 ### Conceptos Clave
 
-- **Y.js**: CRDT (Conflict-Free Replicated Data Type), `Y.Doc`, `Y.Map`, `Y.Array`, `Y.Text`
-- **CRDT**: resoluci├│n autom├ítica de conflictos sin servidor central
-- **WebSocket provider**: `y-websocket`, sincronizaci├│n entre clientes
-- **Awareness**: presencia, cursores, selecci├│n de otros usuarios
-- **Angular + Y.js**: convertir `Y.Map` a se├▒ales con `toSignal`
-- **Texto compartido**: `Y.Text` con `quill`/`prosemirror` binding
-- **Undo/Redo**: `y-undo` plugin
-- **Persistencia**: `y-indexeddb` para persistencia offline
-- **Backend**: Node.js server con `y-websocket`, o FastAPI WebSocket
+- **Y.Doc**: El documento compartido. Es el "pizarrón mágico" donde todos escriben.
+- **Y.Text**: Tipo de texto colaborativo. Es como una "cuerda mágica" que se sincroniza automáticamente.
+- **CRDT**: Conflict-Free Replicated Data Type. Resuelve conflictos sin servidor central.
+- **Provider**: Conecta tu documento con otros usuarios (WebSocket, WebRTC, etc.).
+- **Awareness**: Sistema de presencia. Muestra quién está escribiendo dónde (cursores, selección).
+- **Persistencia**: IndexedDB guarda el documento localmente para soporte offline.
+- **Transacciones**: Operaciones atómicas que garantizan consistencia.
 
-### Proyecto
+### Analogías
 
-Editor de documentos colaborativo multi-usuario con Y.js: edici├│n simult├ínea, cursores en vivo, awareness, historial.
+| Concepto | Analogía |
+|----------|----------|
+| Y.Doc | Pizarrón mágico donde todos pueden escribir al mismo tiempo |
+| Y.Text | Línea de texto que se sincroniza automáticamente entre usuarios |
+| Provider | Canal de comunicación que conecta tu pizarrón con otros |
+| Awareness | Sistema de mensajería que notifica quién está escribiendo dónde |
+| IndexedDB | Copia de seguridad local que persiste aunque no haya internet |
+| Transacción | Caja fuerte que contiene todos los cambios de una vez |
 
-### Ejercicios
+### Archivos del Proyecto
 
-1. Configura Y.Doc con `y-websocket` provider
-2. Convierte Y.Array a se├▒al Angular con `toSignal`
-3. Implementa awareness (qui├®nes est├ín conectados)
-4. Muestra cursores de otros usuarios en vivo
-5. A├▒ade persistencia offline con IndexedDB
+| Archivo | Propósito |
+|---------|-----------|
+| `src/app/yjs.service.ts` | Servicio central de Y.js: crea el documento, providers, y maneja Awareness |
+| `src/app/doc.service.ts` | Servicio de documento: usa Y.js para sincronizar el contenido |
+| `src/app/collab.service.ts` | Servicio de colaboración: maneja la conexión con el servidor |
+| `src/app/cursor.service.ts` | Servicio de cursores: usa Awareness para mostrar posiciones remotas |
+| `src/app/editor.ts` | Componente editor: textarea colaborativo con cursores remotos |
+| `src/app/app.ts` | Componente raíz: controles de conexión y editor |
 
-### C├│mo ejecutar
+### Cómo ejecutar
 
 ```bash
 cd 55-real-time-collab
 npm install
-npm run dev:all
+npm start
 ```
 
-### Archivos del Proyecto
+### Ejercicios
 
-| Archivo | Carpeta | Propósito |
-|---------|---------|-----------|
-| `README.md` | Raíz | Documentación del proyecto |
-| `angular.json` | Raíz | Configuración del workspace Angular |
-| `package.json` | Raíz | Dependencias y scripts del proyecto |
-| `tsconfig.json` | Raíz | Configuración base de TypeScript |
-| `tsconfig.app.json` | Raíz | Configuración de TypeScript para la app |
-| `tsconfig.spec.json` | Raíz | Configuración de TypeScript para tests |
-| `package-lock.json` | Raíz | Bloqueo de versiones de dependencias |
-| `src/index.html` | `src/` | HTML principal de la aplicación |
-| `src/main.ts` | `src/` | Punto de entrada de la aplicación |
-| `src/styles.css` | `src/` | Estilos globales |
-| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
-| `src/app/app.ts` | `src/app/` | Componente raíz de la aplicación |
-| `src/app/app.routes.ts` | `src/app/` | Configuración de rutas |
-| `src/app/editor.ts` | `src/app/` | Editor colaborativo de documentos |
-| `src/app/collab.service.ts` | `src/app/` | Servicio de colaboración con Y.js |
-| `src/app/cursor.service.ts` | `src/app/` | Servicio de awareness y cursores multi-usuario |
-| `src/app/doc.service.ts` | `src/app/` | Servicio de gestión de documentos compartidos |
+1. Conecta a un servidor Y.js público y prueba la sincronización
+2. Agrega un campo de "nombre de usuario" que se muestre en Awareness
+3. Implementa undo/redo usando `y-undo` plugin
+4. Agrega soporte para formato rich text usando Quill + y-quill
+5. Implementa presencia de audio/video usando WebRTC + Y.js
+
+### Errores Frecuentes
+
+| Error | Causa | Solución |
+|-------|-------|----------|
+| `Module not found: y-websocket` | No se instalaron las dependencias | `npm install yjs y-websocket y-indexeddb` |
+| Cursores no aparecen | Awareness no está configurado | Verificar que `provider.awareness` esté inicializado |
+| No sincroniza entre pestañas | IndexedDB no está configurado | Verificar que `IndexeddbPersistence` esté creado |
+| Error de conexión WebSocket | URL del servidor incorrecta | Verificar la URL del servidor Y.js |
+
+### Referencias
+
+- [Y.js Documentation](https://docs.yjs.dev/)
+- [y-websocket Provider](https://github.com/yjs/y-websocket)
+- [y-indexeddb Persistence](https://github.com/yjs/y-indexeddb)
+- [Y.js Examples](https://github.com/yjs/yjs-demos)
