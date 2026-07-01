@@ -8,6 +8,12 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "rootDir": "./src",
+    "baseUrl": "./src",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@services/*": ["app/services/*"],
+      "@models/*": ["app/models/*"]
+    },
     "skipLibCheck": true,
     "isolatedModules": true,
     "experimentalDecorators": true,
