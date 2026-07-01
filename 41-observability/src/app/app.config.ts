@@ -29,6 +29,9 @@ import { AppErrorHandler } from './error-handler';
 // Importamos el interceptor de logging HTTP.
 import { httpLogInterceptor } from './http-log.interceptor';
 
+// Importamos el interceptor de OpenTelemetry para instrumentar peticiones HTTP con trazas.
+import { otelInterceptor } from './otel.interceptor';
+
 /**
  * Sentry.init: Inicializa el SDK de Sentry para Angular.
  *
@@ -57,7 +60,13 @@ export const appConfig: ApplicationConfig = {
     // provide: Especifica qué clase usar para el servicio ErrorHandler.
     // useClass: Indica que se debe usar AppErrorHandler como implementación.
     { provide: ErrorHandler, useClass: AppErrorHandler },
-    // Configuramos el cliente HTTP con el interceptor de logging.
-    provideHttpClient(withInterceptors([httpLogInterceptor])),
+    // Configuramos el cliente HTTP con dos interceptores:
+    // 1. otelInterceptor: Crea spans de OpenTelemetry para cada petición HTTP
+    // 2. httpLogInterceptor: Registra logs y agrega correlation IDs
+    //
+    // El orden importa: los interceptores se ejecutan en el orden que se listan.
+    // OpenTelemetry va primero para capturar la petición completa antes de que
+    // el interceptor de logging la modifique (agregue headers).
+    provideHttpClient(withInterceptors([otelInterceptor, httpLogInterceptor])),
   ],
 };

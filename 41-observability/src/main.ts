@@ -9,6 +9,11 @@
  * logging, manejo de errores y métricas de rendimiento (Web Vitals).
  */
 
+// OpenTelemetry tracing: Se importa PRIMERO para que intercepte todas las peticiones HTTP
+// desde el inicio de la aplicación. Si lo importas después, las primeras peticiones
+// no serán rastreadas. Es como encender las cámaras de seguridad ANTES de abrir el almacén.
+import './app/tracing';
+
 // bootstrapApplication: Función de Angular que inicializa una aplicación standalone.
 import { bootstrapApplication } from '@angular/platform-browser';
 
