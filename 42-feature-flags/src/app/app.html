@@ -8,6 +8,8 @@
   </label>
 }
 
+<button (click)="refreshFlags()">Sincronizar con servidor</button>
+
 <h2>Demo Sections</h2>
 
 <div [class.dark]="flags.isEnabled('darkMode')">

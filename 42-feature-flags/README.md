@@ -1,48 +1,47 @@
-## 42 ÔÇö Feature Flags
+## 42 — Feature Flags
 
-Feature flags en Angular: activaci├│n/desactivaci├│n de funcionalidades, releases graduales, A/B testing.
+Feature flags en Angular: activación/desactivación de funcionalidades con carga remota simulada.
 
-> **Prop├│sito:** Implementar feature flags en Angular: toggles remotos, rollout porcentual, A/B testing, flags tipados y limpieza autom├ítica de flags muertos.
+> **Propósito:** Implementar feature flags en Angular con servicio centralizado que carga flags desde un API remoto (simulado), permite overrides locales y sincronización con el servidor.
 >
-> **Problema que resuelve:** Desplegar c├│digo incompleto o desactivar funcionalidades en producci├│n sin feature flags requiere deploys de emergencia o c├│digo comentado en el c├│digo base.
+> **Problema que resuelve:** Desplegar código incompleto o desactivar funcionalidades en producción sin feature flags requiere deploys de emergencia o código comentado en el código base.
 >
-> **C├│mo lo resuelve:** Feature flags con servicio centralizado que consulta flags remotos (LaunchDarkly/ConfigCat), rollout gradual por porcentaje, A/B testing con asignaci├│n de variantes, y flags tipados con TypeScript.
+> **Cómo lo resuelve:** Feature flags con signal<boolean> por feature, servicio centralizado que obtiene flags de un API remoto (simulado con delay de 300ms), override local para toggles, y sincronización manual con el servidor.
 >
-> **Por qu├® aprenderlo:** Feature flags permiten despliegues continuos sin riesgo, pruebas en producci├│n con usuarios reales y release de funcionalidades bajo demanda; est├índar en equipos que practican CI/CD.
-
+> **Por qué aprenderlo:** Feature flags permiten despliegues continuos sin riesgo, pruebas en producción con usuarios reales y release de funcionalidades bajo demanda; estándar en equipos que practican CI/CD.
 
 ```mermaid
 flowchart LR
-    LD["LaunchDarkly / ConfigCat"] --> PROV["Flag Provider"]
-    PROV --> SVC["Feature Flag Service"]
+    API["API Remoto (simulado)"] --> SVC["Feature Flags Service"]
     SVC --> CMP_A["Componente (flag ON)"]
     SVC --> CMP_B["Componente (flag OFF)"]
+    USER["Usuario"] -->|"Sincronizar"| SVC
 ```
 
 ### Conceptos Clave
 
 - **Feature Flags**: `signal<boolean>` por feature, control centralizado
-- **Proveedores**: flags desde API, Firebase Remote Config, LaunchDarkly
-- **Flags basadas en se├▒ales**: `featureFlag('newCheckout')` devuelve se├▒al
-- **Directiva estructural**: `*appFeatureFlag` o `@if (flags.newCheckout())`
-- **Kill switches**: desactivar features en producci├│n inmediatamente
-- **Rollout gradual**: porcentaje de usuarios, targeting por rol/id
-- **A/B testing**: flags para experimentaci├│n, analytics
-- **Persistencia**: flags en localStorage, override por usuario
+- **Carga remota**: `FeatureFlagsApiService` simula petición HTTP con delay de 300ms
+- **Override local**: Toggle manual que se sobreescribe al sincronizar con el servidor
+- **Sincronización**: `refreshFlags()` recarga valores desde el API remoto
+- **Directivas estructurales**: `*ffShow` y `*ffHide` muestran/ocultan según flag
+- **Kill switches**: desactivar features en producción inmediatamente
+- **Rollout gradual**: porcentaje de usuarios (preparado para expansión futura)
+- **Persistencia**: flags en memoria, override por usuario
 
 ### Proyecto
 
-App con 3 feature flags (modo oscuro, checkout nuevo, b├║squeda avanzada) controlados desde API + panel de administraci├│n.
+App con 3 feature flags (modo oscuro, checkout nuevo, búsqueda avanzada) controlados desde API simulado + panel de administración con sincronización.
 
 ### Ejercicios
 
-1. Crea servicio de feature flags con se├▒ales
-2. Implementa directiva `*appFeatureFlag` y control flow
-3. Agrega flags desde API con polling cada 5min
-4. Implementa rollout gradual por porcentaje
-5. Crea panel admin para toggle flags en tiempo real
+1. Crea servicio de feature flags con señales
+2. Implementa directiva `*ffShow` y `*ffHide`
+3. Agrega flags desde API con delay simulado
+4. Implementa persistencia con localStorage para que los flags sobrevivan recargas
+5. Crea un interceptor que agregue headers de autenticación a las peticiones de flags
 
-### C├│mo ejecutar
+### Cómo ejecutar
 
 ```bash
 cd 42-feature-flags
@@ -62,9 +61,10 @@ ng serve --host 0.0.0.0 --port 8080
 | `src/index.html` | `src/` | HTML principal de la aplicación |
 | `src/main.ts` | `src/` | Punto de entrada de la aplicación |
 | `src/styles.css` | `src/` | Estilos globales |
-| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular |
-| `src/app/app.ts` | `src/app/` | Componente raíz de la aplicación |
+| `src/app/app.config.ts` | `src/app/` | Configuración de providers de Angular (incluye provideHttpClient) |
+| `src/app/app.ts` | `src/app/` | Componente raíz con panel de toggles y sincronización |
 | `src/app/app.css` | `src/app/` | Estilos del componente raíz |
-| `src/app/app.html` | `src/app/` | Template del componente raíz |
-| `src/app/feature-flags.service.ts` | `src/app/` | Servicio centralizado de feature flags |
-| `src/app/feature-flag.directive.ts` | `src/app/` | Directiva estructural para toggle de features |
+| `src/app/app.html` | `src/app/` | Template con toggle panel y botón sincronizar |
+| `src/app/feature-flags.service.ts` | `src/app/` | Servicio centralizado con carga remota y overrides locales |
+| `src/app/feature-flags-api.service.ts` | `src/app/` | Servicio API que simula comunicación con backend remoto |
+| `src/app/feature-flag.directive.ts` | `src/app/` | Directivas estructurales ffShow y ffHide |

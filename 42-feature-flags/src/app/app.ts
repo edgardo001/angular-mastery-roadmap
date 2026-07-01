@@ -11,6 +11,10 @@
  * Analogía: Es como los interruptores de luz de una casa. Cada interruptor
  * controla una habitación (funcionalidad). Puedes encender o apagar cada
  * habitación independientemente de las demás.
+ *
+ * Este componente ahora incluye la capacidad de refrescar las flags
+ * desde un API remoto, demostrando cómo se integran feature flags
+ * con fuentes de datos externas.
  */
 
 // Component: Decorador de Angular que define las propiedades de un componente.
@@ -46,6 +50,20 @@ export class App {
    */
   toggle(key: FeatureFlagKey): void {
     this.flags.toggle(key);
+  }
+
+  /**
+   * refreshFlags: Sincroniza las feature flags con el API remoto.
+   *
+   * Cuando el usuario hace clic en "Sincronizar", este método llama
+   * a refreshFlags() del servicio, que obtiene los valores más recientes
+   * del servidor y sobreescribe los valores locales.
+   *
+   * Analogía: Es como presionar el botón de "refrescar" en tu navegador
+   * para obtener la versión más reciente de una página web.
+   */
+  refreshFlags(): void {
+    this.flags.refreshFlags();
   }
 
   /**
