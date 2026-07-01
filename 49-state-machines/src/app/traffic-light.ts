@@ -1,5 +1,6 @@
 // Componente de semáforo que usa una máquina de estados
 // Demuestra cómo XState maneja flujos de UI complejos
+// Nuevo: muestra context, guards, actions, entry/exit en acción
 import { Component, OnDestroy, inject, signal } from '@angular/core';
 import { MachineService } from '../services/machine.service';
 import { trafficLightMachine } from '../machines/traffic-light.machine';
@@ -10,6 +11,7 @@ import { trafficLightMachine } from '../machines/traffic-light.machine';
   template: `
     <div class="traffic-light">
       <h2>Traffic Light</h2>
+
       <!-- Visualización del semáforo con 3 bombillas -->
       <div class="light">
         <!-- [class.active]: clase condicional que ilumina la bombilla actual -->
@@ -17,8 +19,33 @@ import { trafficLightMachine } from '../machines/traffic-light.machine';
         <div class="bulb yellow" [class.active]="currentState() === 'yellow'"></div>
         <div class="bulb green" [class.active]="currentState() === 'green'"></div>
       </div>
+
       <!-- Mostramos el estado actual de la máquina -->
       <p>State: <strong>{{ currentState() }}</strong></p>
+
+      <!-- CONTEXT: muestra los datos internos de la máquina -->
+      <div class="context-info">
+        <p><strong>Countdown:</strong> {{ context().countdown }}s</p>
+        <p><strong>Cycles:</strong> {{ context().cycleCount }} / {{ context().maxCycles }}</p>
+        <!-- Guard visual: muestra si la transición está habilitada -->
+        <p>
+          <strong>Can go green:</strong>
+          <span [class.enabled]="context().cycleCount < context().maxCycles">
+            {{ context().cycleCount < context().maxCycles ? '✅ Yes' : '❌ No (max reached)' }}
+          </span>
+        </p>
+      </div>
+
+      <!-- LOG: muestra las últimas acciones ejecutadas -->
+      <div class="log">
+        <p><strong>Action Log:</strong></p>
+        <ul>
+          @for (entry of recentLog(); track entry) {
+            <li>{{ entry }}</li>
+          }
+        </ul>
+      </div>
+
       <div class="actions">
         <!-- Botones que envían eventos a la máquina de estados -->
         @if (currentState() !== 'flashingRed') {
@@ -43,6 +70,12 @@ import { trafficLightMachine } from '../machines/traffic-light.machine';
     .bulb.green.active { background: #22c55e; box-shadow: 0 0 20px #22c55e; }
     .actions { display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
     button { padding: 6px 16px; border: 1px solid #6366f1; background: #fff; border-radius: 6px; cursor: pointer; }
+    .context-info { background: #f8fafc; padding: 0.75rem; border-radius: 8px; margin: 0.75rem 0; font-size: 0.85rem; }
+    .context-info p { margin: 0.25rem 0; }
+    .enabled { color: #22c55e; font-weight: 600; }
+    .log { background: #f1f5f9; padding: 0.75rem; border-radius: 8px; margin: 0.75rem 0; max-height: 120px; overflow-y: auto; font-size: 0.8rem; }
+    .log ul { margin: 0.25rem 0; padding-left: 1.25rem; }
+    .log li { margin: 0.1rem 0; }
   `]
 })
 export class TrafficLightComponent implements OnDestroy {
@@ -50,21 +83,32 @@ export class TrafficLightComponent implements OnDestroy {
   private readonly machineService = inject(MachineService);
   private actor: any = null; // Actor de XState (instancia de la máquina)
   readonly currentState = signal('green'); // Signal con el estado actual
+  readonly context = signal<any>({ countdown: 5, cycleCount: 0, maxCycles: 3, log: [] }); // Signal con el context
+  readonly recentLog = signal<string[]>([]); // Últimas 5 entradas del log
 
   constructor() {
     // Creamos un actor desde la máquina de semáforo
     this.actor = this.machineService.createActorFrom(trafficLightMachine);
     // Obtenemos el estado inicial de la máquina
-    this.currentState.set(this.actor.getSnapshot().value);
+    const initialSnapshot = this.actor.getSnapshot();
+    this.currentState.set(initialSnapshot.value);
+    // Leemos el context inicial
+    this.context.set(initialSnapshot.context);
+    this.recentLog.set(initialSnapshot.context.log.slice(-5));
+
     // subscribe(): escucha cambios de estado en la máquina
     // Cada vez que la máquina cambia de estado, actualizamos el signal
     this.actor.subscribe((snapshot: any) => {
       this.currentState.set(snapshot.value);
+      // Actualizamos el context (datos internos de la máquina)
+      this.context.set(snapshot.context);
+      // Mostramos las últimas 5 entradas del log de acciones
+      this.recentLog.set(snapshot.context.log.slice(-5));
     });
   }
 
   // Envía un evento a la máquina de estados
-  // La máquina decide a qué estado transicionar según el evento y el estado actual
+  // La máquina decide a qué estado transicionar según el evento, el estado actual, y los guards
   send(event: string) {
     this.actor?.send({ type: event });
   }
