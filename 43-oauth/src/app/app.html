@@ -1,12 +1,36 @@
-<h1>OAuth 2.0 / OIDC</h1>
+<h1>OAuth 2.0 / OIDC con PKCE</h1>
 
 @if (auth.isAuthenticated()) {
-  <p>Authenticated</p>
-  <button (click)="logout()">Logout</button>
+  <div class="status authenticated">
+    <span class="status-dot"></span>
+    Autenticado con PKCE
+  </div>
+  <button (click)="logout()" class="btn-logout">Cerrar sesión</button>
 
-  <h2>User Data</h2>
+  <h2>Datos del usuario</h2>
   <pre>{{ auth.userData() | json }}</pre>
 } @else {
-  <p>Not authenticated</p>
-  <button (click)="login()">Login</button>
+  <div class="status not-authenticated">
+    <span class="status-dot"></span>
+    No autenticado
+  </div>
+
+  <!-- Login estándar con PKCE (Authorization Code flow) -->
+  <button (click)="login()" class="btn-primary">
+    Iniciar sesión (Authorization Code + PKCE)
+  </button>
+
+  <!-- Login social con diferentes proveedores -->
+  <div class="social-login">
+    <h3>O inicia sesión con:</h3>
+    @for (provider of auth.socialProviders; track provider.id) {
+      <button
+        (click)="loginWithSocial(provider)"
+        class="btn-social"
+        [style.backgroundColor]="provider.color"
+      >
+        {{ provider.name }} — {{ provider.description }}
+      </button>
+    }
+  </div>
 }
